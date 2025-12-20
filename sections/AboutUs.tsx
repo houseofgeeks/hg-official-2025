@@ -1,4 +1,5 @@
 import AboutCard from "@/components/AboutCard"
+import { HiOutlineUserGroup,HiOutlineLightBulb,HiOutlineCodeBracket } from "react-icons/hi2";
 const AboutUs = () => {
   return (
     <section className='text-white flex items-center justify-center pt-40 flex-col gap-5'>
@@ -13,9 +14,13 @@ const AboutUs = () => {
         </div>
 
 
-        <div className="flex">
-            <AboutCard />
-            <AboutCard />
+        <div className="flex flex-col gap-5">
+          <div className="flex">
+            <AboutCard icon={HiOutlineUserGroup} text="Community of developers, designers, and problem solvers" />
+            <AboutCard icon={HiOutlineLightBulb} text="Focus on learning, building, and real-world impact" />
+          </div>
+          <AboutCard icon={HiOutlineCodeBracket} text="Workshops, hackathons, tech talks, and collaborative projects" classname="justify-center" />
+            
         </div>
 
     </section>
