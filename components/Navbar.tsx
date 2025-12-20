@@ -10,7 +10,7 @@ const Navbar = () => {
   }
 
   return (
-      <nav className="flex margin-x-auto  text-white  items-center text-4xl font-teko justify-between mr-20">
+      <nav className="flex margin-x-auto  text-white  items-center text-4xl font-teko justify-between md:mr-20 mr-0">
         <div className="cursor-pointer"><Image src="/hog.svg" alt="Logo" width={160} height={150} /></div>
         <ul className="flex gap-10 w-full justify-center max-md:hidden ">
           <li className="hover:text-themecolor link-underline">Home</li>

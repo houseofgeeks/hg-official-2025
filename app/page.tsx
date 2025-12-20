@@ -1,7 +1,8 @@
 'use client'
 import Navbar from '@/components/Navbar'
+import Hero from '@/sections/Hero'
 import Snowfall from 'react-snowfall'
-// import Hero from '@/components/Hero'
+
 const page = () => {
   return (
     <>
@@ -13,7 +14,7 @@ const page = () => {
 />
     <main className="px-8 py-8 w-full margin-auto">
       <Navbar />
-      {/* <Hero /> */}
+      <Hero />
     </main>
     </>
   )
