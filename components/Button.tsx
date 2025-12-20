@@ -1,12 +1,13 @@
 'use client'
 type Props = {
   classname?: string;
-  text ?: string
+  text ?: string;
+  onClick?: () => void;
 };
 
-const Button = ({classname,text} : Props) => {
+const Button = ({classname,text, onClick} : Props) => {
   return (
-    <button className={`cursor-pointer hover:scale-105 transition-all duration-300 ${classname} `}>
+    <button onClick={onClick} className={`cursor-pointer hover:scale-105 transition-all duration-300 ${classname} `}>
         {text}
     </button>
   )

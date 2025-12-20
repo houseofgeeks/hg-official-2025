@@ -1,5 +1,6 @@
 'use client'
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { RxHamburgerMenu, RxCross1 } from 'react-icons/rx';
 const Navbar = () => {
@@ -11,17 +12,17 @@ const Navbar = () => {
 
   return (
       <nav className="flex margin-x-auto  text-white  items-center text-3xl font-teko justify-between md:mr-20 mr-0">
-        <div className="cursor-pointer"><Image src="/hog.svg" alt="Logo" width={160} height={150} /></div>
+        <div className="cursor-pointer"><Link href="/"><Image src="/hog.svg" alt="Logo" width={160} height={150} /></Link></div>
         <ul className="flex gap-10 w-full justify-center max-md:hidden ">
-          <li className="hover:text-themecolor link-underline">Home</li>
-          <li className="hover:text-themecolor link-underline">About</li>
-          <li className="hover:text-themecolor link-underline">Leaderboard</li>
-          <li className="hover:text-themecolor link-underline">Community</li>
-          <li className="hover:text-themecolor link-underline">Contact</li>
+          <li className="hover:text-themecolor"><Link href="/" className='interactive-element'>Home</Link></li>
+          <li className="hover:text-themecolor"><Link href="/#about" className='interactive-element'>About</Link></li>
+          <li className="hover:text-themecolor"><Link href="/leaderboard" className='interactive-element'>Leaderboard</Link></li>
+          <li className="hover:text-themecolor"><Link href="/#community" className='interactive-element'>Community</Link></li>
+          <li className="hover:text-themecolor"><Link href="/#contact" className='interactive-element'>Contact</Link></li>
         </ul>
 
         <div className="md:hidden">
-        <button onClick={toggleMenu} aria-label="Toggle menu" className=" link-underline hover:text-themecolor z-60">
+        <button onClick={toggleMenu} aria-label="Toggle menu" className="interactive-element link-underline hover:text-themecolor z-60">
         {isopen ? <RxCross1   size={24} /> : <RxHamburgerMenu size={24} />}
         </button>
 
@@ -38,20 +39,15 @@ const Navbar = () => {
       z-50 transform transition-transform duration-300 ease-in-out
       ${isopen ? 'translate-x-0' : 'translate-x-full'}
     `}>
-          <li className="hover:text-themecolor link-underline">Home</li>
-          <li className="hover:text-themecolor link-underline">About</li>
-          <li className="hover:text-themecolor link-underline">Leaderboard</li>
-          <li className="hover:text-themecolor link-underline">Community</li>
+          <li className="hover:text-themecolor"><Link href="/" className='interactive-element'>Home</Link></li>
+          <li className="hover:text-themecolor"><Link href="/#about" className='interactive-element'>About</Link></li>
+          <li className="hover:text-themecolor"><Link href="/leaderboard" className='interactive-element'>Leaderboard</Link></li>
+          <li className="hover:text-themecolor"><Link href="/#community" className='interactive-element'>Community</Link></li>
+          <li className="hover:text-themecolor"><Link href="/#contact" className='interactive-element'>Contact</Link></li>
         </ul>
         
         </div>
-
-
-
-       
       </nav>
-    
-    
   )
 }
 

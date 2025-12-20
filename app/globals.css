@@ -160,3 +160,88 @@ Some extra css
     @apply bg-background ;
   }
 }
+
+body {
+  cursor: none;
+}
+
+.custom-cursor {
+  width: 8px;
+  height: 8px;
+  background-color: var(--themecolor);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  transition: width 0.2s ease-out, height 0.2s ease-out, background-color 0.2s ease-out;
+}
+
+.custom-cursor.hover {
+  background-color: white;
+}
+
+.cursor-lock {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  border-radius: 8px;
+}
+
+.cursor-lock .corner {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-style: solid;
+  border-color: var(--themecolor);
+}
+
+.cursor-lock .top-left {
+  top: -3px;
+  left: -3px;
+  border-width: 3px 0 0 3px;
+}
+
+.cursor-lock .top-right {
+  top: -3px;
+  right: -3px;
+  border-width: 3px 3px 0 0;
+}
+
+.cursor-lock .bottom-left {
+  bottom: -3px;
+  left: -3px;
+  border-width: 0 0 3px 3px;
+}
+
+.cursor-lock .bottom-right {
+  bottom: -3px;
+  right: -3px;
+  border-width: 0 3px 3px 0;
+}
+
+.cursor-lock.locked .top-left {
+  top: -10px;
+  left: -10px;
+}
+
+.cursor-lock.locked .top-right {
+  top: -10px;
+  right: -10px;
+}
+
+.cursor-lock.locked .bottom-left {
+  bottom: -10px;
+  left: -10px;
+}
+
+.cursor-lock.locked .bottom-right {
+  bottom: -10px;
+  right: -10px;
+}
+
+body .interactive-element:hover {
+  border-color: transparent;
+  outline-color: transparent;
+}
