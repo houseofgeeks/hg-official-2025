@@ -3,7 +3,7 @@ import Navbar from '@/components/Navbar'
 import Hero from '@/sections/Hero'
 import AboutUs from '@/sections/AboutUs'
 import Snowfall from 'react-snowfall'
-
+import Domains from '@/sections/Domains'
 const page = () => {
   return (
     <>
@@ -22,6 +22,7 @@ const page = () => {
       <Navbar />
       <Hero />
       <AboutUs />
+      <Domains />
     </main>
     </>
   )

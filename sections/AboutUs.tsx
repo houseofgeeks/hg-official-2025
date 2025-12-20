@@ -5,7 +5,7 @@ const AboutUs = () => {
     <section className='text-white flex items-center justify-center pt-40 flex-col gap-5'>
         <div className='flex flex-col items-center '>
             <h1 className='text-center text-7xl font-teko font-bold'>ABOUT</h1>
-            <h2 className='text-center font-semibold font-teko text-5xl text-themecolor'>HOUSE OF GEEKS</h2>
+            <h2 className='text-center font-semibold font-teko text-5xl text-themecolor underline'>HOUSE OF GEEKS</h2>
         </div>
         
         <div className='max-w-2xl'>
