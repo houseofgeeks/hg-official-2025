@@ -6,7 +6,7 @@ type DomainCardProps = {
     icon : IconType;
     id:number;
     title : string;
-    ur:string;
+    url:string;
     description : string;
     slug?: string;
     leads?:Lead[]
