@@ -14,7 +14,7 @@ const Domains = () => {
 
         <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {domains.map((domain,index) => (
-                <DomainCard key={index} title={domain.title} description={domain.description}  icon={domain.icon} />
+                <DomainCard key={index} title={domain.title} description={domain.description} id={domain.id} icon={domain.icon} leads={domain.leads} cords={domain.cordinators} />
             ))}
         </div>
     </section>

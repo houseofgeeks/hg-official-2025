@@ -195,6 +195,7 @@ body {
   height: 15px;
   border-style: solid;
   border-color: var(--themecolor);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .cursor-lock .top-left {

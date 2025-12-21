@@ -34,8 +34,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  community,
 }: Readonly<{
   children: React.ReactNode;
+  community: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -45,6 +47,7 @@ export default function RootLayout({
         <SpaceBackground />
         <CustomCursor />
         {children}
+        {community}
       </body>
     </html>
   );

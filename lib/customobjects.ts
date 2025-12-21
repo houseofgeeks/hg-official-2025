@@ -1,49 +1,130 @@
 import { HiOutlineCodeBracket,HiOutlineTrophy,HiOutlineCpuChip,HiOutlineBolt,HiOutlinePaintBrush,HiOutlineSparkles,HiOutlineShieldCheck} from "react-icons/hi2";
+import ap from "./images/ap.png";
+import ab from "./images/ab.png";
+import aa from "./images/aa.png";
+import as from "./images/as.png";
+
+
+export interface Lead{
+  name:string,
+  domain?:string,
+  url?:string,
+  image?:string
+}
+
 
 
 export const domains = [
   {
+    id:1,
     title: "Software Development",
     description:
       "Building scalable applications, system design, and full-stack development",
     icon: HiOutlineCodeBracket,
+    leads:[
+      {
+        name:"Agnish Bhattacharya",
+        image: ab.src
+      },
+      {
+        name:"Aditya Singh",
+        image: as.src
+      }
+  ],
+  cordinators:[
+    {
+     name:"Atul Pandey",
+     domain:"Web Development",
+     image: ap.src
+    },
+    {
+     name:"Amitesh Anand",
+     domain:"App Development",
+     image: aa.src
+    },
+    {
+     name:"Atharva Jain",
+     domain:"Web Development",
+     image: ap.src
+    },
+    {
+     name:"Kumar Mridul",
+     domain:"Web Development",
+     image: ap.src
+    },
+    {
+     name:"Shubham Atri",
+     domain:"Web Development",
+     image: ap.src
+    },
+    {
+     name:"Aarju",
+     domain:"Web Development",
+     image: ap.src
+    },
+    {
+     name:"Ananya",
+     domain:"Web Development",
+     image: ap.src
+    },
+  
+]
+
   },
   {
+    id:2,
     title: "Competitive Programming",
     description:
       "Problem solving, algorithms, data structures, and coding competitions",
     icon: HiOutlineTrophy,
+    leads: [],
+    cordinators: [],
   },
   {
+    id:3,
     title: "Internet of Things (IoT)",
     description:
       "Embedded systems, sensors, hardware-software integration, and smart devices",
     icon: HiOutlineCpuChip,
+    leads: [],
+    cordinators: [],
   },
   {
+    id:4,
     title: "SPARKK (Core Electronics)",
     description:
       "Circuit design, microcontrollers, digital systems, and electronics fundamentals",
     icon: HiOutlineBolt,
+    leads: [],
+    cordinators: [],
   },
   {
+    id:5,
     title: "Arcanum (Web Design & Gaming)",
     description:
       "UI/UX design, creative web experiences, game design, and interactive media",
     icon: HiOutlinePaintBrush,
     highlight: true,
+    leads: [],
+    cordinators: [],
   },
   {
+    id:6,
     title: "AI & Machine Learning",
     description:
       "Data-driven intelligence, neural networks, and real-world AI applications",
     icon: HiOutlineSparkles,
+    leads: [],
+    cordinators: [],
   },
   {
+    id:7,
     title: "Cybersecurity",
     description:
       "Ethical hacking, system security, cryptography, and digital defense",
     icon: HiOutlineShieldCheck,
+    leads: [],
+    cordinators: [],
   },
 ];
 
