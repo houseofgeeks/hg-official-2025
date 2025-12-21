@@ -46,3 +46,66 @@ export const domains = [
     icon: HiOutlineShieldCheck,
   },
 ];
+
+export const donors = [
+  {
+    id: 1,
+    name: 'John Doe',
+    amount: 5000,
+    image: 'https://i.pravatar.cc/150?u=1',
+  },
+  {
+    id: 2,
+    name: 'Jane Doe',
+    amount: 4750,
+    image: 'https://i.pravatar.cc/150?u=2',
+  },
+  {
+    id: 3,
+    name: 'Peter Jones',
+    amount: 4500,
+    image: 'https://i.pravatar.cc/150?u=3',
+  },
+  {
+    id: 4,
+    name: 'Sara Williams',
+    amount: 3250,
+    image: 'https://i.pravatar.cc/150?u=4',
+  },
+  {
+    id: 5,
+    name: 'David Brown',
+    amount: 2100,
+    image: 'https://i.pravatar.cc/150?u=5',
+  },
+  {
+    id: 6,
+    name: 'Emily Davis',
+    amount: 1500,
+    image: 'https://i.pravatar.cc/150?u=6',
+  },
+  {
+    id: 7,
+    name: 'Michael Miller',
+    amount: 1000,
+    image: 'https://i.pravatar.cc/150?u=7',
+  },
+  {
+    id: 8,
+    name: 'Jessica Wilson',
+    amount: 750,
+    image: 'https://i.pravatar.cc/150?u=8',
+  },
+  {
+    id: 9,
+    name: 'Chris Moore',
+    amount: 500,
+    image: 'https://i.pravatar.cc/150?u=9',
+  },
+  {
+    id: 10,
+    name: 'Ashley Taylor',
+    amount: 250,
+    image: 'https://i.pravatar.cc/150?u=10',
+  },
+];
