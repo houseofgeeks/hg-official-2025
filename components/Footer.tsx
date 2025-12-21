@@ -1,7 +1,6 @@
 'use client'
 import { FaInstagram, FaLinkedin } from 'react-icons/fa'
 import { MdEmail } from 'react-icons/md'
-import Link from 'next/link'
 
 const Footer = () => {
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
@@ -11,108 +10,53 @@ const Footer = () => {
       element.scrollIntoView({ behavior: 'smooth' })
     }
   }
+
   return (
-    <footer className='relative w-full bg-black pt-5 pb-2 px-4 md:px-8 border-t border-gray-800'>
-
-      <div className='relative z-10 max-w-7xl mx-auto'>
-        {/* Main Footer Content */}
-        <div className='grid grid-cols-1 md:grid-cols-4 gap-8'>
-          {/* Brand Section */}
-          <div className='flex flex-col gap-4'>
-            <div>
-              <h3 className='text-2xl font-teko font-bold text-white drop-shadow-lg'>HOUSE OF</h3>
-              <h3 className='text-2xl font-teko font-bold text-themecolor drop-shadow-lg'>GEEKS</h3>
-            </div>
-            <p className='text-gray-300 text-sm font-montserrat leading-relaxed'>
-              The official technical society of IIIT Ranchi, fostering innovation and excellence.
-            </p>
+    <footer className='relative w-full bg-black/50 backdrop-blur-sm border-t border-themecolor/20 py-8 px-4'>
+      <div className='max-w-7xl mx-auto'>
+        
+        {/* Main Content */}
+        <div className='flex flex-col md:flex-row justify-between items-center gap-6'>
+          
+          {/* Left - Branding */}
+          <div className='flex flex-col gap-1'>
+            <h3 className='text-lg font-teko font-bold text-white'>HOUSE OF GEEKS</h3>
+            <p className='text-xs text-gray-400 font-montserrat'>IIIT Ranchi Official Tech Society</p>
           </div>
 
-          {/* Quick Links */}
-          <div className='flex flex-col gap-4'>
-            <h4 className='text-lg font-teko font-bold text-white'>QUICK LINKS</h4>
-            <div className='flex flex-col gap-2'>
-              <a
-                href="#about"
-                onClick={(e) => handleSmoothScroll(e, 'about')}
-                className='text-gray-300 hover:text-themecolor transition-colors duration-300 font-montserrat text-sm group flex items-center gap-2'
-              >
-                <span className='h-0.5 w-0 bg-themecolor group-hover:w-4 transition-all duration-300'></span>
-                About Us
-              </a>
-              <Link
-                href="#contact"
-                className='text-gray-300 hover:text-themecolor transition-colors duration-300 font-montserrat text-sm group flex items-center gap-2'
-              >
-                <span className='h-0.5 w-0 bg-themecolor group-hover:w-4 transition-all duration-300'></span>
-                Contact Us
-              </Link>
-              <Link
-                href="#events"
-                className='text-gray-300 hover:text-themecolor transition-colors duration-300 font-montserrat text-sm group flex items-center gap-2'
-              >
-                <span className='h-0.5 w-0 bg-themecolor group-hover:w-4 transition-all duration-300'></span>
-                Events
-              </Link>
-              <Link
-                href="#community"
-                className='text-gray-300 hover:text-themecolor transition-colors duration-300 font-montserrat text-sm group flex items-center gap-2'
-              >
-                <span className='h-0.5 w-0 bg-themecolor group-hover:w-4 transition-all duration-300'></span>
-                Community
-              </Link>
-            </div>
+          {/* Center - Quick Links */}
+          <div className='flex gap-6 flex-wrap justify-center'>
+            <a href='#about' onClick={(e) => handleSmoothScroll(e, 'about')} className='text-xs text-gray-300 hover:text-themecolor transition-colors duration-300 font-montserrat'>
+              About
+            </a>
+            <a href='#contact' className='text-xs text-gray-300 hover:text-themecolor transition-colors duration-300 font-montserrat'>
+              Contact
+            </a>
+            <a href='#events' className='text-xs text-gray-300 hover:text-themecolor transition-colors duration-300 font-montserrat'>
+              Events
+            </a>
+            <a href='#community' className='text-xs text-gray-300 hover:text-themecolor transition-colors duration-300 font-montserrat'>
+              Community
+            </a>
           </div>
 
-          {/* Contact Info */}
-          <div className='flex flex-col gap-4'>
-            <h4 className='text-lg font-teko font-bold text-white'>CONTACT</h4>
-            <div className='flex flex-col gap-3'>
-              <a
-                href='mailto:contact@houseofgeeks.in'
-                className='flex items-center gap-3 text-gray-300 hover:text-themecolor transition-all duration-300 group'
-              >
-                <div className='p-2 bg-gray-800 group-hover:bg-themecolor/20 rounded-lg transition-all duration-300'>
-                  <MdEmail size={20} className='text-themecolor' />
-                </div>
-                <span className='text-sm font-montserrat'>contact@hg.com</span>
-              </a>
-              <p className='text-gray-400 text-sm font-montserrat'>
-                📍 IIIT Ranchi, Jharkhand
-              </p>
-            </div>
+          {/* Right - Social & Contact */}
+          <div className='flex items-center gap-4'>
+            <a href='mailto:contact@houseofgeeks.in' className='text-gray-400 hover:text-themecolor transition-colors duration-300' aria-label='Email'>
+              <MdEmail size={18} />
+            </a>
+            <a href='https://instagram.com/houseofgeeks' target='_blank' rel='noopener noreferrer' className='text-gray-400 hover:text-themecolor transition-colors duration-300' aria-label='Instagram'>
+              <FaInstagram size={16} />
+            </a>
+            <a href='https://linkedin.com/company/houseofgeeks' target='_blank' rel='noopener noreferrer' className='text-gray-400 hover:text-themecolor transition-colors duration-300' aria-label='LinkedIn'>
+              <FaLinkedin size={16} />
+            </a>
           </div>
+        </div>
 
-          {/* Social Links */}
-          <div className='flex flex-col gap-4'>
-            <h4 className='text-lg font-teko font-bold text-white'>FOLLOW US</h4>
-            <div className='flex gap-4'>
-              <a
-                href='https://instagram.com/houseofgeeks'
-                target='_blank'
-                rel='noopener noreferrer'
-                className='relative group'
-                aria-label='Instagram'
-              >
-                <div className='absolute inset-0 bg-gradient-to-r from-themecolor to-purple-500 rounded-lg blur opacity-0 group-hover:opacity-100 transition duration-300'></div>
-                <div className='relative flex items-center justify-center w-12 h-12 bg-gray-800 rounded-lg group-hover:bg-themecolor transition-all duration-300 hover:scale-110'>
-                  <FaInstagram size={24} className='text-themecolor group-hover:text-white' />
-                </div>
-              </a>
-              <a
-                href='https://linkedin.com/company/houseofgeeks'
-                target='_blank'
-                rel='noopener noreferrer'
-                className='relative group'
-                aria-label='LinkedIn'
-              >
-                <div className='absolute inset-0 bg-gradient-to-r from-themecolor to-purple-500 rounded-lg blur opacity-0 group-hover:opacity-100 transition duration-300'></div>
-                <div className='relative flex items-center justify-center w-12 h-12 bg-gray-800 rounded-lg group-hover:bg-themecolor transition-all duration-300 hover:scale-110'>
-                  <FaLinkedin size={24} className='text-themecolor group-hover:text-white' />
-                </div>
-              </a>
-            </div>
-          </div>
+        {/* Bottom Divider & Copyright */}
+        <div className='mt-6 pt-4 border-t border-gray-800/50'>
+          <p className='text-xs text-gray-500 text-center font-montserrat'>© 2025 House of Geeks. All rights reserved.</p>
         </div>
       </div>
     </footer>
