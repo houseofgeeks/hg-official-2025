@@ -12,7 +12,7 @@ const Navbar = () => {
 
   return (
       <nav className="flex margin-x-auto  text-white  items-center text-3xl font-teko justify-between md:mr-20 mr-0">
-        <div className="cursor-pointer"><Link href="/"><Image src="/hog.svg" alt="Logo" width={160} height={150} /></Link></div>
+        <div className="cursor-pointer"><Link href="/" className="interactive-element"><Image src="/hog.svg" alt="Logo" width={160} height={150} /></Link></div>
         <ul className="flex gap-10 w-full justify-center max-md:hidden ">
           <li className="hover:text-themecolor"><Link href="/" className='interactive-element'>Home</Link></li>
           <li className="hover:text-themecolor"><Link href="/#about" className='interactive-element'>About</Link></li>

@@ -18,11 +18,13 @@ const Page = async ({ params }: { params: Promise<{ community: string }> }) => {
   return (
     <main className="px-8 py-8 w-full margin-auto min-h-screen">
         <Navbar />
-        <DomainTeam 
-          wingName={currentDomain.title} 
-          leads={currentDomain.leads} 
-          cordinators={currentDomain.cordinators} 
-        />
+        <div className="container mx-auto mt-12">
+          <DomainTeam 
+            wingName={currentDomain.title} 
+            leads={currentDomain.leads} 
+            cordinators={currentDomain.cordinators} 
+          />
+        </div>
     </main>
   )
 }
