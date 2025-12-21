@@ -2,9 +2,11 @@ import DomainCard from "@/components/DomainCard"
 import ShinyText from "@/components/ShinyText"
 import { domains } from "@/lib/customobjects"
 
+type DomainProp={
+  useModal:boolean;
+}
 
-
-const Domains = () => {
+const Domains = ({useModal}:DomainProp) => {
   return (
     <section>
         <div className="flex justify-center items-center flex-col pb-20">
@@ -14,7 +16,7 @@ const Domains = () => {
 
         <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {domains.map((domain,index) => (
-                <DomainCard key={index} url={domain.url} title={domain.title} description={domain.description} id={domain.id} icon={domain.icon} leads={domain.leads} cords={domain.cordinators} />
+                <DomainCard key={index} url={domain.url} title={domain.title} description={domain.description} id={domain.id} icon={domain.icon} leads={domain.leads} cords={domain.cordinators} useModal={useModal} />
             ))}
         </div>
     </section>

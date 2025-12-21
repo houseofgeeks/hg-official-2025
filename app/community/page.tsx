@@ -8,7 +8,7 @@ const Community = () => {
     <main className="px-8 py-8 w-full margin-auto min-h-screen">
         <Navbar />
         <div className="container mx-auto mt-12">
-        <Domains/>
+        <Domains useModal={false} />
     </div>
     </main>
   )

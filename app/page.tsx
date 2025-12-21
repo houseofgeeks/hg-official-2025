@@ -12,7 +12,7 @@ const page = () => {
       <Navbar />
       <Hero />
       <AboutUs />
-      <Domains />
+      <Domains useModal={true} />
     </main>
     </>
   )
