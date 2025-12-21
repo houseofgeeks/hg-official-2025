@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Montserrat, Teko } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
-import SpaceBackground from "./SpaceBackground";
+import SpaceBackground from "../components/SpaceBackground";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

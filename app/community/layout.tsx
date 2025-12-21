@@ -3,7 +3,7 @@ const CommunityLayout = ({
   community,
 }: {
   children: React.ReactNode;
-  community: string;
+  community:string;
 }) => {
   return (
     <div>

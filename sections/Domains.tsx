@@ -1,6 +1,5 @@
 import DomainCard from "@/components/DomainCard"
 import ShinyText from "@/components/ShinyText"
-import { HiOutlineCodeBracket,HiOutlineTrophy,HiOutlineCpuChip,HiOutlineBolt,HiOutlinePaintBrush,HiOutlineSparkles,HiOutlineShieldCheck} from "react-icons/hi2";
 import { domains } from "@/lib/customobjects"
 
 
