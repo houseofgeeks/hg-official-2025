@@ -8,6 +8,9 @@ import arj from "./images/arj.png";
 import sa from "./images/sa.png";
 import mk from "./images/mk.png";
 import aj from "./images/aj.png";
+import dk from "./images/dk.png";
+import km from "./images/km.png";
+import cc from "./images/cc.png";
 
 
 export interface Lead{
@@ -17,6 +20,26 @@ export interface Lead{
   image?:string
 }
 
+
+export const heads=[
+  
+  {
+      name:"Kushagra Malviya",
+      position:"Pr Lead",
+      image:km.src
+  },
+  {
+      name:"Devansh Khandelwal",
+      position:"Head of Operations",
+      image:dk.src
+  },
+  {
+      name:"Chaitanya Chaurasia",
+      position:"Treasurar",
+      image:cc.src
+  },
+
+]
 
 
 export const domains = [
