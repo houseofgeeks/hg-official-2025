@@ -1,10 +1,11 @@
 import DomainTeam from "@/components/DomainTeam"
+import Navbar from "@/components/Navbar"
 import { domains } from "@/lib/customobjects"
 // Mock data for domains - replace with your actual data source
 
 const Page = async ({ params }: { params: Promise<{ community: string }> }) => {
   const { community } = await params;
-  const currentDomain = domains.find((domain) => domain.id === +community)
+  const currentDomain = domains.find((domain) => domain.url === community)
 
   if (!currentDomain) {
     return (
@@ -15,13 +16,14 @@ const Page = async ({ params }: { params: Promise<{ community: string }> }) => {
   }
 
   return (
-    <div className="min-h-screen text-white pt-24">
+    <main className="px-8 py-8 w-full margin-auto min-h-screen">
+        <Navbar />
         <DomainTeam 
           wingName={currentDomain.title} 
           leads={currentDomain.leads} 
           cordinators={currentDomain.cordinators} 
         />
-    </div>
+    </main>
   )
 }
 

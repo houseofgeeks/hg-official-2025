@@ -3,6 +3,11 @@ import ap from "./images/ap.png";
 import ab from "./images/ab.png";
 import aa from "./images/aa.png";
 import as from "./images/as.png";
+import ana from "./images/ana.png";
+import arj from "./images/arj.png";
+import sa from "./images/sa.png";
+import mk from "./images/mk.png";
+import aj from "./images/aj.png";
 
 
 export interface Lead{
@@ -17,6 +22,7 @@ export interface Lead{
 export const domains = [
   {
     id:1,
+    url:"sd",
     title: "Software Development",
     description:
       "Building scalable applications, system design, and full-stack development",
@@ -43,36 +49,38 @@ export const domains = [
      image: aa.src
     },
     {
+     name:"Ananya",
+     domain:"Web Development",
+     image: ana.src
+    },
+    {
      name:"Atharva Jain",
      domain:"Web Development",
-     image: ap.src
+     image: aj.src
     },
     {
      name:"Kumar Mridul",
      domain:"Web Development",
-     image: ap.src
+     image: mk.src
     },
     {
      name:"Shubham Atri",
      domain:"Web Development",
-     image: ap.src
+     image: sa.src
     },
     {
      name:"Aarju",
      domain:"Web Development",
-     image: ap.src
+     image: arj.src
     },
-    {
-     name:"Ananya",
-     domain:"Web Development",
-     image: ap.src
-    },
+    
   
 ]
 
   },
   {
     id:2,
+    url:"cp",
     title: "Competitive Programming",
     description:
       "Problem solving, algorithms, data structures, and coding competitions",
@@ -82,6 +90,7 @@ export const domains = [
   },
   {
     id:3,
+    url:"iot",
     title: "Internet of Things (IoT)",
     description:
       "Embedded systems, sensors, hardware-software integration, and smart devices",
@@ -91,7 +100,8 @@ export const domains = [
   },
   {
     id:4,
-    title: "SPARKK (Core Electronics)",
+    url:"spark",
+    title: "SPARK (Core Electronics)",
     description:
       "Circuit design, microcontrollers, digital systems, and electronics fundamentals",
     icon: HiOutlineBolt,
@@ -100,6 +110,7 @@ export const domains = [
   },
   {
     id:5,
+    url:"arcanum",
     title: "Arcanum (Web Design & Gaming)",
     description:
       "UI/UX design, creative web experiences, game design, and interactive media",
@@ -110,6 +121,7 @@ export const domains = [
   },
   {
     id:6,
+    url:"aiml",
     title: "AI & Machine Learning",
     description:
       "Data-driven intelligence, neural networks, and real-world AI applications",
@@ -119,6 +131,7 @@ export const domains = [
   },
   {
     id:7,
+    url:"cyber",
     title: "Cybersecurity",
     description:
       "Ethical hacking, system security, cryptography, and digital defense",
