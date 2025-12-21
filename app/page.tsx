@@ -11,7 +11,9 @@ const page = () => {
     <main className="px-8 py-8 w-full margin-auto">
       <Navbar />
       <Hero />
-      <AboutUs />
+      <section id="about" className="py-24 w-full">
+        <AboutUs />
+      </section>
       <Domains useModal={true} />
     </main>
     </>

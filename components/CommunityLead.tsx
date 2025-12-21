@@ -3,7 +3,9 @@ import Image from "next/image"
 
 const CommunityLead = () => {
   return (
-    <div className="flex flex-wrap justify-center items-center gap-16 w-full py-12">
+    <div className="flex flex-col items-center w-full py-12">
+      <h1 className="text-7xl font-teko font-bold text-themecolor mb-16 text-center">OUR LEADS</h1>
+      <div className="flex flex-wrap justify-center items-center gap-16 w-full">
       {heads.map((head, index) => (
         <div key={index} className="flex flex-col items-center group">
             {/* Image Circle */}
@@ -23,6 +25,7 @@ const CommunityLead = () => {
             </div>
         </div>
       ))}
+      </div>
     </div>
   )
 }

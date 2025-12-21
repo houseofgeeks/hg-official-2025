@@ -246,3 +246,7 @@ body .interactive-element:hover {
   border-color: transparent;
   outline-color: transparent;
 }
+
+html {
+  scroll-behavior: smooth;
+}

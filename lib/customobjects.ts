@@ -35,7 +35,7 @@ export const heads=[
   },
   {
       name:"Chaitanya Chaurasia",
-      position:"Treasurar",
+      position:"Treasurer",
       image:cc.src
   },
 
