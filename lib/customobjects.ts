@@ -64,9 +64,9 @@ export const domains = [
      image:"https://res.cloudinary.com/dlmfnwkon/image/upload/ana_hdgzbs.png"
     },
     {
-     name:"Atharva Jain",
+     name:"Atharv Jain",
      domain:"Web Development",
-     image:"https://res.cloudinary.com/dlmfnwkon/image/upload/aj_xhaocf.png"
+     image:"https://res.cloudinary.com/dlmfnwkon/image/upload/ajj_jnz8qo.jpg"
     },
     {
      name:"Kumar Mridul",
@@ -213,3 +213,49 @@ export const donors = [
     image: 'https://i.pravatar.cc/150?u=10',
   },
 ];
+
+
+
+export type Event = {
+  id: number;
+  date: string;
+  category: string;
+  title: string;
+  description: string;
+};
+
+export const eventsData: Event[] = [
+  {
+    id: 1,
+    date: "March 2025",
+    category: "College-Level Hackathon",
+    title: "Quasar 2.0",
+    description:
+      "A high-energy hackathon bringing together students to collaborate, innovate, and build impactful technical solutions under real-world problem statements.",
+  },
+  {
+    id: 2,
+    date: "August 2024",
+    category: "Internal Selection Hackathon",
+    title: "Smart India Hackathon – Internal Hackathon 2024",
+    description:
+      "An internal hackathon conducted to shortlist and mentor teams for the Smart India Hackathon, focusing on problem-solving, teamwork, and innovation.",
+  },
+  {
+    id: 3,
+    date: "2025",
+    category: "Internal Selection Hackathon",
+    title: "Smart India Hackathon – Internal Hackathon 2025",
+    description:
+      "A continuation of the SIH internal selection process aimed at nurturing competitive teams and preparing students for national-level innovation challenges.",
+  },
+  {
+    id: 4,
+    date: "January 2025",
+    category: "Cybersecurity & Ethical Hacking Event",
+    title: "House of Hackers",
+    description:
+      "A focused technical event designed to introduce students to cybersecurity concepts, ethical hacking practices, and real-world security challenges.",
+  },
+];
+

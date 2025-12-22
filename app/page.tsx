@@ -4,6 +4,7 @@ import Hero from '@/sections/Hero'
 import AboutUs from '@/sections/AboutUs'
 import Domains from '@/sections/Domains'
 import ParticlesContainer from '@/components/ParticlesContainer'
+import Events from '@/sections/Events'
 const page = () => {
   return (
     <>
@@ -15,6 +16,7 @@ const page = () => {
         <AboutUs />
       </section>
       <Domains useModal={true} />
+      <Events />
     </main>
     </>
   )
