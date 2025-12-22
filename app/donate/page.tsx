@@ -278,8 +278,22 @@ const DonatePage: React.FC = () => {
                 )}
                 <CldUploadWidget
                   uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_PRESET}
-                  onSuccess={(result: any) => {
-                    setPhotoURL(result.info.secure_url);
+                  onSuccess={async (result: any) => {
+                    const newPhotoURL = result.info.secure_url;
+                    setPhotoURL(newPhotoURL);
+                    // Update Firestore immediately when photo is uploaded
+                    if (user?.uid) {
+                      try {
+                        const userRef = doc(firestore, 'users', user.uid);
+                        await updateDoc(userRef, {
+                          photoURL: newPhotoURL,
+                        });
+                        setMessage('Profile photo updated!');
+                        setMessageType('success');
+                      } catch (error) {
+                        console.error('Error updating photo:', error);
+                      }
+                    }
                   }}
                 >
                   {({ open }) => (

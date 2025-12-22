@@ -6,7 +6,8 @@ import ParticlesContainer from '@/components/ParticlesContainer';
 import Image from 'next/image';
 import Link from 'next/link';
 import { firestore } from '@/lib/firebase';
-import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
+import { collection, query, orderBy, limit, getDocs, doc, getDoc } from 'firebase/firestore';
+import { useAuth } from '@/lib/AuthContext';
 
 interface Donor {
   id: string;
@@ -17,8 +18,10 @@ interface Donor {
 }
 
 const LeaderboardPage: React.FC = () => {
+  const { user } = useAuth();
   const [donors, setDonors] = useState<Donor[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userHasDonated, setUserHasDonated] = useState(false);
 
   useEffect(() => {
     const fetchDonors = async () => {
@@ -56,6 +59,24 @@ const LeaderboardPage: React.FC = () => {
 
     fetchDonors();
   }, []);
+
+  // Check if current user has donated
+  useEffect(() => {
+    const checkUserDonation = async () => {
+      if (user?.uid) {
+        try {
+          const userDoc = await getDoc(doc(firestore, 'users', user.uid));
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            setUserHasDonated(userData.donatedAmount > 0);
+          }
+        } catch (error) {
+          console.error('Error checking user donation:', error);
+        }
+      }
+    };
+    checkUserDonation();
+  }, [user?.uid]);
 
   const sortedDonors = donors;
   const topThree = sortedDonors.slice(0, 3);
@@ -212,14 +233,16 @@ const LeaderboardPage: React.FC = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.5 }}
-            className="max-w-2xl mx-auto mt-16 p-8 rounded-xl bg-gradient-to-br from-[#1a1a1a] to-[#0c0c0c] border border-themecolor/20"
+            className="max-w-2xl mx-auto mt-16 p-8 rounded-xl bg-transparent border border-gray-600/50"
           >
             <p className="text-center text-gray-300 text-lg mb-6 font-montserrat">
-              Want to get featured on the leaderboard?
+              {userHasDonated 
+                ? "Thank you for your support! Want to climb higher on the leaderboard?" 
+                : "Want to get featured on the leaderboard?"}
             </p>
             <Link href="/donate">
-              <button className="w-full py-4 px-8 bg-gradient-to-r from-themecolor to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold text-lg rounded-lg transition-all duration-300 transform hover:scale-105 font-montserrat">
-                Donate Now
+              <button className="w-full py-4 px-8 bg-themecolor hover:bg-themecolor/90 text-white font-bold text-lg rounded-xl transition-all duration-300 shadow-lg shadow-themecolor/30 hover:shadow-themecolor/50 font-montserrat">
+                {userHasDonated ? "Donate More" : "Donate Now"}
               </button>
             </Link>
           </motion.div>
