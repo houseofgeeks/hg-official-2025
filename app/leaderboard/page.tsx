@@ -233,7 +233,7 @@ const LeaderboardPage: React.FC = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.5 }}
-            className="max-w-2xl mx-auto mt-16 p-8 rounded-xl bg-transparent border border-gray-600/50"
+            className="max-w-2xl mx-auto mt-16 p-8 rounded-xl bg-transparent "
           >
             <p className="text-center text-gray-300 text-lg mb-6 font-montserrat">
               {userHasDonated 

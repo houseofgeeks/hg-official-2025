@@ -272,7 +272,7 @@ const DonatePage: React.FC = () => {
                     <img
                       src={photoURL}
                       alt="Profile"
-                      className="w-20 h-20 rounded-full border-2 border-themecolor object-cover"
+                      className="w-40 h-40 rounded-full border-2 border-themecolor object-cover"
                     />
                   </div>
                 )}
@@ -300,7 +300,7 @@ const DonatePage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => open()}
-                      className="w-full py-2 px-4 border-2 border-themecolor text-themecolor font-semibold rounded-lg hover:bg-themecolor/10 transition-all duration-300 font-montserrat"
+                      className="w-full py-2 px-4 text-themecolor hover:text-white font-semibold rounded-lg transition-all duration-300 font-montserrat underline"
                     >
                       {photoURL ? 'Change Photo' : 'Upload Photo'}
                     </button>
@@ -323,7 +323,7 @@ const DonatePage: React.FC = () => {
                       }}
                       className={`py-3 px-4 rounded-lg font-bold transition-all duration-300 font-montserrat ${
                         selectedAmount === amount && customAmount === ''
-                          ? 'bg-gradient-to-r from-themecolor to-purple-600 text-white'
+                          ? 'bg-themecolor text-white'
                           : 'bg-white/10 text-white border border-themecolor/30 hover:border-themecolor/60'
                       }`}
                     >
@@ -356,7 +356,7 @@ const DonatePage: React.FC = () => {
               <button
                 onClick={() => handleDonate(customAmount ? parseInt(customAmount) : selectedAmount)}
                 disabled={loading}
-                className="w-full py-4 px-6 bg-gradient-to-r from-themecolor to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold text-lg rounded-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed font-montserrat"
+                className="w-full py-4 px-6 bg-themecolor hover:bg-themecolor/90 text-white font-bold text-lg rounded-xl transition-all duration-300 shadow-lg shadow-themecolor/30 hover:shadow-themecolor/50 disabled:opacity-50 disabled:cursor-not-allowed font-montserrat"
               >
                 {loading ? 'Processing...' : `Donate ₹${customAmount || selectedAmount}`}
               </button>
