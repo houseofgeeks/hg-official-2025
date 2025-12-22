@@ -66,7 +66,7 @@ export const domains = [
     {
      name:"Atharva Jain",
      domain:"Web Development",
-     image:"https://res.cloudinary.com/dlmfnwkon/image/upload/aj_xhaocf.png"
+     image:"https://res.cloudinary.com/dlmfnwkon/image/upload/ajj_jnz8qo.jpg"
     },
     {
      name:"Kumar Mridul",

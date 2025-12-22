@@ -121,7 +121,7 @@ const LeaderboardPage: React.FC = () => {
                           } flex items-center justify-center text-center p-4`}
                         >
                           {donor.photoURL ? (
-                            <Image
+                            <img
                               src={donor.photoURL}
                               alt={donor.name}
                               width={200}

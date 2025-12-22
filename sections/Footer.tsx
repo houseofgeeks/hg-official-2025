@@ -34,19 +34,19 @@ const Footer = () => {
           <div className='flex flex-col gap-4'>
             <h4 className='text-lg font-teko font-bold text-white'>QUICK LINKS</h4>
             <div className='flex flex-col gap-2'>
-              <a href='#about' onClick={(e) => handleSmoothScroll(e, 'about')} className='text-gray-300 hover:text-themecolor transition-all duration-300 font-montserrat text-sm group flex items-center gap-2'>
+              <a href='#about' onClick={(e) => handleSmoothScroll(e, 'about')} className='text-gray-300 hover:text-themecolor transition-colors duration-300 font-montserrat text-sm group flex items-center gap-2 cursor-pointer'>
                 <span className='w-0 h-0.5 bg-themecolor group-hover:w-4 transition-all duration-300'></span>
                 About Us
               </a>
-              <a href='#contact' className='text-gray-300 hover:text-themecolor transition-all duration-300 font-montserrat text-sm group flex items-center gap-2'>
+              <a href='#contact' className='text-gray-300 hover:text-themecolor transition-colors duration-300 font-montserrat text-sm group flex items-center gap-2 cursor-pointer'>
                 <span className='w-0 h-0.5 bg-themecolor group-hover:w-4 transition-all duration-300'></span>
                 Contact Us
               </a>
-              <a href='#events' className='text-gray-300 hover:text-themecolor transition-all duration-300 font-montserrat text-sm group flex items-center gap-2'>
+              <a href='#events' className='text-gray-300 hover:text-themecolor transition-colors duration-300 font-montserrat text-sm group flex items-center gap-2 cursor-pointer'>
                 <span className='w-0 h-0.5 bg-themecolor group-hover:w-4 transition-all duration-300'></span>
                 Events
               </a>
-              <a href='#community' className='text-gray-300 hover:text-themecolor transition-all duration-300 font-montserrat text-sm group flex items-center gap-2'>
+              <a href='#community' className='text-gray-300 hover:text-themecolor transition-colors duration-300 font-montserrat text-sm group flex items-center gap-2 cursor-pointer'>
                 <span className='w-0 h-0.5 bg-themecolor group-hover:w-4 transition-all duration-300'></span>
                 Community
               </a>
