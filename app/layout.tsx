@@ -3,7 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Montserrat, Teko } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
-import SpaceBackground from "./SpaceBackground";
+import SpaceBackground from "../components/SpaceBackground";
+import Footer from '@/sections/Footer'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,8 +35,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  community,
 }: Readonly<{
   children: React.ReactNode;
+  community: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -45,6 +48,8 @@ export default function RootLayout({
         <SpaceBackground />
         <CustomCursor />
         {children}
+        {community}
+        <Footer/>
       </body>
     </html>
   );

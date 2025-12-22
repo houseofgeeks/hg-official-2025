@@ -13,10 +13,10 @@ const LeaderboardPage: React.FC = () => {
 
   return (
     <>
-      <Navbar />
       <ParticlesContainer />
       <main className="px-8 py-8 w-full min-h-screen text-white">
-        <div className="container mx-auto pt-20">
+        <Navbar />
+        <div className="container mx-auto mt-12">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}

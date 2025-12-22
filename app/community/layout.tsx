@@ -1,15 +1,14 @@
-const CommunityLayout = ({
+export default function CommunityLayout({
   children,
   community,
 }: {
-  children: React.ReactNode;
-  community: string;
-}) => {
+  children: React.ReactNode
+  community: React.ReactNode
+}) {
   return (
-    <div>
+    <>
       {children}
       {community}
-    </div>
-  );
-};
-export default CommunityLayout;
+    </>
+  )
+}
