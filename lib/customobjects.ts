@@ -228,7 +228,7 @@ export type Event = {
 export const eventsData: Event[] = [
   {
     id: 1,
-    eventurl : "quasar2.0",
+    eventurl : "quasar-2",
     date: "March 2025",
     category: "College-Level Hackathon",
     title: "Quasar 2.0",
@@ -264,4 +264,7 @@ export const eventsData: Event[] = [
       "An internal hackathon conducted to shortlist and mentor teams for the Smart India Hackathon, focusing on problem-solving, teamwork, and innovation.",
   }
 ];
+
+
+
 
