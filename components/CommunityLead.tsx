@@ -10,10 +10,9 @@ const CommunityLead = () => {
         <div key={index} className="flex flex-col items-center group">
             {/* Image Circle */}
             <div className="relative w-56 h-56 rounded-full overflow-hidden border-4 border-themecolor shadow-lg transition-transform duration-300 group-hover:scale-105 interactive-element">
-                <Image 
+                <img 
                     src={head.image} 
                     alt={head.name} 
-                    fill
                     className="object-cover"
                 />
             </div>

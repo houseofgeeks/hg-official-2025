@@ -1,17 +1,4 @@
 import { HiOutlineCodeBracket,HiOutlineTrophy,HiOutlineCpuChip,HiOutlineBolt,HiOutlinePaintBrush,HiOutlineSparkles,HiOutlineShieldCheck} from "react-icons/hi2";
-import ap from "./images/ap.png";
-import ab from "./images/ab.png";
-import aa from "./images/aa.png";
-import as from "./images/as.png";
-import ana from "./images/ana.png";
-import arj from "./images/arj.png";
-import sa from "./images/sa.png";
-import mk from "./images/mk.png";
-import aj from "./images/aj.png";
-import dk from "./images/dk.png";
-import km from "./images/km.png";
-import cc from "./images/cc.png";
-
 
 export interface Lead{
   name:string,
@@ -26,17 +13,17 @@ export const heads=[
   {
       name:"Kushagra Malviya",
       position:"Pr Lead",
-      image:km.src
+      image:"https://res.cloudinary.com/dlmfnwkon/image/upload/km_tg6lmk.png"
   },
   {
       name:"Devansh Khandelwal",
       position:"Head of Operations",
-      image:dk.src
+      image:"https://res.cloudinary.com/dlmfnwkon/image/upload/dk_fqpjkp.png"
   },
   {
       name:"Chaitanya Chaurasia",
       position:"Treasurer",
-      image:cc.src
+      image:"https://res.cloudinary.com/dlmfnwkon/image/upload/cc_kuwcph.png"
   },
 
 ]
@@ -53,48 +40,48 @@ export const domains = [
     leads:[
       {
         name:"Agnish Bhattacharya",
-        image: ab.src
+        image:"https://res.cloudinary.com/dlmfnwkon/image/upload/ab_zmycia.png"
       },
       {
         name:"Aditya Singh",
-        image: as.src
+        image:"https://res.cloudinary.com/dlmfnwkon/image/upload/as_brd6vg.png"
       }
   ],
   cordinators:[
     {
      name:"Atul Pandey",
      domain:"Web Development",
-     image: ap.src
+     image:"https://res.cloudinary.com/dlmfnwkon/image/upload/ap_p6khin.png"
     },
     {
      name:"Amitesh Anand",
      domain:"App Development",
-     image: aa.src
+     image:"https://res.cloudinary.com/dlmfnwkon/image/upload/aa_h1uem1.png"
     },
     {
      name:"Ananya",
      domain:"Web Development",
-     image: ana.src
+     image:"https://res.cloudinary.com/dlmfnwkon/image/upload/ana_hdgzbs.png"
     },
     {
      name:"Atharva Jain",
      domain:"Web Development",
-     image: aj.src
+     image:"https://res.cloudinary.com/dlmfnwkon/image/upload/aj_xhaocf.png"
     },
     {
      name:"Kumar Mridul",
      domain:"Web Development",
-     image: mk.src
+     image:"https://res.cloudinary.com/dlmfnwkon/image/upload/mk_ryxgcg.png"
     },
     {
      name:"Shubham Atri",
      domain:"Web Development",
-     image: sa.src
+     image:"https://res.cloudinary.com/dlmfnwkon/image/upload/sa_h11a26.png"
     },
     {
      name:"Aarju",
      domain:"Web Development",
-     image: arj.src
+     image: "https://res.cloudinary.com/dlmfnwkon/image/upload/arj_i2bxbs.png"
     },
     
   
@@ -198,7 +185,7 @@ export const donors = [
   {
     id: 6,
     name: 'Emily Davis',
-    amount: 1500,
+    amount: 7500,
     image: 'https://i.pravatar.cc/150?u=6',
   },
   {

@@ -4,7 +4,7 @@ import { Montserrat, Teko } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
 import SpaceBackground from "../components/SpaceBackground";
-import Footer from '@/components/Footer'
+import Footer from '@/sections/Footer'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
