@@ -5,6 +5,7 @@ import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
 import SpaceBackground from "../components/SpaceBackground";
 import Footer from '@/sections/Footer'
+import { AuthProvider } from '@/lib/AuthContext';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,11 +46,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} ${teko.variable} antialiased`}
       >
-        <SpaceBackground />
-        <CustomCursor />
-        {children}
-        {community}
-        <Footer/>
+        <AuthProvider>
+          <SpaceBackground />
+          <CustomCursor />
+          {children}
+          {community}
+          <Footer/>
+        </AuthProvider>
       </body>
     </html>
   );
