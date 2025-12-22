@@ -1,9 +1,10 @@
 import EventCard from "@/components/EventCard";
+import ShinyText from "@/components/ShinyText";
 import { eventsData } from "@/lib/customobjects";
 const Events = () => {
   return (
-    <section className="flex flex-col items-center">
-      <div className="flex flex-col items-center pb-18">
+    <section className="flex flex-col items-center pb-20">
+      <div className="flex flex-col items-center pb-18 gap-2">
         {/* Wrapper */}
         <div className="relative inline-block">
           <h1 className="text-7xl font-teko text-white pt-30 text-center">
@@ -13,6 +14,7 @@ const Events = () => {
           {/* Underline */}
           <div className="h-1 w-full bg-gradient-to-r from-themecolor via-purple-500 to-themecolor rounded-full mt-2" />
         </div>
+        <ShinyText text="Flagship technical events organized by House of Geeks" className="text-2xl"></ShinyText>
       </div>
       {eventsData.map((event) => (
             <EventCard
@@ -21,6 +23,7 @@ const Events = () => {
             category={event.category}
             title={event.title}
             description={event.description}
+            eventurl={event.eventurl}
         />
       ))}
 

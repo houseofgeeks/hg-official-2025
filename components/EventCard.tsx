@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FaTrophy, FaRegCalendarAlt } from "react-icons/fa";
 
 type EventCardProps = {
@@ -5,6 +6,7 @@ type EventCardProps = {
   category: string;
   title: string;
   description: string;
+  eventurl: string;
 };
 
 export default function EventCard({
@@ -12,9 +14,11 @@ export default function EventCard({
   category,
   title,
   description,
+  eventurl,
 }: EventCardProps) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center py-4">
+     <Link href={`/events/${eventurl}`} >
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center py-4 interactive-element hover:bg-gray-900 px-4">
       {/* Left Card */}
       <div className="relative h-56 rounded-2xl bg-gradient-to-br from-[#1a0b12] to-black border border-white/10 flex items-center justify-center">
         <div className="flex flex-col items-center gap-2 text-pink-500">
@@ -50,5 +54,6 @@ export default function EventCard({
         </p>
       </div>
     </div>
+    </Link>
   );
 }
