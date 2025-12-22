@@ -7,7 +7,7 @@ import { CldUploadWidget } from 'next-cloudinary';
 import Link from 'next/link';
 import ParticlesContainer from '@/components/ParticlesContainer';
 import Navbar from '@/components/Navbar';
-import { doc, updateDoc, increment, collection, addDoc, serverTimestamp, getDoc } from 'firebase/firestore';
+import { doc, setDoc, increment, collection, addDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { firestore, auth } from '@/lib/firebase';
 import { signOut } from 'firebase/auth';
 
@@ -166,15 +166,32 @@ const DonatePage: React.FC = () => {
             });
 
             const verifyData = await verifyResponse.json();
+            console.log('Verify response:', verifyData);
             if (verifyData.success) {
               // Update Firestore on client side
               if (user.uid) {
                 const userRef = doc(firestore, 'users', user.uid);
-                await updateDoc(userRef, {
-                  donatedAmount: increment(amount),
-                  photoURL: photoURL || user.photoURL,
-                  lastDonationDate: serverTimestamp(),
-                });
+                
+                // Check if user document exists
+                const userDoc = await getDoc(userRef);
+                if (userDoc.exists()) {
+                  // Update existing document
+                  await setDoc(userRef, {
+                    donatedAmount: increment(amount),
+                    photoURL: photoURL || user.photoURL,
+                    lastDonationDate: serverTimestamp(),
+                  }, { merge: true });
+                } else {
+                  // Create new document
+                  await setDoc(userRef, {
+                    name: user.displayName || 'Anonymous',
+                    email: user.email,
+                    donatedAmount: amount,
+                    photoURL: photoURL || user.photoURL,
+                    lastDonationDate: serverTimestamp(),
+                    createdAt: serverTimestamp(),
+                  });
+                }
 
                 // Add donation record
                 await addDoc(collection(firestore, 'donations'), {
@@ -194,10 +211,12 @@ const DonatePage: React.FC = () => {
               setMessageType('success');
               setTimeout(() => router.push('/leaderboard'), 2000);
             } else {
-              setMessage('Payment verification failed');
+              console.error('Payment verification failed:', verifyData);
+              setMessage(verifyData.message || 'Payment verification failed');
               setMessageType('error');
             }
           } catch (error) {
+            console.error('Error in payment handler:', error);
             setMessage('Error verifying payment');
             setMessageType('error');
           }
@@ -285,9 +304,9 @@ const DonatePage: React.FC = () => {
                     if (user?.uid) {
                       try {
                         const userRef = doc(firestore, 'users', user.uid);
-                        await updateDoc(userRef, {
+                        await setDoc(userRef, {
                           photoURL: newPhotoURL,
-                        });
+                        }, { merge: true });
                         setMessage('Profile photo updated!');
                         setMessageType('success');
                       } catch (error) {
