@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { RxHamburgerMenu, RxCross1 } from 'react-icons/rx';
+
 const Navbar = () => {
   const [isopen, setIsOpen] = useState(false)
 
@@ -11,7 +12,7 @@ const Navbar = () => {
   }
 
   return (
-      <nav className="flex margin-x-auto  text-white  items-center text-3xl font-teko justify-between md:mr-20 mr-0">
+      <nav className="flex margin-x-auto text-white items-center text-3xl font-teko justify-between md:mr-20 mr-0 py-4 px-4 md:px-8">
         <div className="cursor-pointer"><Link href="/" className="interactive-element flex items-center"><Image src="/hog.svg" alt="Logo" width={160} height={150} /></Link></div>
         <ul className="flex gap-10 w-full justify-center max-md:hidden ">
           <li className="hover:text-themecolor"><Link href="/" className='interactive-element'>Home</Link></li>
