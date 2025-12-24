@@ -307,7 +307,7 @@ const DonatePage: React.FC = () => {
     <>
       <Navbar />
       <ParticlesContainer />
-      <main className="min-h-screen w-full px-4 py-8 relative">
+      <main className="min-h-screen w-full px-4 py-2 relative">
         {/* Hero Section */}
         <motion.section
           initial={{ opacity: 0, y: -30 }}
@@ -325,29 +325,7 @@ const DonatePage: React.FC = () => {
           <div className="h-1 w-32 bg-gradient-to-r from-themecolor to-purple-600 mx-auto rounded-full"></div>
         </motion.section>
 
-        {/* Impact Stats */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="max-w-5xl mx-auto mb-16"
-        >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {impactStats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
-                className="interactive-element rounded-xl p-6 text-center hover:bg-white/5 transition-all duration-300 group"
-              >
-                <span className="text-4xl mb-3 block group-hover:scale-110 transition-transform duration-300">{stat.icon}</span>
-                <p className="text-3xl font-teko font-bold text-themecolor mb-1">{stat.value}</p>
-                <p className="text-sm text-gray-400 font-montserrat">{stat.label}</p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
+        
 
         {/* Main Content - Two Column Layout */}
         <div className="max-w-[90rem] mx-auto grid lg:grid-cols-2 gap-16 mb-16 px-4">
@@ -554,6 +532,7 @@ const DonatePage: React.FC = () => {
                 </motion.div>
               ))}
             </div>
+            
 
             {/* Testimonial */}
             {/* <motion.div
@@ -577,6 +556,29 @@ const DonatePage: React.FC = () => {
             </motion.div> */}
           </motion.section>
         </div>
+        {/* Impact Stats */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="max-w-5xl mx-auto mb-16"
+        >
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {impactStats.map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
+                className="interactive-element rounded-xl p-6 text-center hover:bg-white/5 transition-all duration-300 group"
+              >
+                <span className="text-4xl mb-3 block group-hover:scale-110 transition-transform duration-300">{stat.icon}</span>
+                <p className="text-3xl font-teko font-bold text-themecolor mb-1">{stat.value}</p>
+                <p className="text-sm text-gray-400 font-montserrat">{stat.label}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
 
         {/* Bottom CTA */}
         <motion.section
