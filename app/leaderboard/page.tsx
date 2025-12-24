@@ -15,11 +15,13 @@ interface Donor {
   donatedAmount: number;
   photoURL?: string;
   featured?: boolean;
+  lastDonationDate?: any;
 }
 
 const LeaderboardPage: React.FC = () => {
   const { user } = useAuth();
   const [donors, setDonors] = useState<Donor[]>([]);
+  const [recentDonors, setRecentDonors] = useState<Donor[]>([]);
   const [loading, setLoading] = useState(true);
   const [userHasDonated, setUserHasDonated] = useState(false);
 
@@ -50,6 +52,35 @@ const LeaderboardPage: React.FC = () => {
         });
 
         setDonors(donorsList);
+
+        // Fetch recent donors (last 5) ordered by lastDonationDate
+        try {
+          const recentQuery = query(
+            collection(firestore, 'users'),
+            orderBy('lastDonationDate', 'desc'),
+            limit(5)
+          );
+
+          const recentSnapshot = await getDocs(recentQuery);
+          const recentList: Donor[] = [];
+
+          recentSnapshot.forEach((doc) => {
+            const data = doc.data();
+            if (data.donatedAmount > 0 && data.lastDonationDate) {
+              recentList.push({
+                id: doc.id,
+                name: data.name || 'Anonymous',
+                donatedAmount: data.donatedAmount || 0,
+                photoURL: data.photoURL,
+                lastDonationDate: data.lastDonationDate,
+              });
+            }
+          });
+
+          setRecentDonors(recentList);
+        } catch (e) {
+          console.error('Error fetching recent donors:', e);
+        }
       } catch (error) {
         console.error('Error fetching donors:', error);
       } finally {
@@ -78,6 +109,16 @@ const LeaderboardPage: React.FC = () => {
     checkUserDonation();
   }, [user?.uid]);
 
+  const formatDate = (ts?: any) => {
+    if (!ts) return '';
+    try {
+      const d = ts.toDate ? ts.toDate() : new Date(ts);
+      return d.toLocaleString();
+    } catch {
+      return '';
+    }
+  };
+
   const sortedDonors = donors;
   const topThree = sortedDonors.slice(0, 3);
   const rest = sortedDonors.slice(3);
@@ -101,7 +142,7 @@ const LeaderboardPage: React.FC = () => {
               TOP DONORS
             </h2>
           </motion.div>
-
+         
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -225,15 +266,51 @@ const LeaderboardPage: React.FC = () => {
                     </motion.div>
                   ))}
                 </div>
+
+                {/* Recent donors (below full top donors list) */}
+                {recentDonors.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6, duration: 0.45 }}
+                    className="mb-8"
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-3xl font-teko font-semibold text-white">Recent Donors</h3>
+                      <p className="text-sm text-gray-400">Latest 5 donors</p>
+                    </div>
+
+                    <div className="recent-donors-scroll">
+                      {recentDonors.map((r) => (
+                        <div key={r.id} className="recent-donor-card flex items-center gap-4">
+                          <div className="flex-shrink-0">
+                            {r.photoURL ? (
+                              <Image src={r.photoURL} alt={r.name} width={56} height={56} className="rounded-full object-cover" />
+                            ) : (
+                              <div className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-themecolor to-purple-600 rounded-full text-white text-xl font-bold">
+                                {r.name.charAt(0).toUpperCase()}
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex-grow">
+                            <h4 className="font-semibold text-lg">{r.name}</h4>
+                            <p className="text-gray-400 text-sm">₹{r.donatedAmount.toLocaleString()}</p>
+                            <p className="text-gray-500 text-xs mt-1">{formatDate(r.lastDonationDate)}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+
               </>
             )}
           </motion.div>
-
-          <motion.div
+           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.5 }}
-            className="max-w-2xl mx-auto mt-16 p-8 rounded-xl bg-transparent "
+            className="max-w-2xl mx-auto mt-5 p-8 rounded-xl bg-transparent "
           >
             <p className="text-center text-gray-300 text-lg mb-6 font-montserrat">
               {userHasDonated 
@@ -246,6 +323,7 @@ const LeaderboardPage: React.FC = () => {
               </button>
             </Link>
           </motion.div>
+          
         </div>
       </main>
     </>
