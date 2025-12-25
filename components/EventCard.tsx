@@ -18,7 +18,7 @@ export default function EventCard({
 }: EventCardProps) {
   return (
      <Link href={`/events/${eventurl}`} >
-    <div className="w-full rounded-2xl p-10 group hover:scale-103 transition-all duration-300 hover:border hover:border-themecolor interactive-element grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+    <div className="w-full rounded-2xl p-10 group hover:scale-103 transition-all duration-300 border border-transparent hover:border-themecolor interactive-element grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
       {/* Left Card */}
       {/* <div className="relative h-56 rounded-2xl bg-linear-to-br from-[#1a0b12] to-black border border-white/10 flex items-center justify-center"> */}
       <div className="relative h-56 rounded-2xl border border-white/10 flex items-center justify-center">
