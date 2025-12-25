@@ -12,20 +12,25 @@ const Events = () => {
           </h1>
 
           {/* Underline */}
-          <div className="h-1 w-full bg-gradient-to-r from-themecolor via-purple-500 to-themecolor rounded-full mt-2" />
+            <div className="h-1 w-full bg-linear-to-r from-themecolor via-purple-500 to-themecolor rounded-full mt-2" />
         </div>
-        <ShinyText text="Flagship technical events organized by House of Geeks" className="text-2xl"></ShinyText>
+        <ShinyText
+          text="Flagship technical events organized by House of Geeks"
+          className="text-2xl font-montserrat text-center mt-4"
+        />
       </div>
-      {eventsData.map((event) => (
-            <EventCard
+      <div className="w-full max-w-6xl space-y-6 px-4">
+        {eventsData.map((event) => (
+          <EventCard
             key={event.id}
             date={event.date}
             category={event.category}
             title={event.title}
             description={event.description}
             eventurl={event.eventurl}
-        />
-      ))}
+          />
+        ))}
+      </div>
 
 
     </section>
