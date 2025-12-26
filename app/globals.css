@@ -290,3 +290,10 @@ html {
   transform: translateY(-6px);
   box-shadow: 0 14px 30px rgba(0,0,0,0.65);
 }
+
+/* Contact-specific card: allow shrinking in grid and take full width */
+.contact-card {
+  min-width: 0 !important;
+  width: 100%;
+  box-sizing: border-box;
+}
