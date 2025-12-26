@@ -5,6 +5,7 @@ import AboutUs from '@/sections/AboutUs'
 import Domains from '@/sections/Domains'
 import ParticlesContainer from '@/components/ParticlesContainer'
 import Events from '@/sections/Events'
+import Contact from '@/sections/Contact'
 const page = () => {
   return (
     <>
@@ -17,6 +18,9 @@ const page = () => {
       </section>
       <Domains useModal={true} />
       <Events />
+      <section id="contact" className="py-10 w-full">
+        <Contact />
+      </section>
     </main>
     </>
   )

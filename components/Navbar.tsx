@@ -2,13 +2,28 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname, useRouter } from 'next/navigation';
 import { RxHamburgerMenu, RxCross1 } from 'react-icons/rx';
 
 const Navbar = () => {
   const [isopen, setIsOpen] = useState(false)
+  const pathname = usePathname()
+  const router = useRouter()
 
   const toggleMenu = () => {
     setIsOpen(!isopen)
+  }
+
+  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault()
+    const el = typeof document !== 'undefined' ? document.getElementById(id) : null
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+      if (typeof window !== 'undefined') window.history.pushState(null, '', `/#${id}`)
+    } else {
+      router.push(`/#${id}`)
+    }
+    setIsOpen(false)
   }
 
   return (
@@ -19,7 +34,7 @@ const Navbar = () => {
           <li className="hover:text-themecolor"><Link href="/#about" className='interactive-element'>About</Link></li>
           <li className="hover:text-themecolor"><Link href="/leaderboard" className='interactive-element'>Leaderboard</Link></li>
           <li className="hover:text-themecolor"><Link href="/community" className='interactive-element'>Community</Link></li>
-          <li className="hover:text-themecolor"><Link href="/#contact" className='interactive-element'>Contact</Link></li>
+          <li className="hover:text-themecolor"><Link href="/#contact" onClick={(e)=>handleAnchorClick(e,'contact')} className='interactive-element'>Contact</Link></li>
         </ul>
 
         <div className="md:hidden">
@@ -44,7 +59,7 @@ const Navbar = () => {
           <li className="hover:text-themecolor"><Link href="/#about" className='interactive-element'>About</Link></li>
           <li className="hover:text-themecolor"><Link href="/leaderboard" className='interactive-element'>Leaderboard</Link></li>
           <li className="hover:text-themecolor"><Link href="/community" className='interactive-element'>Community</Link></li>
-          <li className="hover:text-themecolor"><Link href="/#contact" className='interactive-element'>Contact</Link></li>
+          <li className="hover:text-themecolor"><Link href="/#contact" onClick={(e)=>handleAnchorClick(e,'contact')} className='interactive-element'>Contact</Link></li>
         </ul>
         
         </div>
