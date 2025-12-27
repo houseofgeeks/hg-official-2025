@@ -9,10 +9,11 @@ type ContactItem = {
 }
 
 const CONTACTS: ContactItem[] = [
-  { id: 'instagram', label: 'Instagram', value: '@houseofgeeks', href: 'https://instagram.com/houseofgeeks' },
-  { id: 'linkedin', label: 'LinkedIn', value: 'House of Geeks', href: 'https://linkedin.com/company/house-of-geeks' },
-  { id: 'email', label: 'Email', value: 'hello@houseofgeeks.com', href: 'mailto:hello@houseofgeeks.com' },
-  { id: 'phone', label: 'Phone', value: '+91 98765 43210', href: 'tel:+919876543210' },
+  { id: 'instagram', label: 'Instagram', value: '@hg.iiitranchi', href: 'http://instagram.com/hg.iiitranchi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D' },
+  { id: 'linkedin', label: 'LinkedIn', value: 'HG IIIT Ranchi', href: 'https://www.linkedin.com/company/hgiiitranchi/' },
+  // { id: 'github', label: 'GitHub', value: 'houseofgeeks', href: 'https://github.com/houseofgeeks' },
+  { id: 'email', label: 'Email', value: 'houseofgeeks@iiitranchi.ac.in', href: 'mailto:houseofgeeks@iiitranchi.ac.in' },
+  // { id: 'phone', label: 'Phone', value: '+91 98765 43210', href: 'tel:+919876543210' },
 ]
 
 const Icon = ({ name }: { name: string }) => {
@@ -48,6 +49,12 @@ const Icon = ({ name }: { name: string }) => {
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 3.08 4.18 2 2 0 0 1 5 2h3a2 2 0 0 1 2 1.72c.12 1.38.44 2.72.94 4a2 2 0 0 1-.45 2.11L9.91 11.09a15.05 15.05 0 0 0 6 6l1.16-1.16a2 2 0 0 1 2.11-.45c1.26.5 2.6.82 4 .94A2 2 0 0 1 22 16.92z" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       )
+    case 'github':
+      return (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-themecolor">
+          <path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.28 3.438 9.75 8.205 11.325.6.112.82-.263.82-.583 0-.288-.01-1.05-.015-2.06-3.338.725-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.998.108-.775.418-1.305.76-1.605-2.665-.305-5.466-1.335-5.466-5.93 0-1.31.468-2.38 1.235-3.22-.124-.303-.535-1.525.116-3.176 0 0 1.008-.322 3.3 1.23A11.5 11.5 0 0 1 12 6.845c1.02.004 2.045.138 3.003.405 2.29-1.552 3.297-1.23 3.297-1.23.653 1.65.243 2.873.12 3.176.77.84 1.233 1.91 1.233 3.22 0 4.61-2.804 5.62-5.476 5.92.43.372.815 1.102.815 2.222 0 1.606-.014 2.9-.014 3.293 0 .322.218.698.825.58C20.565 22.25 24 17.78 24 12.5 24 5.87 18.63.5 12 .5z" stroke="currentColor" strokeWidth="0" fill="currentColor" />
+        </svg>
+      )
     default:
       return null
   }
@@ -67,37 +74,39 @@ const Contact = () => {
   }
 
   return (
-    <section className="py-16 flex flex-col items-center gap-8">
+    <section className="py-12 flex flex-col items-center gap-8">
       <div className="max-w-6xl w-full px-4">
         <h2 className="text-4xl font-montserrat font-bold text-white">Contact</h2>
         <p className="text-muted-foreground mt-2 mb-6">Reach out to us — follow on social, drop an email or give us a call. We'll get back to you soon.</p>
 
-        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {CONTACTS.map((c) => (
-            <div key={c.id} className="contact-card recent-donor-card flex flex-col gap-3">
-              <div className="flex items-center justify-between">
-<div className="flex items-center gap-3 min-w-0">
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center bg-[rgba(240,66,124,0.08)] text-themecolor">
-                    <Icon name={c.id} />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-sm text-muted-foreground uppercase font-semibold">{c.label}</div>
-                    <div className="text-white font-semibold min-w-0" style={{wordBreak: 'break-word', overflowWrap: 'break-word'}}>{c.value}</div>
-                  </div>
+            <div key={c.id} className="contact-card recent-donor-card flex flex-col gap-3 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-200">
+              <div className="flex items-start gap-3">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center bg-[rgba(240,66,124,0.08)] text-themecolor">
+                  <Icon name={c.id} />
                 </div>
-
-                <div className="flex items-center gap-3">
-                  {c.href.startsWith('http') ? (
-                    <a href={c.href} target="_blank" rel="noreferrer" className="text-sm link-underline text-white/80">Visit</a>
-                  ) : (
-                    <div className="flex items-center gap-3">
-                      <a href={c.href} className="text-sm link-underline text-white/80">Open</a>
-                      <button onClick={() => handleCopy(c.value, c.id)} className="text-sm text-white/80 hover:text-white">Copy</button>
-                    </div>
-                  )}
+                <div className="min-w-0">
+                  <div className="text-sm text-muted-foreground uppercase font-semibold">{c.label}</div>
+                  <div className="text-white font-semibold truncate max-w-[220px]" title={c.value} style={{ wordBreak: 'normal', overflowWrap: 'normal' }}>{c.value}</div>
                 </div>
               </div>
-              {copied === c.id && <div className="text-sm text-themecolor mt-1">Copied!</div>}
+
+              <div className="mt-3 flex items-center gap-4">
+                {c.href.startsWith('http') ? (
+                  <>
+                    <a href={c.href} target="_blank" rel="noreferrer" className="text-sm link-underline text-white/80" title={`Visit ${c.label}`}>Visit</a>
+                    <button onClick={() => handleCopy(c.href, `${c.id}-copy`)} className="text-sm text-white/80 hover:text-white" aria-label={`Copy ${c.label} link`}>Copy</button>
+                  </>
+                ) : (
+                  <>
+                    <a href={c.href} className="text-sm link-underline text-white/80" title={`Open ${c.label}`}>Open</a>
+                    <button onClick={() => handleCopy(c.value, `${c.id}-copy`)} className="text-sm text-white/80 hover:text-white">Copy</button>
+                  </>
+                )}
+              </div>
+
+              {copied === `${c.id}-copy` && <div className="text-sm text-themecolor mt-2">Copied!</div>}
             </div>
           ))}
         </div>
