@@ -13,7 +13,7 @@ const CoordinatorCircle: React.FC<CoordinatorCircleProps> = ({ member, intercept
   const hoverClass = intercepted ? "group-hover:scale-105" : "group-hover:scale-110";
 
   return (
-    <div className="flex flex-col items-center justify-center group cursor-pointer w-full">
+    <div className={`flex flex-col items-center justify-center group cursor-pointer w-full ${className ?? ''}`}>
       {/* Circular Photo */}
       <div className={`${sizeClass} rounded-full overflow-hidden mb-3 transition-all duration-300 ${hoverClass} group-hover:shadow-[0_0_20px_rgba(240,66,124,0.4)]`}>
         {member.image ? (
