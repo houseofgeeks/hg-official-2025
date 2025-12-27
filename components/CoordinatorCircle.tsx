@@ -3,11 +3,12 @@ import { Lead } from '../lib/customobjects';
 
 interface CoordinatorCircleProps {
   member: Lead;
+  className?: string;
 }
 
-const CoordinatorCircle: React.FC<CoordinatorCircleProps> = ({ member }) => {
+const CoordinatorCircle: React.FC<CoordinatorCircleProps> = ({ member, className }) => {
   return (
-    <div className="flex flex-col items-center justify-center group cursor-pointer w-full">
+    <div className={`flex flex-col items-center justify-center group cursor-pointer w-full ${className ?? ''}`}>
       {/* Circular Photo */}
       <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden mb-3 transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(240,66,124,0.4)]">
         {member.image ? (

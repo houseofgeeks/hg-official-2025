@@ -52,11 +52,46 @@ const DomainTeam: React.FC<DomainTeamProps> = ({ wingName, leads, cordinators })
               <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-themecolor"></span>
             </h2>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            {cordinators.map((coord, index) => (
-              <CoordinatorCircle key={index} member={coord} />
-            ))}
-          </div>
+          {/* Render coordinators in rows of up to 5. If the last row has 1 or 2 items and there are more than 5 total, center them. */}
+          {(() => {
+            const cols = 4;
+            const rows: Lead[][] = [];
+            for (let i = 0; i < cordinators.length; i += cols) {
+              rows.push(cordinators.slice(i, i + cols));
+            }
+
+            return (
+              <div>
+                {rows.map((row, rowIndex) => {
+                  const isLast = rowIndex === rows.length - 1;
+                  const shouldCenterLast = isLast && cordinators.length > cols && row.length <= 2;
+
+                  // Increase vertical spacing for row 1 and row 2
+                  const extraBottom = rowIndex === 0 ? 'mb-10' : rowIndex === 1 ? 'mb-8' : '';
+
+                  if (shouldCenterLast) {
+                    return (
+                      <div key={rowIndex} className={`flex justify-center gap-8 mt-6 ${extraBottom}`}>
+                        {row.map((coord, idx) => (
+                          <div key={idx} className="px-3">
+                            <CoordinatorCircle member={coord} className="w-auto" />
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <div key={rowIndex} className={`grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6 mt-4 ${extraBottom}`}>
+                      {row.map((coord, idx) => (
+                        <CoordinatorCircle key={idx} member={coord} />
+                      ))}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })()}
         </div>
       ) : null}
     </div>
