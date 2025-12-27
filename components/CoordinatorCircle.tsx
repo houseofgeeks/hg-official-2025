@@ -3,13 +3,19 @@ import { Lead } from '../lib/customobjects';
 
 interface CoordinatorCircleProps {
   member: Lead;
+  intercepted?: boolean;
 }
 
-const CoordinatorCircle: React.FC<CoordinatorCircleProps> = ({ member }) => {
+const CoordinatorCircle: React.FC<CoordinatorCircleProps> = ({ member, intercepted = false }) => {
+  const sizeClass = intercepted
+    ? "w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28"
+    : "w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32";
+  const hoverClass = intercepted ? "group-hover:scale-105" : "group-hover:scale-110";
+
   return (
     <div className="flex flex-col items-center justify-center group cursor-pointer w-full">
       {/* Circular Photo */}
-      <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden mb-3 transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(240,66,124,0.4)]">
+      <div className={`${sizeClass} rounded-full overflow-hidden mb-3 transition-all duration-300 ${hoverClass} group-hover:shadow-[0_0_20px_rgba(240,66,124,0.4)]`}>
         {member.image ? (
           <img 
             src={member.image} 

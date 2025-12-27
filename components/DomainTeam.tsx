@@ -7,9 +7,10 @@ interface DomainTeamProps {
   wingName?: string;
   leads: Lead[];
   cordinators: Lead[];
+  intercepted?: boolean;
 }
 
-const DomainTeam: React.FC<DomainTeamProps> = ({ wingName, leads, cordinators }) => {
+const DomainTeam: React.FC<DomainTeamProps> = ({ wingName, leads, cordinators, intercepted = false }) => {
   return (
     <div className="w-full max-w-7xl mx-auto px-4 pb-20">
       {/* Wing Name */}
@@ -54,7 +55,7 @@ const DomainTeam: React.FC<DomainTeamProps> = ({ wingName, leads, cordinators })
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
             {cordinators.map((coord, index) => (
-              <CoordinatorCircle key={index} member={coord} />
+              <CoordinatorCircle key={index} member={coord} intercepted={intercepted} />
             ))}
           </div>
         </div>

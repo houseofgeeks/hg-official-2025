@@ -13,10 +13,20 @@ const CustomCursor = () => {
   } | null>(null);
   const hoveredElementRef = useRef<HTMLElement | null>(null);
   const scrollTimeoutRef = useRef<number | null>(null);
+  const positionRef = useRef({ x: 0, y: 0 });
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
+    const renderRAF = () => {
+      rafRef.current = null;
+      // sync visible position with latest pointer (throttled)
+      const p = positionRef.current;
+      setPosition({ x: p.x, y: p.y });
+    };
+
     const onMouseMove = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+      positionRef.current = { x: e.clientX, y: e.clientY };
+      if (!rafRef.current) rafRef.current = requestAnimationFrame(renderRAF);
     };
 
     const onMouseOver = (e: MouseEvent) => {
@@ -43,31 +53,46 @@ const CustomCursor = () => {
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
       }
-
       scrollTimeoutRef.current = window.setTimeout(() => {
-        if (hoveredElementRef.current) {
-          const rect = hoveredElementRef.current.getBoundingClientRect();
+        // find element currently under the cursor and update target accordingly
+        const pos = positionRef.current;
+        const el = document.elementFromPoint(pos.x, pos.y) as HTMLElement | null;
+        const interactiveElement = el?.closest('.interactive-element') as HTMLElement | null;
+        if (interactiveElement) {
+          hoveredElementRef.current = interactiveElement;
+          const rect = interactiveElement.getBoundingClientRect();
           setTarget({
             width: rect.width,
             height: rect.height,
             top: rect.top,
             left: rect.left,
           });
+          setIsHovering(true);
+        } else {
+          hoveredElementRef.current = null;
+          setTarget(null);
+          setIsHovering(false);
         }
       }, 10);
     };
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseover', onMouseOver);
+    // capture scrolls from any scrollable container (e.g., modal body)
+    document.addEventListener('scroll', onScroll, true);
     window.addEventListener('scroll', onScroll);
+    window.addEventListener('resize', onScroll);
 
     return () => {
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseover', onMouseOver);
+      document.removeEventListener('scroll', onScroll, true);
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
       }
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
 
