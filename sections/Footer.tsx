@@ -1,14 +1,24 @@
 'use client'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { FaInstagram, FaLinkedin, FaGithub } from 'react-icons/fa'
 import { MdEmail, MdLocationOn } from 'react-icons/md'
 
 const Footer = () => {
+  const router = useRouter()
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault()
     const element = document.getElementById(targetId)
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' })
+      return
     }
+    // If section not on current page, navigate to home and scroll after navigation
+    router.push('/')
+    setTimeout(() => {
+      const el = document.getElementById(targetId)
+      if (el) el.scrollIntoView({ behavior: 'smooth' })
+    }, 350)
   }
 
   return (
@@ -38,18 +48,18 @@ const Footer = () => {
                 <span className='w-0 h-0.5 bg-themecolor group-hover:w-4 transition-all duration-300'></span>
                 About Us
               </a>
-              <a href='#contact' className='text-gray-300 hover:text-themecolor transition-colors duration-300 font-montserrat text-sm group flex items-center gap-2 cursor-pointer'>
+              <a href='#contact' onClick={(e) => handleSmoothScroll(e, 'contact')} className='text-gray-300 hover:text-themecolor transition-colors duration-300 font-montserrat text-sm group flex items-center gap-2 cursor-pointer'>
                 <span className='w-0 h-0.5 bg-themecolor group-hover:w-4 transition-all duration-300'></span>
                 Contact Us
               </a>
-              <a href='#events' className='text-gray-300 hover:text-themecolor transition-colors duration-300 font-montserrat text-sm group flex items-center gap-2 cursor-pointer'>
+              <a href='#events' onClick={(e) => handleSmoothScroll(e, 'events')} className='text-gray-300 hover:text-themecolor transition-colors duration-300 font-montserrat text-sm group flex items-center gap-2 cursor-pointer'>
                 <span className='w-0 h-0.5 bg-themecolor group-hover:w-4 transition-all duration-300'></span>
                 Events
               </a>
-              <a href='#community' className='text-gray-300 hover:text-themecolor transition-colors duration-300 font-montserrat text-sm group flex items-center gap-2 cursor-pointer'>
+              <Link href='/community' className='text-gray-300 hover:text-themecolor transition-colors duration-300 font-montserrat text-sm group flex items-center gap-2'>
                 <span className='w-0 h-0.5 bg-themecolor group-hover:w-4 transition-all duration-300'></span>
                 Community
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -63,7 +73,7 @@ const Footer = () => {
                 </div>
                 <div>
                   <p className='font-montserrat text-xs text-gray-400'>Email</p>
-                  <p className='font-montserrat text-sm'>contact@hg.com</p>
+                  <p className='font-montserrat text-sm'>houseofgeeks@iiitranchi.ac.in</p>
                 </div>
               </a>
               <a href='#' className='flex items-center gap-3 text-gray-300 hover:text-themecolor transition-all duration-300 group'>
@@ -83,7 +93,7 @@ const Footer = () => {
             <h4 className='text-lg font-teko font-bold text-white'>FOLLOW US</h4>
             <div className='flex gap-4'>
               <a
-                href='https://instagram.com/houseofgeeks'
+                href='http://instagram.com/hg.iiitranchi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D'
                 target='_blank'
                 rel='noopener noreferrer'
                 className='group relative'
@@ -95,7 +105,7 @@ const Footer = () => {
                 </div>
               </a>
               <a
-                href='https://linkedin.com/company/houseofgeeks'
+                href='https://www.linkedin.com/company/hgiiitranchi/'
                 target='_blank'
                 rel='noopener noreferrer'
                 className='group relative'

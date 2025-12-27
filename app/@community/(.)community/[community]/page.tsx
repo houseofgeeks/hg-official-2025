@@ -67,7 +67,8 @@ const InterceptedPage = () => {
           <DomainTeam 
             wingName={currentDomain.title} 
             leads={currentDomain.leads} 
-            cordinators={currentDomain.cordinators} 
+            cordinators={currentDomain.cordinators}
+            intercepted={true}
           />
         </div>
       </div>
