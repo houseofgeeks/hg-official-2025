@@ -191,7 +191,7 @@ const LeaderboardPage: React.FC = () => {
                               className="rounded-full object-cover"
                             />
                           ) : (
-                            <div className="flex items-center justify-center w-full h-full bg-gradient-to-br from-themecolor to-purple-600 rounded-full text-white text-4xl font-bold">
+                            <div className="flex items-center justify-center w-full h-full bg-linear-to-br from-themecolor to-purple-600 rounded-full text-white text-4xl font-bold">
                               {donor.name.charAt(0).toUpperCase()}
                             </div>
                           )}
@@ -235,12 +235,12 @@ const LeaderboardPage: React.FC = () => {
                       transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
                       className="interactive-element leaderboard-card flex items-center p-6 bg-[#1a1a1a] rounded-xl shadow-lg border-2 border-transparent hover:border-themecolor transition-all duration-300"
                     >
-                      <div className="flex-shrink-0">
+                      <div className="shrink-0">
                         <span className="text-4xl font-bold text-gray-400">
                           #{index + 4}
                         </span>
                       </div>
-                      <div className="flex-shrink-0 ml-4">
+                      <div className="shrink-0 ml-4">
                         {donor.photoURL ? (
                           <Image
                             src={donor.photoURL}
@@ -250,12 +250,12 @@ const LeaderboardPage: React.FC = () => {
                             className="rounded-full object-cover"
                           />
                         ) : (
-                          <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-themecolor to-purple-600 rounded-full text-white text-2xl font-bold">
+                          <div className="flex items-center justify-center w-16 h-16 bg-linear-to-br from-themecolor to-purple-600 rounded-full text-white text-2xl font-bold">
                             {donor.name.charAt(0).toUpperCase()}
                           </div>
                         )}
                       </div>
-                      <div className="ml-6 flex-grow">
+                      <div className="ml-6 grow">
                         <h3 className="text-2xl font-montserrat font-bold">
                           {donor.name}
                         </h3>
@@ -267,41 +267,7 @@ const LeaderboardPage: React.FC = () => {
                   ))}
                 </div>
 
-                {/* Recent donors (below full top donors list)
-                {recentDonors.length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6, duration: 0.45 }}
-                    className="mb-8"
-                  >
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-3xl font-teko font-semibold text-white">Recent Donors</h3>
-                      <p className="text-sm text-gray-400">Latest 5 donors</p>
-                    </div>
-
-                    <div className="recent-donors-scroll">
-                      {recentDonors.map((r) => (
-                        <div key={r.id} className="recent-donor-card flex items-center gap-4">
-                          <div className="flex-shrink-0">
-                            {r.photoURL ? (
-                              <Image src={r.photoURL} alt={r.name} width={56} height={56} className="rounded-full object-cover" />
-                            ) : (
-                              <div className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-themecolor to-purple-600 rounded-full text-white text-xl font-bold">
-                                {r.name.charAt(0).toUpperCase()}
-                              </div>
-                            )}
-                          </div>
-                          <div className="flex-grow">
-                            <h4 className="font-semibold text-lg">{r.name}</h4>
-                            <p className="text-gray-400 text-sm">₹{r.donatedAmount.toLocaleString()}</p>
-                            <p className="text-gray-500 text-xs mt-1">{formatDate(r.lastDonationDate)}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </motion.div>
-                )} */}
+                
 
               </>
             )}
@@ -323,6 +289,40 @@ const LeaderboardPage: React.FC = () => {
               </button>
             </Link>
           </motion.div>
+            {recentDonors.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.45 }}
+                className="max-w-2xl mx-auto mt-6 mb-8"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-3xl font-teko font-semibold text-white">Recent Donors</h3>
+                  <p className="text-sm text-gray-400">Latest 5 donors</p>
+                </div>
+
+                <div className="recent-donors-scroll space-y-4">
+                  {recentDonors.map((r) => (
+                      <div key={r.id} className="recent-donor-card flex items-center gap-4 p-3 bg-[#0f0f0f] rounded-lg">
+                        <div className="shrink-0">
+                        {r.photoURL ? (
+                          <Image src={r.photoURL} alt={r.name} width={56} height={56} className="rounded-full object-cover" />
+                        ) : (
+                          <div className="flex items-center justify-center w-14 h-14 bg-linear-to-br from-themecolor to-purple-600 rounded-full text-white text-xl font-bold">
+                            {r.name.charAt(0).toUpperCase()}
+                          </div>
+                        )}
+                      </div>
+                      <div className="grow">
+                        <h4 className="font-semibold text-lg">{r.name}</h4>
+                        <p className="text-gray-400 text-sm">₹{r.donatedAmount.toLocaleString()}</p>
+                        <p className="text-gray-500 text-xs mt-1">{formatDate(r.lastDonationDate)}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
           
         </div>
       </main>
