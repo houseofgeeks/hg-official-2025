@@ -327,8 +327,8 @@ const DonatePage: React.FC = () => {
 
         
 
-        {/* Main Content - Two Column Layout */}
-        <div className="max-w-[90rem] mx-auto grid lg:grid-cols-2 gap-16 mb-16 px-4">
+        {/* Main Content - Two Column Layout (Donate 60% | Why 40%) */}
+        <div className="max-w-5xl mx-auto lg:ml-60 grid grid-cols-1 lg:grid-cols-[60%_40%] gap-12 mb-16 px-4">
           {/* Donation Form - Now on Left */}
           <motion.section
             initial={{ opacity: 0, x: -30 }}
@@ -508,7 +508,7 @@ const DonatePage: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
             className=""
           >
-            <h2 className="text-5xl font-teko font-bold text-white mb-8">
+            <h2 className="text-5xl font-montserrat font-bold text-white mb-8">
               WHY <span className="text-themecolor">DONATE?</span>
             </h2>
             <div className="space-y-5">
@@ -520,12 +520,12 @@ const DonatePage: React.FC = () => {
                   transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
                   className="interactive-element bg-transparent rounded-xl p-6 hover:bg-white/5 transition-all duration-300 group"
                 >
-                  <div className="flex items-start md:w-[85vw] lg:w-[30vw] gap-4">
-                    <div className="w-12 h-12 rounded-lg bg-themecolor/20 flex items-center justify-center flex-shrink-0">
+                  <div className="flex items-start w-full gap-4 text-white">
+                    <div className="w-12 h-12 rounded-lg bg-themecolor/20 flex items-center justify-center shrink-0">
                       <span className="text-themecolor text-xl">{item.icon}</span>
                     </div>
                     <div>
-                      <h3 className="text-xl font-teko font-bold text-white mb-2">{item.title}</h3>
+                      <h3 className="text-xl font-montserrat font-semibold text-white mb-2 group-hover:text-themecolor">{item.title}</h3>
                       <p className="text-sm text-gray-400 font-montserrat leading-relaxed">{item.description}</p>
                     </div>
                   </div>
