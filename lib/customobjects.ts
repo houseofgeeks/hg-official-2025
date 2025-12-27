@@ -46,10 +46,6 @@ export const domains = [
         name:"Aditya Singh",
         image:"https://res.cloudinary.com/dlmfnwkon/image/upload/v1766605161/IMG_1221_-_ADITYA_SINGH_qngv56.png"
       },
-      {
-        name:"Udisha",
-        image:"https://res.cloudinary.com/dlmfnwkon/image/upload/v1766605157/20251217_155402_1_-_UDISHA_ehso3e.jpg"
-      }
   ],
   cordinators:[
     {
@@ -139,8 +135,17 @@ export const domains = [
         name:"Ayansh Raj",
         image:"https://res.cloudinary.com/dlmfnwkon/image/upload/f4a29726-d70a-43b5-bf48-9e99168a4393_-_AYANSH_RAJ_ynijtj.jpg"
       },
+      {
+        name:"Udisha",
+        image:"https://res.cloudinary.com/dlmfnwkon/image/upload/v1766605157/20251217_155402_1_-_UDISHA_ehso3e.jpg"
+      }
     ],
     cordinators:[
+    {
+      name:"Harsh Goel",
+      domain:"Competitive Programming",
+      image:"https://res.cloudinary.com/dlmfnwkon/image/upload/v1766761425/IMG_20251226_003411_-_HARSH_GOEL_je9gpv.png"
+     },
     {
       name:"Smruti Ranjan Ray",
       domain:"Competitive Programming",
@@ -155,6 +160,11 @@ export const domains = [
       name:"Ujjwal Kumar",
       domain:"Competitive Programming",
       image:"https://res.cloudinary.com/dlmfnwkon/image/upload/v1766605157/ujjwal_photo_-_Ujjwal_Kumar_csvtgs.jpg"
+     },
+    {
+      name:"Vedang Bhushan Masne",
+      domain:"Competitive Programming",
+      image:"https://res.cloudinary.com/dlmfnwkon/image/upload/v1766761426/20251226_170149_-_VEDANG_BHUSHAN_MASNE_a15fcs.jpg"
      },
     {
       name:"Aditya Kumar",
