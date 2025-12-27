@@ -25,7 +25,7 @@ export default async function EventDetailsPage({ params }: Props) {
     <div className="px-6 md:px-16 py-10">
 
       {/* EVENT HEADER */}
-      <h1 className="font-teko text-4xl md:text-5xl text-themecolor">
+      <h1 className="text-4xl md:text-5xl font-montserrat font-semibold text-themecolor" style={{ color: '#ffffff' }}>
         {event.title}
       </h1>
 
@@ -34,15 +34,15 @@ export default async function EventDetailsPage({ params }: Props) {
       </p>
 
       {/* DESCRIPTION */}
-      <div className="mt-8 max-w-3xl">
-        <p className="font-montserrat text-gray-300 leading-relaxed">
+      <div className="mt-8 w-full max-w-6xl">
+        <p className="font-montserrat text-white leading-relaxed">
           {event.description}
         </p>
       </div>
 
       {/* GALLERY PLACEHOLDER */}
       <section className="mt-14">
-        <h2 className="font-teko text-3xl text-themecolor mb-6">
+        <h2 className="font-teko text-3xl font-bold text-themecolor mb-6">
           Event Gallery
         </h2>
 

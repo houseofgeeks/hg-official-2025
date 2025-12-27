@@ -267,7 +267,7 @@ const LeaderboardPage: React.FC = () => {
                   ))}
                 </div>
 
-                {/* Recent donors (below full top donors list) */}
+                {/* Recent donors (below full top donors list)
                 {recentDonors.length > 0 && (
                   <motion.div
                     initial={{ opacity: 0, y: 12 }}
@@ -301,7 +301,7 @@ const LeaderboardPage: React.FC = () => {
                       ))}
                     </div>
                   </motion.div>
-                )}
+                )} */}
 
               </>
             )}
