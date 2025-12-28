@@ -10,6 +10,51 @@ export default function AdminEventList({ events, onDeleted }: { events: any[]; o
   const [loading, setLoading] = useState(false);
   const [adding, setAdding] = useState<string | null>(null); // eventId or null
   const [deletingImages, setDeletingImages] = useState<string | null>(null); // eventId or null
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editFields, setEditFields] = useState<{ title?: string; description?: string; date?: string; category?: string }>({});
+  const [savingEdit, setSavingEdit] = useState(false);
+  // Handle edit field changes
+  const handleEditChange = (field: string, value: string) => {
+    setEditFields(prev => ({ ...prev, [field]: value }));
+  };
+
+  // Start editing an event
+  const startEdit = (ev: any) => {
+    setEditingId(ev.id);
+    setEditFields({
+      title: ev.title || '',
+      description: ev.description || '',
+      date: ev.date || '',
+      category: ev.category || '',
+    });
+  };
+
+  // Cancel editing
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditFields({});
+  };
+
+  // Save event edits
+  const saveEdit = async (id: string) => {
+    setSavingEdit(true);
+    try {
+      const res = await fetch('/api/hgadmin/events/edit', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, ...editFields })
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) throw new Error((data && data.message) || 'Failed to update event');
+      setEditingId(null);
+      setEditFields({});
+      if (onDeleted) onDeleted(); else window.location.reload();
+    } catch (err: any) {
+      alert(err.message || 'Error');
+    }
+    setSavingEdit(false);
+  };
 
   // Toggle selection for an image
   const toggle = (id: string) => setSelected(prev => ({ ...prev, [id]: !prev[id] }));
@@ -85,8 +130,46 @@ export default function AdminEventList({ events, onDeleted }: { events: any[]; o
         <div key={ev.id} className="p-4 mb-4 bg-[#111] rounded">
           <div className="flex items-center justify-between">
             <div>
-              <h4 className="text-white font-semibold">{ev.title}</h4>
-              <div className="text-sm text-white/60">{ev.date} • {ev.category}</div>
+              {editingId === ev.id ? (
+                <>
+                  <input
+                    className="w-full p-2 mb-2 rounded bg-[#222] text-white border border-gray-600"
+                    value={editFields.title || ''}
+                    onChange={e => handleEditChange('title', e.target.value)}
+                    placeholder="Title"
+                  />
+                  <input
+                    className="w-full p-2 mb-2 rounded bg-[#222] text-white border border-gray-600"
+                    value={editFields.date || ''}
+                    onChange={e => handleEditChange('date', e.target.value)}
+                    placeholder="Date"
+                  />
+                  <input
+                    className="w-full p-2 mb-2 rounded bg-[#222] text-white border border-gray-600"
+                    value={editFields.category || ''}
+                    onChange={e => handleEditChange('category', e.target.value)}
+                    placeholder="Category"
+                  />
+                  <textarea
+                    className="w-full p-2 mb-2 rounded bg-[#222] text-white border border-gray-600"
+                    value={editFields.description || ''}
+                    onChange={e => handleEditChange('description', e.target.value)}
+                    placeholder="Description"
+                  />
+                  <div className="flex gap-2 mb-2">
+                    <button onClick={() => saveEdit(ev.id)} className="bg-green-600 text-white px-3 py-1 rounded" disabled={savingEdit}>
+                      {savingEdit ? 'Saving...' : 'Save'}
+                    </button>
+                    <button onClick={cancelEdit} className="bg-gray-600 text-white px-3 py-1 rounded">Cancel</button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h4 className="text-white font-semibold">{ev.title}</h4>
+                  <div className="text-sm text-white/60">{ev.date} • {ev.category}</div>
+                  <div className="text-white text-xs mb-1 whitespace-pre-line">{ev.description}</div>
+                </>
+              )}
             </div>
             <div className="flex gap-2">
               <button onClick={() => deleteEvent(ev.id)} className="bg-red-600 text-white px-3 py-1 rounded" disabled={loading}>
@@ -96,6 +179,9 @@ export default function AdminEventList({ events, onDeleted }: { events: any[]; o
                   'Delete Event'
                 )}
               </button>
+              {editingId !== ev.id && (
+                <button onClick={() => startEdit(ev)} className="bg-yellow-600 text-white px-3 py-1 rounded">Edit</button>
+              )}
             </div>
           </div>
 
