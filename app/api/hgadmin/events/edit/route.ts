@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     const isAuth = isAdminFromCookies(cookieStore);
     if (!isAuth) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
-    const { id, title, description, date, category } = await req.json();
+    const { id, title, description, date, category, thumbnail } = await req.json();
     if (!id) return NextResponse.json({ message: 'Event id required' }, { status: 400 });
     const events = await getEvents();
     const idx = events.findIndex(e => String(e.id) === String(id));
@@ -22,6 +22,7 @@ export async function POST(req: Request) {
     if (description !== undefined) events[idx].description = description;
     if (date !== undefined) events[idx].date = date;
     if (category !== undefined) events[idx].category = category;
+    if (thumbnail !== undefined) events[idx].thumbnail = thumbnail;
     await fs.writeFile(DATA_FILE, JSON.stringify(events, null, 2));
     return NextResponse.json({ event: events[idx] });
   } catch (err: any) {

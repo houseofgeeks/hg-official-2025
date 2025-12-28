@@ -25,7 +25,17 @@ export default function EventCard({
       {/* <div className="relative h-56 rounded-2xl bg-linear-to-br from-[#1a0b12] to-black border border-white/10 flex items-center justify-center"> */}
       <div className="relative h-56 rounded-2xl border border-white/10 flex items-center justify-center overflow-hidden">
         {imageUrl ? (
-          <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
+          <>
+            <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
+            {/* Black box overlay, covers full image box */}
+            <div className="absolute inset-0 bg-black/70 bg-opacity-10 z-10" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
+              <span className="text-lg md:text-xl font-bold text-white drop-shadow-lg mb-2">Event Gallery</span>
+              <span className="mt-1">
+                <span className="bg-themecolor text-white px-4 py-1 rounded-full font-semibold shadow-lg hover:bg-pink-600 transition cursor-pointer text-sm">View Event</span>
+              </span>
+            </div>
+          </>
         ) : (
           <div className="flex flex-col items-center gap-2 text-pink-500">
             <FaTrophy size={36} />

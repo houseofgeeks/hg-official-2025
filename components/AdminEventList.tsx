@@ -6,6 +6,25 @@ import { uploadToCloudinary } from '@/lib/cloudinaryUtils';
 type EventImage = { public_id: string; url: string };
 
 export default function AdminEventList({ events, onDeleted }: { events: any[]; onDeleted?: () => void }) {
+  const [settingThumb, setSettingThumb] = useState<string | null>(null);
+  // Set thumbnail for event
+  const setThumbnail = async (eventId: string, public_id: string) => {
+    setSettingThumb(eventId + public_id);
+    try {
+      const res = await fetch('/api/hgadmin/events/thumbnail', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ eventId, public_id })
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) throw new Error((data && data.message) || 'Failed to set thumbnail');
+      if (typeof onDeleted === 'function') onDeleted(); else window.location.reload();
+    } catch (err: any) {
+      alert(err.message || 'Error');
+    }
+    setSettingThumb(null);
+  };
   const [selected, setSelected] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(false);
   const [adding, setAdding] = useState<string | null>(null); // eventId or null
@@ -194,11 +213,19 @@ export default function AdminEventList({ events, onDeleted }: { events: any[]; o
             }}
           >
             {(ev.images || []).map((img: EventImage) => (
-              <div key={img.public_id} className="relative">
+              <div key={img.public_id} className="relative group">
                 <img src={img.url} className="w-full h-28 object-cover rounded" />
                 <label className="absolute top-1 left-1 bg-black/50 p-1 rounded">
                   <input type="checkbox" checked={!!selected[img.public_id]} onChange={() => toggle(img.public_id)} />
                 </label>
+                <button
+                  className={`absolute bottom-1 left-1 bg-blue-600 text-white text-xs px-2 py-1 rounded opacity-90 group-hover:opacity-100 ${ev.thumbnail === img.public_id ? 'ring-2 ring-yellow-400' : ''}`}
+                  disabled={settingThumb === ev.id + img.public_id}
+                  onClick={() => setThumbnail(ev.id, img.public_id)}
+                  title={ev.thumbnail === img.public_id ? 'Current Thumbnail' : 'Set as Thumbnail'}
+                >
+                  {settingThumb === ev.id + img.public_id ? 'Setting...' : (ev.thumbnail === img.public_id ? 'Thumbnail' : 'Set as Thumbnail')}
+                </button>
               </div>
             ))}
           </div>
