@@ -13,6 +13,7 @@ export type EventItem = {
   category?: string;
   eventurl: string;
   images: EventImage[];
+  thumbnail?: string; // public_id of the thumbnail image
   createdAt: string;
 };
 
@@ -43,6 +44,15 @@ export async function createEvent(payload: Omit<EventItem, 'id' | 'createdAt'>):
   events.unshift(newEvent);
   await fs.writeFile(DATA_FILE, JSON.stringify(events, null, 2));
   return newEvent;
+}
+// Set thumbnail image for an event
+export async function setThumbnailToEvent(id: string, public_id: string): Promise<EventItem> {
+  const events = await getEvents();
+  const idx = events.findIndex(e => String(e.id) === String(id));
+  if (idx === -1) throw new Error('Event not found');
+  events[idx].thumbnail = public_id;
+  await fs.writeFile(DATA_FILE, JSON.stringify(events, null, 2));
+  return events[idx];
 }
 
 export async function deleteEvent(id: string): Promise<void> {
