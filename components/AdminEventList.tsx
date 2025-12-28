@@ -8,13 +8,15 @@ type EventImage = { public_id: string; url: string };
 export default function AdminEventList({ events, onDeleted }: { events: any[]; onDeleted?: () => void }) {
   const [selected, setSelected] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(false);
+  const [adding, setAdding] = useState<string | null>(null); // eventId or null
+  const [deletingImages, setDeletingImages] = useState<string | null>(null); // eventId or null
 
   // Toggle selection for an image
   const toggle = (id: string) => setSelected(prev => ({ ...prev, [id]: !prev[id] }));
 
   // Delete selected images for an event
   const deleteSelectedImages = async (eventId: string) => {
-    setLoading(true);
+    setDeletingImages(eventId);
     try {
       const event = events.find(e => e.id === eventId);
       if (!event) throw new Error('Event not found');
@@ -42,7 +44,7 @@ export default function AdminEventList({ events, onDeleted }: { events: any[]; o
     } catch (err: any) {
       alert(err.message || 'Error');
     }
-    setLoading(false);
+    setDeletingImages(null);
   };
 
   const deleteEvent = async (id: string) => {
@@ -61,7 +63,7 @@ export default function AdminEventList({ events, onDeleted }: { events: any[]; o
 
   const addImagesToEvent = async (eventId: string, files: FileList | null) => {
     if (!files || files.length === 0) { alert('No files selected'); return; }
-    setLoading(true);
+    setAdding(eventId);
     try {
       const arr = Array.from(files);
       const uploaded = await Promise.all(arr.map(f => uploadToCloudinary(f)));
@@ -73,7 +75,7 @@ export default function AdminEventList({ events, onDeleted }: { events: any[]; o
     } catch (err: any) {
       alert(err.message || 'Error');
     }
-    setLoading(false);
+    setAdding(null);
   };
 
   return (
@@ -87,11 +89,24 @@ export default function AdminEventList({ events, onDeleted }: { events: any[]; o
               <div className="text-sm text-white/60">{ev.date} • {ev.category}</div>
             </div>
             <div className="flex gap-2">
-              <button onClick={() => deleteEvent(ev.id)} className="bg-red-600 text-white px-3 py-1 rounded">Delete Event</button>
+              <button onClick={() => deleteEvent(ev.id)} className="bg-red-600 text-white px-3 py-1 rounded" disabled={loading}>
+                {loading ? (
+                  <span className="flex items-center gap-1"><span className="loader mr-1"></span>Deleting...</span>
+                ) : (
+                  'Delete Event'
+                )}
+              </button>
             </div>
           </div>
 
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-2 mt-4">
+          <div
+            className="grid gap-2 mt-4 overflow-y-auto"
+            style={{
+              maxHeight: '220px',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
+              WebkitOverflowScrolling: 'touch',
+            }}
+          >
             {(ev.images || []).map((img: EventImage) => (
               <div key={img.public_id} className="relative">
                 <img src={img.url} className="w-full h-28 object-cover rounded" />
@@ -104,18 +119,42 @@ export default function AdminEventList({ events, onDeleted }: { events: any[]; o
 
           <div className="flex items-center gap-2 mt-4">
             <label className="bg-blue-600 text-white px-3 py-1 rounded cursor-pointer">
-              Add Images
-              <input type="file" multiple accept="image/*" className="hidden" onChange={(e) => addImagesToEvent(ev.id, e.target.files)} />
+              {adding === ev.id ? (
+                <span className="flex items-center gap-1"><span className="loader mr-1"></span>Adding...</span>
+              ) : (
+                <>
+                  Add Images
+                  <input type="file" multiple accept="image/*" className="hidden" onChange={(e) => addImagesToEvent(ev.id, e.target.files)} />
+                </>
+              )}
             </label>
             <button
               onClick={() => deleteSelectedImages(ev.id)}
-              disabled={loading}
+              disabled={!!deletingImages}
               className="bg-yellow-600 text-white px-3 py-1 rounded disabled:opacity-60"
             >
-              Delete Selected Images
+              {deletingImages === ev.id ? (
+                <span className="flex items-center gap-1"><span className="loader mr-1"></span>Deleting...</span>
+              ) : (
+                'Delete Selected Images'
+              )}
             </button>
-            <button onClick={() => deleteEvent(ev.id)} className="bg-red-600 text-white px-3 py-1 rounded">Delete Event</button>
           </div>
+<style jsx global>{`
+  .loader {
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #555;
+    border-radius: 50%;
+    width: 1em;
+    height: 1em;
+    animation: spin 0.8s linear infinite;
+    display: inline-block;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+`}</style>
 
           {/* Cloudinary delete warning removed */}
         </div>
