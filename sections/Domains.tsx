@@ -16,7 +16,7 @@ const Domains = ({useModal}:DomainProp) => {
             </h1>
 
             {/* Underline */}
-            <div className="h-1 w-full bg-gradient-to-r from-themecolor via-purple-500 to-themecolor rounded-full " />
+            <div className="h-1 w-full bg-linear-to-r from-themecolor via-purple-500 to-themecolor rounded-full " />
           </div>
 
             <ShinyText
@@ -28,7 +28,17 @@ const Domains = ({useModal}:DomainProp) => {
 
         <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {domains.map((domain,index) => (
-                <DomainCard key={index} url={domain.url} title={domain.title} description={domain.description} id={domain.id} icon={domain.icon} leads={domain.leads} cords={domain.cordinators} useModal={useModal} />
+                <DomainCard
+                  key={index}
+                  url={domain.url}
+                  title={domain.title}
+                  description={domain.description}
+                  id={domain.id}
+                  icon={<domain.icon size={50} className="text-themecolor font-bold border border-themecolor rounded-md p-2" />}
+                  leads={domain.leads}
+                  cords={domain.cordinators}
+                  useModal={useModal}
+                />
             ))}
         </div>
     </section>

@@ -1,11 +1,11 @@
 'use client'
-import { IconType } from 'react-icons'
+import React from 'react';
 import Link from 'next/link'
 import { Lead } from '@/lib/customobjects'
 import Image from 'next/image'
 
 type DomainCardProps = {
-    icon : IconType;
+    icon : React.ReactNode;
     id:number;
     title : string;
     url:string;
@@ -17,7 +17,7 @@ type DomainCardProps = {
     
 }
 
-const DomainCard = ({icon : Icon, title, description, url, useModal, leads = [], cords = []} : DomainCardProps) => {
+const DomainCard = ({icon, title, description, url, useModal, leads = [], cords = []} : DomainCardProps) => {
   // Combine leads and coordinators, limit to show max 6 avatars
   const allMembers = [...leads, ...cords];
   const displayMembers = allMembers.slice(0, 6);
@@ -25,7 +25,7 @@ const DomainCard = ({icon : Icon, title, description, url, useModal, leads = [],
 
   const CardContent = () => (
     <div className='interactive-element domain-card flex flex-col items-start text-white hover:border-themecolor rounded-2xl p-10 gap-5 group hover:scale-103 transition-all duration-300 hover:border border-transparent hover:bg-gray-900 h-full'>
-      <Icon size={50} className='text-themecolor font-bold border border-themecolor rounded-md p-2' />
+      {icon}
       <h1 className='text-2xl font-montserrat group-hover:text-themecolor'>{title}</h1>
       <p>{description}</p>
       

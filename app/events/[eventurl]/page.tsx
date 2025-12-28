@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { eventsData } from "@/lib/customobjects";
+import { getEventByUrl } from "@/lib/eventsService";
 import Navbar from "@/components/Navbar";
 
 type Props = {
@@ -11,9 +11,7 @@ type Props = {
 export default async function EventDetailsPage({ params }: Props) {
   const { eventurl } = await params; // ✅ unwrap params
 
-  const event = eventsData.find(
-    (e) => e.eventurl === eventurl
-  );
+  const event = await getEventByUrl(eventurl);
 
   if (!event) {
     notFound();
@@ -40,23 +38,22 @@ export default async function EventDetailsPage({ params }: Props) {
         </p>
       </div>
 
-      {/* GALLERY PLACEHOLDER */}
+      {/* GALLERY */}
       <section className="mt-14">
         <h2 className="font-teko text-3xl font-bold text-themecolor mb-6">
           Event Gallery
         </h2>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div
-              key={i}
-              className="aspect-square border-2 border-dashed border-themecolor/40 rounded-lg flex items-center justify-center"
-            >
-              <span className="font-montserrat text-sm text-themecolor/60">
-                Photo
-              </span>
-            </div>
-          ))}
+          {event.images && event.images.length > 0 ? (
+            event.images.map((img) => (
+              <div key={img.public_id} className="aspect-square rounded-lg overflow-hidden">
+                <img src={img.url} className="w-full h-full object-cover" />
+              </div>
+            ))
+          ) : (
+            <div className="text-white/70">No photos added for this event yet.</div>
+          )}
         </div>
       </section>
 
