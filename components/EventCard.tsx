@@ -7,6 +7,7 @@ type EventCardProps = {
   title: string;
   description: string;
   eventurl: string;
+  imageUrl?: string;
 };
 
 export default function EventCard({
@@ -15,19 +16,24 @@ export default function EventCard({
   title,
   description,
   eventurl,
+  imageUrl,
 }: EventCardProps) {
   return (
      <Link href={`/events/${eventurl}`} >
     <div className="w-full rounded-2xl p-10 group hover:scale-103 transition-all duration-300 border border-transparent hover:border-themecolor interactive-element grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
       {/* Left Card */}
       {/* <div className="relative h-56 rounded-2xl bg-linear-to-br from-[#1a0b12] to-black border border-white/10 flex items-center justify-center"> */}
-      <div className="relative h-56 rounded-2xl border border-white/10 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-2 text-pink-500">
-          <FaTrophy size={36} />
-          <span className="text-xs tracking-widest text-white/60">
-            EVENT GALLERY
-          </span>
-        </div>
+      <div className="relative h-56 rounded-2xl border border-white/10 flex items-center justify-center overflow-hidden">
+        {imageUrl ? (
+          <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
+        ) : (
+          <div className="flex flex-col items-center gap-2 text-pink-500">
+            <FaTrophy size={36} />
+            <span className="text-xs tracking-widest text-white/60">
+              EVENT GALLERY
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Right Content */}

@@ -9,7 +9,7 @@ const AboutUs = () => {
                 <h1 className='relative text-center text-6xl md:text-7xl font-teko font-bold text-white drop-shadow-lg'>ABOUT</h1>
             </div>
             <h2 className='text-center font-semibold font-teko text-4xl md:text-6xl text-themecolor drop-shadow-lg'>HOUSE OF GEEKS</h2>
-            <div className='h-1 w-24 bg-gradient-to-r from-themecolor via-purple-500 to-themecolor rounded-full'></div>
+            <div className='h-1 w-24 bg-linear-to-r from-themecolor via-purple-500 to-themecolor rounded-full'></div>
         </div>
         
         {/* Description Section */}
@@ -23,14 +23,14 @@ const AboutUs = () => {
         <div className="w-full max-w-4xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div className='transform hover:scale-105 transition-transform duration-300 interactive-element'>
-              <AboutCard icon={HiOutlineUserGroup} text="Community of developers, designers, and problem solvers" />
+              <AboutCard icon={<HiOutlineUserGroup size={50} className="text-themecolor drop-shadow-lg"/>} text="Community of developers, designers, and problem solvers" />
             </div>
             <div className='transform hover:scale-105 transition-transform duration-300 interactive-element'>
-              <AboutCard icon={HiOutlineLightBulb} text="Focus on learning, building, and real-world impact" />
+              <AboutCard icon={<HiOutlineLightBulb size={50} className="text-themecolor drop-shadow-lg"/>} text="Focus on learning, building, and real-world impact" />
             </div>
           </div>
           <div className='transform hover:scale-105 transition-transform duration-300 interactive-element'>
-            <AboutCard icon={HiOutlineCodeBracket} text="Workshops, hackathons, tech talks, and collaborative projects" classname="justify-center" />
+            <AboutCard icon={<HiOutlineCodeBracket size={50} className="text-themecolor drop-shadow-lg"/>} text="Workshops, hackathons, tech talks, and collaborative projects" classname="justify-center" />
           </div>
         </div>
 

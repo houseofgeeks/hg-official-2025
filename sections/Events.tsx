@@ -1,7 +1,8 @@
 import EventCard from "@/components/EventCard";
 import ShinyText from "@/components/ShinyText";
-import { eventsData } from "@/lib/customobjects";
-const Events = () => {
+import { getEvents } from "@/lib/eventsService";
+const Events = async () => {
+  const events = await getEvents();
   return (
     <section className="flex flex-col items-center pb-20">
       <div className="flex flex-col items-center pb-18 gap-2">
@@ -20,14 +21,15 @@ const Events = () => {
         />
       </div>
       <div className="w-full max-w-6xl space-y-6 px-4">
-        {eventsData.map((event) => (
+        {events.map((event) => (
           <EventCard
             key={event.id}
-            date={event.date}
-            category={event.category}
+            date={event.date || ''}
+            category={event.category || ''}
             title={event.title}
-            description={event.description}
+            description={event.description || ''}
             eventurl={event.eventurl}
+            imageUrl={event.images?.[0]?.url}
           />
         ))}
       </div>

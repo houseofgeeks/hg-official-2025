@@ -4,9 +4,10 @@ import { Lead } from '../lib/customobjects';
 interface CoordinatorCircleProps {
   member: Lead;
   intercepted?: boolean;
+  className?: string;
 }
 
-const CoordinatorCircle: React.FC<CoordinatorCircleProps> = ({ member, intercepted = false }) => {
+const CoordinatorCircle: React.FC<CoordinatorCircleProps> = ({ member, intercepted = false, className }) => {
   const sizeClass = intercepted
     ? "w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28"
     : "w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32";
