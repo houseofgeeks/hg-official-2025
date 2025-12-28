@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { eventsData } from "@/lib/customobjects";
 import Navbar from "@/components/Navbar";
+import { getEvents } from "@/lib/eventsService";
 
-export default function EventsPage() {
+
+export default async function EventsPage() {
+  const events = await getEvents();
   return (
     <main className="px-8 py-8 w-full margin-auto min-h-screen">
         <Navbar />
@@ -14,7 +17,7 @@ export default function EventsPage() {
       </h1>
 
       <div className="space-y-6">
-        {eventsData.map((event) => (
+        {events.map((event) => (
           <Link
             key={event.id}
             href={`/events/${event.eventurl}`}

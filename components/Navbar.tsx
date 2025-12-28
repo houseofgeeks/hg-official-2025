@@ -27,9 +27,9 @@ const Navbar = () => {
   }
 
   return (
-      <nav className="flex margin-x-auto text-white items-center text-3xl font-teko justify-between md:mr-20 mr-0 py-4 px-4 md:px-8">
+      <nav className="flex margin-x-auto text-white items-center text-3xl font-teko justify-between lg:mr-20 mr-0 py-4 px-4 md:px-8">
         <div className="cursor-pointer"><Link href="/" className="interactive-element flex items-center"><Image src="/hog.svg" alt="Logo" width={160} height={150} /></Link></div>
-        <ul className="flex gap-10 w-full justify-center max-md:hidden ">
+        <ul className="flex gap-10 w-full justify-center max-lg:hidden ">
           <li className="hover:text-themecolor"><Link href="/" className='interactive-element'>Home</Link></li>
           <li className="hover:text-themecolor"><Link href="/#about" className='interactive-element'>About</Link></li>
           <li className="hover:text-themecolor"><Link href="/leaderboard" className='interactive-element'>Leaderboard</Link></li>
@@ -37,7 +37,7 @@ const Navbar = () => {
           <li className="hover:text-themecolor"><Link href="/#contact" onClick={(e)=>handleAnchorClick(e,'contact')} className='interactive-element'>Contact</Link></li>
         </ul>
 
-        <div className="md:hidden">
+        <div className="lg:hidden">
         <button onClick={toggleMenu} aria-label="Toggle menu" className="interactive-element link-underline hover:text-themecolor z-60">
         {isopen ? <RxCross1   size={24} /> : <RxHamburgerMenu size={24} />}
         </button>
