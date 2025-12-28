@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { deleteEvent, getEvents } from '@/lib/eventsService';
 import { cookies } from 'next/headers';
-import { destroyImage } from '@/lib/cloudinaryAdmin';
+import { deleteImages } from '@/lib/cloudinaryDelete';
 
 export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -18,8 +18,12 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
     if (!event) return NextResponse.json({ message: 'Not found' }, { status: 404 });
 
     // delete images from cloudinary (best-effort)
-    for (const img of event.images || []) {
-      try { await destroyImage(img.public_id); } catch (err) { console.error('failed to destroy image', img.public_id, err); }
+    if (event.images && event.images.length > 0) {
+      try {
+        await deleteImages(event.images.map((img: any) => img.public_id));
+      } catch (err) {
+        console.error('failed to destroy images', err);
+      }
     }
 
     await deleteEvent(id);
