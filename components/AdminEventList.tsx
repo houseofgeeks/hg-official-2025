@@ -8,14 +8,11 @@ type EventImage = { public_id: string; url: string };
 export default function AdminEventList({ events, onDeleted }: { events: any[]; onDeleted?: () => void }) {
   const [selected, setSelected] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(false);
-  const [cloudinaryDeleteEnabled, setCloudinaryDeleteEnabled] = useState<boolean | null>(null);
 
-  React.useEffect(() => {
-    fetch('/api/hgadmin/config').then(r => r.json()).then(d => setCloudinaryDeleteEnabled(!!d.cloudinaryDeleteEnabled)).catch(() => setCloudinaryDeleteEnabled(false));
-  }, []);
-
+  // Toggle selection for an image
   const toggle = (id: string) => setSelected(prev => ({ ...prev, [id]: !prev[id] }));
 
+  // Delete selected images for an event
   const deleteSelectedImages = async (eventId: string) => {
     setLoading(true);
     try {
@@ -23,30 +20,24 @@ export default function AdminEventList({ events, onDeleted }: { events: any[]; o
       if (!event) throw new Error('Event not found');
       const publicIds = (event.images || []).filter((img: EventImage) => selected[img.public_id]).map((i: EventImage) => i.public_id);
       if (publicIds.length === 0) { alert('No images selected'); setLoading(false); return; }
-      const res = await fetch('/api/hgadmin/images/delete', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ publicIds, eventId }) });
+      if (!confirm(`Delete ${publicIds.length} selected image(s) from Cloudinary?`)) { setLoading(false); return; }
+      const res = await fetch('/api/hgadmin/images/delete', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ publicIds, eventId })
+      });
       const data = await res.json().catch(() => null);
-      if (!res.ok) {
-        throw new Error((data && data.message) || 'Failed to delete images');
-      }
+      if (!res.ok) throw new Error((data && data.message) || 'Failed to delete images');
       const results = data?.results || [];
       const succeeded = results.filter((r: any) => r.ok).length;
       const failed = results.filter((r: any) => !r.ok);
+      let msg = `Deleted: ${succeeded}`;
       if (failed.length > 0) {
-        const msgs = failed.map((f: any) => `${f.id}: ${f.error || 'error'}`).join('\n');
-        const shouldForce = confirm(`Deleted: ${succeeded}. Failed: ${failed.length}\nDetails:\n${msgs}\n\nDo you want to remove references from the event anyway? (force)`);
-        if (shouldForce) {
-          // call API with force=true to remove references locally
-          const res2 = await fetch('/api/hgadmin/images/delete', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ publicIds, eventId, force: true }) });
-          const data2 = await res2.json().catch(() => null);
-          if (!res2.ok) throw new Error((data2 && data2.message) || 'Failed to force-remove image refs');
-          alert('Forced removal completed');
-        }
-      } else {
-        alert(`Deleted: ${succeeded}`);
+        msg += `\nFailed: ${failed.length}\n` + failed.map((f: any) => `${f.id}: ${f.error || 'error'}`).join('\n');
       }
-      if (data?.removalError) {
-        alert('Warning: failed to update event images: ' + data.removalError);
-      }
+      alert(msg);
+      setSelected({});
       if (onDeleted) onDeleted(); else window.location.reload();
     } catch (err: any) {
       alert(err.message || 'Error');
@@ -97,7 +88,6 @@ export default function AdminEventList({ events, onDeleted }: { events: any[]; o
             </div>
             <div className="flex gap-2">
               <button onClick={() => deleteEvent(ev.id)} className="bg-red-600 text-white px-3 py-1 rounded">Delete Event</button>
-              <button onClick={() => deleteSelectedImages(ev.id)} disabled={loading} className="bg-yellow-600 text-white px-3 py-1 rounded">Delete Selected Images</button>
             </div>
           </div>
 
@@ -117,13 +107,17 @@ export default function AdminEventList({ events, onDeleted }: { events: any[]; o
               Add Images
               <input type="file" multiple accept="image/*" className="hidden" onChange={(e) => addImagesToEvent(ev.id, e.target.files)} />
             </label>
-            <button onClick={() => deleteSelectedImages(ev.id)} disabled={loading} className="bg-yellow-600 text-white px-3 py-1 rounded">Delete Selected Images</button>
+            <button
+              onClick={() => deleteSelectedImages(ev.id)}
+              disabled={loading}
+              className="bg-yellow-600 text-white px-3 py-1 rounded disabled:opacity-60"
+            >
+              Delete Selected Images
+            </button>
             <button onClick={() => deleteEvent(ev.id)} className="bg-red-600 text-white px-3 py-1 rounded">Delete Event</button>
           </div>
 
-          {cloudinaryDeleteEnabled === false && (
-            <div className="text-yellow-400 text-sm mt-2">Cloudinary delete not configured. Set NEXT_PUBLIC_CLOUDINARY_API_KEY and NEXT_PUBLIC_CLOUDINARY_API_SECRET in your .env to enable server-side deletions.</div>
-          )}
+          {/* Cloudinary delete warning removed */}
         </div>
       ))}
     </div>

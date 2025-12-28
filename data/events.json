@@ -1,1 +1,33 @@
-[]
+[
+  {
+    "title": "SIH 2025",
+    "description": "The SIH Was conducted and was the internal round",
+    "date": "Sep 2024",
+    "category": "Internal Collage round",
+    "eventurl": "sih24",
+    "images": [
+      {
+        "public_id": "vgz0rarsxjmhypbpgmhw",
+        "url": "https://res.cloudinary.com/dlmfnwkon/image/upload/v1766924554/vgz0rarsxjmhypbpgmhw.png"
+      },
+      {
+        "public_id": "foizaiyjfjemfnoe8ifh",
+        "url": "https://res.cloudinary.com/dlmfnwkon/image/upload/v1766924555/foizaiyjfjemfnoe8ifh.jpg"
+      },
+      {
+        "public_id": "ccbrzplwramuzc26alxf",
+        "url": "https://res.cloudinary.com/dlmfnwkon/image/upload/v1766924554/ccbrzplwramuzc26alxf.jpg"
+      },
+      {
+        "public_id": "rzedhnlh3d8c2mngetdu",
+        "url": "https://res.cloudinary.com/dlmfnwkon/image/upload/v1766925900/rzedhnlh3d8c2mngetdu.png"
+      },
+      {
+        "public_id": "boqgjgtoufrc2d6fi5iv",
+        "url": "https://res.cloudinary.com/dlmfnwkon/image/upload/v1766925900/boqgjgtoufrc2d6fi5iv.jpg"
+      }
+    ],
+    "id": "bf0b20dd-35d8-4a2a-ba99-b1f17635a582",
+    "createdAt": "2025-12-28T12:22:43.983Z"
+  }
+]

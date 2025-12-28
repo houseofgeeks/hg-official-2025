@@ -27,12 +27,4 @@ export const uploadToCloudinary = async (file: File): Promise<{ url: string; pub
   }
 };
 
-export const deleteFromCloudinary = async (publicId: string): Promise<void> => {
-  try {
-    // Note: Deletion requires server-side authentication with API key
-    // For client-side, we recommend using a server endpoint
-    console.log('To delete image, use server-side endpoint with API key');
-  } catch (error) {
-    console.error('Cloudinary delete error:', error);
-  }
-};
+
