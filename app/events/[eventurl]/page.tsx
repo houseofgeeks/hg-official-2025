@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getEventByUrl } from "@/lib/eventsService";
 import Navbar from "@/components/Navbar";
+import EventGallery from "@/components/EventGallery"
 
 type Props = {
   params: Promise<{
@@ -44,7 +45,7 @@ export default async function EventDetailsPage({ params }: Props) {
           Event Gallery
         </h2>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {event.images && event.images.length > 0 ? (
             event.images.map((img) => (
               <div key={img.public_id} className="aspect-square rounded-lg overflow-hidden">
@@ -54,7 +55,8 @@ export default async function EventDetailsPage({ params }: Props) {
           ) : (
             <div className="text-white/70">No photos added for this event yet.</div>
           )}
-        </div>
+        </div> */}
+        <EventGallery images={event.images} />
       </section>
 
     </div>
