@@ -7,7 +7,7 @@ export const uploadToCloudinary = async (file: File): Promise<{ url: string; pub
   const formData = new FormData();
   formData.append('file', file);
   formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET || '');
-  formData.append('cloud_name', CLOUDINARY_CLOUD_NAME || '');
+  formData.append('cloud_name', CLOUDINARY_CLOUD_NAME || ''); 
 
   try {
     const response = await axios.post(
