@@ -27,12 +27,19 @@ export default function LoginPage() {
     }
 
     setLoading(true);
+    console.log('Starting login process...');
+    
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      setMessage('Login successful! Redirecting...');
-      setMessageType('success');
-      setTimeout(() => router.push('/donate'), 1500);
+      console.log('Login successful, redirecting...');
+      
+      // Redirect immediately - auth state persists across page loads
+      window.location.href = '/donate';
+      
     } catch (err: any) {
+      console.error('Login error:', err);
+      setLoading(false);
+      
       if (err.code === 'auth/user-not-found') {
         setMessage('User not found. Please sign up first.');
       } else if (err.code === 'auth/wrong-password') {
@@ -43,8 +50,6 @@ export default function LoginPage() {
         setMessage(err.message || 'Login failed');
       }
       setMessageType('error');
-    } finally {
-      setLoading(false);
     }
   };
 

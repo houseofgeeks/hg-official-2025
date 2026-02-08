@@ -20,6 +20,7 @@ export default function SignupPage() {
   const [otp, setOtp] = useState('');
   const [step, setStep] = useState<'form' | 'otp'>('form');
   const [loading, setLoading] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState<'success' | 'error'>('success');
   const router = useRouter();
@@ -70,14 +71,18 @@ export default function SignupPage() {
     }
 
     setLoading(true);
+    console.log('Starting signup process...');
+    
     try {
       // Verify OTP
+      console.log('Verifying OTP...');
       const res = await fetch('/api/auth/otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp, isSignup: true, name }),
       });
       const data = await res.json();
+      console.log('OTP verification response:', data);
       
       if (!data.success) {
         setMessage(data.message || 'Invalid OTP');
@@ -87,26 +92,60 @@ export default function SignupPage() {
       }
 
       // Create Firebase Auth user
+      console.log('Creating Firebase Auth user...');
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log('User created:', userCredential.user.uid);
       
-      // Create Firestore user document
-      await setDoc(doc(firestore, 'users', userCredential.user.uid), {
-        name,
-        email,
-        photoURL: null,
-        donatedAmount: 0,
-        featured: false,
-        createdAt: new Date(),
-      });
+      // Try to create Firestore document, but don't fail signup if it fails
+      console.log('Creating Firestore document...');
+      console.log('Firestore instance:', firestore);
+      
+      try {
+        const userDocRef = doc(firestore, 'users', userCredential.user.uid);
+        console.log('Document reference created:', userDocRef.path);
+        
+        // Set a timeout for the Firestore operation
+        const firestoreTimeout = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Firestore operation timed out')), 5000)
+        );
+        
+        const firestoreWrite = setDoc(userDocRef, {
+          name,
+          email,
+          photoURL: null,
+          donatedAmount: 0,
+          featured: false,
+          createdAt: new Date(),
+        });
+        
+        await Promise.race([firestoreWrite, firestoreTimeout]);
+        
+        console.log('Firestore document created successfully');
+      } catch (firestoreError: any) {
+        console.error('Firestore error (non-fatal):', firestoreError);
+        console.error('Error code:', firestoreError?.code);
+        console.error('Error message:', firestoreError?.message);
+        console.warn('Continuing with signup despite Firestore error - document can be created later');
+        // Don't throw - allow signup to continue
+      }
 
-      setMessage('Account created! Redirecting...');
-      setMessageType('success');
-      setTimeout(() => router.push('/donate'), 1500);
+      // Redirect immediately - auth state will update on the donate page
+      console.log('Redirecting to donate page...');
+      window.location.href = '/donate';
+      
     } catch (err: any) {
-      setMessage(err.message || 'Signup failed');
-      setMessageType('error');
-    } finally {
+      console.error('Signup error:', err);
       setLoading(false);
+      setRedirecting(false);
+      
+      if (err.code === 'auth/email-already-in-use') {
+        setMessage('Email already registered. Please login instead.');
+      } else if (err.code === 'auth/weak-password') {
+        setMessage('Password is too weak');
+      } else {
+        setMessage(err.message || 'Signup failed');
+      }
+      setMessageType('error');
     }
   };
 
@@ -178,16 +217,16 @@ export default function SignupPage() {
                   onChange={setOtp}
                   numInputs={6}
                   renderInput={(props) => (
-                    <input {...props} className="!w-12 !h-12 mx-1 text-center text-xl bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-themecolor" />
+                    <input {...props} className="w-12! h-12! mx-1 text-center text-xl bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-themecolor" />
                   )}
                 />
               </div>
               <button
                 type="submit"
-                disabled={loading}
+                disabled={loading || redirecting}
                 className="w-full py-3 bg-themecolor hover:bg-themecolor/80 text-white font-semibold rounded-lg transition disabled:opacity-50"
               >
-                {loading ? 'Creating Account...' : 'Create Account'}
+                {loading ? 'Creating Account...' : redirecting ? 'Redirecting...' : 'Create Account'}
               </button>
               <button type="button" onClick={() => setStep('form')} className="w-full text-gray-400 hover:text-white">
                 ← Back
