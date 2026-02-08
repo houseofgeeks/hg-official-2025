@@ -136,7 +136,7 @@ const LeaderboardPage: React.FC = () => {
             className="text-center mb-12"
           >
             <h1 className="text-7xl font-teko font-bold text-white">
-              LEADERBOARD
+              CONTRIBUTIONS
             </h1>
             <h2 className="text-5xl font-teko font-semibold text-themecolor underline">
               TOP CONTRIBUTORS
@@ -341,11 +341,11 @@ const LeaderboardPage: React.FC = () => {
           >
             <p className="text-center text-gray-300 text-lg mb-6 font-montserrat">
               {userHasDonated 
-                ? "Thank you for your support! Want to climb higher on the leaderboard?" 
-                : "Want to get featured on the leaderboard?"}
+                ? "Thank you for your support! Want to climb higher?" 
+                : "Want to get featured in our contributions?"}
             </p>
             <Link href="/donate">
-              <button className="w-full py-4 px-8 bg-themecolor hover:bg-themecolor/90 text-white font-bold text-lg rounded-xl transition-all duration-300 shadow-lg shadow-themecolor/30 hover:shadow-themecolor/50 font-montserrat">
+              <button className="interactive-element w-full py-4 px-8 bg-themecolor hover:bg-themecolor/90 text-white font-bold text-lg rounded-xl transition-all duration-300 shadow-lg shadow-themecolor/30 hover:shadow-themecolor/50 font-montserrat">
                 {userHasDonated ? "Contribute More" : "Contribute Now"}
               </button>
             </Link>

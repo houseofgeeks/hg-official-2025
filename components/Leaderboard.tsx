@@ -196,7 +196,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ isOpen, onClose }) => {
           </div>
 
           <div className="border-t border-themecolor/10 pt-6">
-            <p className="text-center text-gray-300 mb-4 font-montserrat">Want to get featured on the leaderboard?</p>
+            <p className="text-center text-gray-300 mb-4 font-montserrat">Want to get featured in our contributions?</p>
             <button
               onClick={() => setIsDonateOpen(true)}
               className="w-full py-3 px-6 bg-linear-to-r from-themecolor to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-lg transition-all font-montserrat"

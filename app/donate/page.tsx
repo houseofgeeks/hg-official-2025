@@ -118,7 +118,7 @@ const DonatePage: React.FC = () => {
               </div>
               <h2 className="text-3xl font-teko font-bold text-white mb-3">READY TO CONTRIBUTE?</h2>
               <p className="text-gray-300 mb-6 font-montserrat">
-                Please login to continue with your contribution. Your profile will appear on our leaderboard!
+                Please login to continue with your contribution. Your profile will appear on our contributions page!
               </p>
               <div className="flex flex-col gap-3">
                 <Link href="/auth/login">
@@ -254,7 +254,7 @@ const DonatePage: React.FC = () => {
 
               setMessage('Contribution successful! Thank you for your support!');
               setMessageType('success');
-              setTimeout(() => router.push('/leaderboard'), 2000);
+              setTimeout(() => router.push('/contribution'), 2000);
             } else {
               console.error('Payment verification failed:', verifyData);
               setMessage(verifyData.message || 'Payment verification failed');
@@ -440,7 +440,7 @@ const DonatePage: React.FC = () => {
 
                   {/* Note */}
                   <p className="text-xs text-gray-400 text-center font-montserrat">
-                    After submitting the form, our team will verify your payment and update the leaderboard within 24-48 hours.
+                    After submitting the form, our team will verify your payment and update the contributions within 24-48 hours.
                   </p>
 
                   {/* Logout Button */}
@@ -456,7 +456,7 @@ const DonatePage: React.FC = () => {
                 {/* Profile Photo Upload */}
                 <div className="text-center">
                   <label className="block text-gray-300 font-montserrat font-semibold mb-3 text-sm">
-                    Profile Photo (Optional - for Leaderboard)
+                    Profile Photo (Optional - for Contributions Page)
                   </label>
                   {photoURL && (
                     <div className="mb-3 flex justify-center">
@@ -701,11 +701,11 @@ const DonatePage: React.FC = () => {
                 </svg>
                 View Community
               </Link>
-              <Link href="/leaderboard" className="interactive-element inline-flex items-center gap-2 px-6 py-3 bg-transparent hover:bg-white/5 text-white font-montserrat font-semibold rounded-xl transition-all duration-300">
+              <Link href="/contribution" className="interactive-element inline-flex items-center gap-2 px-6 py-3 bg-transparent hover:bg-white/5 text-white font-montserrat font-semibold rounded-xl transition-all duration-300">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                 </svg>
-                View Leaderboard
+                View Contributions
               </Link>
             </div>
           </div>

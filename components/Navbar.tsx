@@ -32,7 +32,7 @@ const Navbar = () => {
         <ul className="flex gap-10 w-full justify-center max-lg:hidden ">
           <li className="hover:text-themecolor"><Link href="/" className='interactive-element'>Home</Link></li>
           <li className="hover:text-themecolor"><Link href="/#about" className='interactive-element'>About</Link></li>
-          <li className="hover:text-themecolor"><Link href="/leaderboard" className='interactive-element'>Leaderboard</Link></li>
+          <li className="hover:text-themecolor"><Link href="/contribution" className='interactive-element'>Contributions</Link></li>
           <li className="hover:text-themecolor"><Link href="/community" className='interactive-element'>Community</Link></li>
           <li className="hover:text-themecolor"><Link href="/#contact" onClick={(e)=>handleAnchorClick(e,'contact')} className='interactive-element'>Contact</Link></li>
         </ul>
@@ -57,7 +57,7 @@ const Navbar = () => {
     `}>
           <li className="hover:text-themecolor"><Link href="/" className='interactive-element'>Home</Link></li>
           <li className="hover:text-themecolor"><Link href="/#about" className='interactive-element'>About</Link></li>
-          <li className="hover:text-themecolor"><Link href="/leaderboard" className='interactive-element'>Leaderboard</Link></li>
+          <li className="hover:text-themecolor"><Link href="/contribution" className='interactive-element'>Contributions</Link></li>
           <li className="hover:text-themecolor"><Link href="/community" className='interactive-element'>Community</Link></li>
           <li className="hover:text-themecolor"><Link href="/#contact" onClick={(e)=>handleAnchorClick(e,'contact')} className='interactive-element'>Contact</Link></li>
         </ul>
