@@ -1,20 +1,12 @@
 'use client';
-
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import ParticlesContainer from '@/components/ParticlesContainer';
 import Image from 'next/image';
 import Link from 'next/link';
 import { firestore } from '@/lib/firebase';
-import {
-  collection,
-  query,
-  orderBy,
-  limit,
-  getDocs,
-  doc,
-  getDoc,
-} from 'firebase/firestore';
+import { collection, query, orderBy, limit, getDocs, doc, getDoc } from 'firebase/firestore';
 import { useAuth } from '@/lib/AuthContext';
 
 interface Donor {
@@ -22,14 +14,9 @@ interface Donor {
   name: string;
   donatedAmount: number;
   photoURL?: string;
+  featured?: boolean;
   lastDonationDate?: any;
 }
-
-const rankMeta = [
-  { icon: '👑', label: '1st', color: 'text-yellow-400' },
-  { icon: '🥈', label: '2nd', color: 'text-gray-300' },
-  { icon: '🥉', label: '3rd', color: 'text-orange-400' },
-];
 
 const LeaderboardPage: React.FC = () => {
   const { user } = useAuth();
@@ -40,283 +27,363 @@ const LeaderboardPage: React.FC = () => {
 
   useEffect(() => {
     const fetchDonors = async () => {
-      setLoading(true);
+      try {
+        setLoading(true);
+        const donorsQuery = query(
+          collection(firestore, 'users'),
+          orderBy('donatedAmount', 'desc'),
+          limit(20)
+        );
 
-      const donorsQuery = query(
-        collection(firestore, 'users'),
-        orderBy('donatedAmount', 'desc'),
-        limit(20)
-      );
+        const querySnapshot = await getDocs(donorsQuery);
+        const donorsList: Donor[] = [];
 
-      const snapshot = await getDocs(donorsQuery);
-      const list: Donor[] = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          if (data.donatedAmount > 0) {
+            donorsList.push({
+              id: doc.id,
+              name: data.name || 'Anonymous',
+              donatedAmount: data.donatedAmount || 0,
+              photoURL: data.photoURL,
+              featured: data.featured || false,
+            });
+          }
+        });
 
-      snapshot.forEach((d) => {
-        const data = d.data();
-        if (data.donatedAmount > 0) {
-          list.push({
-            id: d.id,
-            name: data.name || 'Anonymous',
-            donatedAmount: data.donatedAmount,
-            photoURL: data.photoURL,
+        setDonors(donorsList);
+
+        // Fetch recent donors (last 5) ordered by lastDonationDate
+        try {
+          const recentQuery = query(
+            collection(firestore, 'users'),
+            orderBy('lastDonationDate', 'desc'),
+            limit(5)
+          );
+
+          const recentSnapshot = await getDocs(recentQuery);
+          const recentList: Donor[] = [];
+
+          recentSnapshot.forEach((doc) => {
+            const data = doc.data();
+            if (data.donatedAmount > 0 && data.lastDonationDate) {
+              recentList.push({
+                id: doc.id,
+                name: data.name || 'Anonymous',
+                donatedAmount: data.donatedAmount || 0,
+                photoURL: data.photoURL,
+                lastDonationDate: data.lastDonationDate,
+              });
+            }
           });
+
+          setRecentDonors(recentList);
+        } catch (e) {
+          console.error('Error fetching recent donors:', e);
         }
-      });
-
-      setDonors(list);
-
-      const recentQuery = query(
-        collection(firestore, 'users'),
-        orderBy('lastDonationDate', 'desc'),
-        limit(5)
-      );
-
-      const recentSnap = await getDocs(recentQuery);
-      const recent: Donor[] = [];
-
-      recentSnap.forEach((d) => {
-        const data = d.data();
-        if (data.donatedAmount > 0 && data.lastDonationDate) {
-          recent.push({
-            id: d.id,
-            name: data.name || 'Anonymous',
-            donatedAmount: data.donatedAmount,
-            photoURL: data.photoURL,
-            lastDonationDate: data.lastDonationDate,
-          });
-        }
-      });
-
-      setRecentDonors(recent);
-      setLoading(false);
+      } catch (error) {
+        console.error('Error fetching donors:', error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchDonors();
   }, []);
 
+  // Check if current user has donated
   useEffect(() => {
-    const checkDonation = async () => {
-      if (!user?.uid) return;
-      const userDoc = await getDoc(doc(firestore, 'users', user.uid));
-      if (userDoc.exists()) {
-        setUserHasDonated(userDoc.data().donatedAmount > 0);
+    const checkUserDonation = async () => {
+      if (user?.uid) {
+        try {
+          const userDoc = await getDoc(doc(firestore, 'users', user.uid));
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            setUserHasDonated(userData.donatedAmount > 0);
+          }
+        } catch (error) {
+          console.error('Error checking user donation:', error);
+        }
       }
     };
-    checkDonation();
+    checkUserDonation();
   }, [user?.uid]);
 
   const formatDate = (ts?: any) => {
+    if (!ts) return '';
     try {
-      return ts?.toDate().toLocaleString();
+      const d = ts.toDate ? ts.toDate() : new Date(ts);
+      return d.toLocaleString();
     } catch {
       return '';
     }
   };
 
-  const topThree = donors.slice(0, 3);
-  const rest = donors.slice(3);
+  const sortedDonors = donors;
+  const topThree = sortedDonors.slice(0, 3);
+  const rest = sortedDonors.slice(3);
 
   return (
     <>
       <ParticlesContainer />
-      <main className="px-4 md:px-8 py-8 min-h-screen text-white">
+      <main className="px-8 py-8 w-full min-h-screen text-white">
         <Navbar />
-
         <div className="container mx-auto mt-12">
-          {/* HEADER */}
-          <div className="text-center mb-10">
-            <h1 className="text-5xl md:text-7xl font-teko font-bold">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-12"
+          >
+            <h1 className="text-7xl font-teko font-bold text-white">
               LEADERBOARD
             </h1>
-            <h2 className="text-3xl md:text-5xl font-teko text-themecolor underline">
-              TOP DONORS
+            <h2 className="text-5xl font-teko font-semibold text-themecolor underline">
+              TOP CONTRIBUTORS
             </h2>
-          </div>
-
-          {loading ? (
-            <div className="flex justify-center items-center h-64">
-              <div className="animate-spin h-12 w-12 border-t-2 border-b-2 border-themecolor rounded-full" />
-            </div>
-          ) : (
-            <>
-              {/* ================= MOBILE TOP 3 ================= */}
-              <div className="md:hidden space-y-4 mb-10">
-                {topThree.map((donor, index) => (
-                  <div
-                    key={donor.id}
-                    className="interactive-element flex items-center gap-4 p-4 rounded-xl border-2 bg-[#121212]"
-                  >
-                    <div className={`text-2xl ${rankMeta[index].color}`}>
-                      {rankMeta[index].icon}
-                    </div>
-
-                    {donor.photoURL ? (
-                      <Image
-                        src={donor.photoURL}
-                        alt={donor.name}
-                        width={48}
-                        height={48}
-                        className="rounded-full"
-                      />
-                    ) : (
-                      <div className="w-12 h-12 rounded-full bg-linear-to-br from-themecolor to-purple-600 flex items-center justify-center font-bold">
-                        {donor.name.charAt(0).toUpperCase()}
-                      </div>
-                    )}
-
-                    <div className="flex-1">
-                      <h3 className="font-semibold">
-                        {donor.name}{' '}
-                        <span className="text-sm text-gray-400">
-                          ({rankMeta[index].label})
-                        </span>
-                      </h3>
-                      <p className="text-themecolor font-bold">
-                        ₹{donor.donatedAmount.toLocaleString()}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+          </motion.div>
+         
+          {/* MOBILE: Provided code for small screens */}
+          <div className="md:hidden">
+            {loading ? (
+              <div className="flex justify-center items-center h-64">
+                <div className="animate-spin h-12 w-12 border-t-2 border-b-2 border-themecolor rounded-full" />
               </div>
-
-              {/* ================= DESKTOP PODIUM ================= */}
-              <div className="hidden md:flex justify-center items-end gap-8 mb-16">
-                {topThree.map((donor, index) => (
-                  <div
-                    key={donor.id}
-                    className={`interactive-element flex flex-col items-center ${
-                      index === 0
-                        ? 'order-2'
-                        : index === 1
-                        ? 'order-1'
-                        : 'order-3'
-                    }`}
-                  >
-                    <div className="mb-2 text-3xl">
-                      {rankMeta[index].icon}{' '}
-                      <span className={`text-sm ${rankMeta[index].color}`}>
-                        {rankMeta[index].label}
-                      </span>
-                    </div>
-
+            ) : (
+              <>
+                {/* Top 3 Donors - Mobile */}
+                <div className="space-y-4 mb-10">
+                  {topThree.map((donor, index) => (
                     <div
-                      className={`rounded-full border-4 flex items-center justify-center ${
-                        index === 0
-                          ? 'w-48 h-48 border-yellow-400'
-                          : 'w-40 h-40 border-gray-500'
-                      }`}
+                      key={donor.id}
+                      className="interactive-element flex items-center gap-4 p-4 rounded-xl border-2 bg-[#121212]"
                     >
+                      <div className={`text-2xl ${['text-yellow-400','text-gray-300','text-orange-400'][index]}`}>
+                        {['👑','🥈','🥉'][index]}
+                      </div>
                       {donor.photoURL ? (
-                        <img
+                        <Image
                           src={donor.photoURL}
-                          className="rounded-full w-full h-full object-cover"
+                          alt={donor.name}
+                          width={48}
+                          height={48}
+                          className="rounded-full"
                         />
                       ) : (
-                        <div className="w-full h-full rounded-full bg-linear-to-br from-themecolor to-purple-600 flex items-center justify-center text-4xl font-bold">
+                        <div className="w-12 h-12 rounded-full bg-linear-to-br from-themecolor to-purple-600 flex items-center justify-center font-bold">
                           {donor.name.charAt(0).toUpperCase()}
                         </div>
                       )}
-                    </div>
-
-                    <h3 className="mt-4 text-xl font-bold">{donor.name}</h3>
-                    <p className="text-themecolor text-2xl font-semibold">
-                      ₹{donor.donatedAmount.toLocaleString()}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              {/* ================= REST ================= */}
-              <div className="space-y-4">
-                {rest.map((donor, index) => (
-                  <div
-                    key={donor.id}
-                    className="interactive-element flex items-center gap-4 p-4 bg-[#1a1a1a] rounded-xl"
-                  >
-                    <span className="text-xl font-bold text-gray-400">
-                      #{index + 4}
-                    </span>
-
-                    {donor.photoURL ? (
-                      <Image
-                        src={donor.photoURL}
-                        alt={donor.name}
-                        width={48}
-                        height={48}
-                        className="rounded-full"
-                      />
-                    ) : (
-                      <div className="w-12 h-12 rounded-full bg-linear-to-br from-themecolor to-purple-600 flex items-center justify-center font-bold">
-                        {donor.name.charAt(0).toUpperCase()}
+                      <div className="flex-1">
+                        <h3 className="font-semibold">
+                          {donor.name}{' '}
+                          <span className="text-sm text-gray-400">
+                            ({['1st','2nd','3rd'][index]})
+                          </span>
+                        </h3>
                       </div>
-                    )}
-
-                    <div className="flex-1">
-                      <h3 className="font-semibold">{donor.name}</h3>
                     </div>
-
-                    <div className="font-bold text-themecolor">
-                      ₹{donor.donatedAmount.toLocaleString()}
+                  ))}
+                </div>
+                {/* Rest of Donors - Mobile */}
+                <div className="space-y-4">
+                  {rest.map((donor, index) => (
+                    <div
+                      key={donor.id}
+                      className="interactive-element flex items-center gap-4 p-4 bg-[#1a1a1a] rounded-xl"
+                    >
+                      <span className="text-xl font-bold text-gray-400">
+                        #{index + 4}
+                      </span>
+                      {donor.photoURL ? (
+                        <Image
+                          src={donor.photoURL}
+                          alt={donor.name}
+                          width={48}
+                          height={48}
+                          className="rounded-full"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded-full bg-linear-to-br from-themecolor to-purple-600 flex items-center justify-center font-bold">
+                          {donor.name.charAt(0).toUpperCase()}
+                        </div>
+                      )}
+                      <div className="flex-1">
+                        <h3 className="font-semibold">{donor.name}</h3>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+          {/* DESKTOP: Original code for md+ screens */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="hidden md:block max-w-5xl mx-auto"
+          >
+            {loading ? (
+              <div className="flex justify-center items-center h-96">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-themecolor"></div>
               </div>
-
-              {/* ================= CTA ================= */}
-              <div className="max-w-md mx-auto mt-10 text-center">
-                <p className="text-gray-300 mb-4">
-                  {userHasDonated
-                    ? 'Want to climb higher on the leaderboard?'
-                    : 'Want to get featured on the leaderboard?'}
-                </p>
-                <Link href="/donate">
-                  <button className="cursor-pointer active:scale-95 w-full py-3 bg-themecolor rounded-xl font-bold transition interactive-element ">
-                    {userHasDonated ? 'Donate More' : 'Donate Now'}
-                  </button>
-                </Link>
+            ) : donors.length === 0 ? (
+              <div className="text-center py-16">
+                <p className="text-gray-300 text-xl font-montserrat">No contributors yet. Be the first to support us!</p>
               </div>
-
-              {/* ================= RECENT DONORS ================= */}
-              {recentDonors.length > 0 && (
-                <div className="mt-14">
-                  <h3 className="text-2xl font-teko mb-4">Recent Donors</h3>
-
-                  <div className="flex gap-4 overflow-x-auto flex-nowrap pb-2">
-                    {recentDonors.map((r) => (
-                      <div
-                        key={r.id}
-                        className="interactive-element min-w-[260px] flex gap-3 items-center bg-[#0f0f0f] p-4 rounded-lg"
-                      >
-                        {r.photoURL ? (
+            ) : (
+              <>
+                <div className="flex justify-center items-end gap-8 mb-16">
+                  {topThree.map((donor, index) => (
+                    <motion.div
+                      key={donor.id}
+                      initial={{ opacity: 0, y: 50 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5 + index * 0.2, duration: 0.5 }}
+                      className={`leaderboard-card-top flex flex-col items-center ${
+                        index === 0
+                          ? 'order-2'
+                          : index === 1
+                          ? 'order-1'
+                          : 'order-3'
+                      }`}
+                    >
+                      <div className="relative">
+                        <div
+                          className={`interactive-element rounded-full bg-gray-800 border-4 ${
+                            index === 0
+                              ? 'w-48 h-48 border-yellow-400'
+                              : 'w-40 h-40 border-gray-500'
+                          } flex items-center justify-center text-center p-4`}
+                        >
+                          {donor.photoURL ? (
+                            <img
+                              src={donor.photoURL}
+                              alt={donor.name}
+                              width={200}
+                              height={200}
+                              className="rounded-full object-cover"
+                            />
+                          ) : (
+                            <div className="flex items-center justify-center w-full h-full bg-linear-to-br from-themecolor to-purple-600 rounded-full text-white text-4xl font-bold">
+                              {donor.name.charAt(0).toUpperCase()}
+                            </div>
+                          )}
+                        </div>
+                        <div
+                          className={`absolute -top-5 left-1/2 -translate-x-1/2 rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl ${
+                            index === 0
+                              ? 'bg-yellow-400 text-black'
+                              : 'bg-gray-500 text-white'
+                          }`}
+                        >
+                          {index + 1}
+                        </div>
+                        <div className="text-center mt-4">
+                          <h3
+                            className={`font-bold ${
+                              index === 0 ? 'text-2xl' : 'text-xl'
+                            }`}
+                          >
+                            {donor.name}
+                          </h3>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+                <div className="grid grid-cols-1 gap-6">
+                  {rest.map((donor, index) => (
+                    <motion.div
+                      key={donor.id}
+                      initial={{ opacity: 0, x: -50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
+                      className="interactive-element leaderboard-card flex items-center p-6 bg-[#1a1a1a] rounded-xl shadow-lg border-2 border-transparent hover:border-themecolor transition-all duration-300"
+                    >
+                      <div className="shrink-0">
+                        <span className="text-4xl font-bold text-gray-400">
+                          #{index + 4}
+                        </span>
+                      </div>
+                      <div className="shrink-0 ml-4">
+                        {donor.photoURL ? (
                           <Image
-                            src={r.photoURL}
-                            alt={r.name}
-                            width={44}
-                            height={44}
-                            className="rounded-full"
+                            src={donor.photoURL}
+                            alt={donor.name}
+                            width={60}
+                            height={60}
+                            className="rounded-full object-cover"
                           />
                         ) : (
-                          <div className="w-11 h-11 rounded-full bg-linear-to-br from-themecolor to-purple-600 flex items-center justify-center font-bold">
+                          <div className="flex items-center justify-center w-16 h-16 bg-linear-to-br from-themecolor to-purple-600 rounded-full text-white text-2xl font-bold">
+                            {donor.name.charAt(0).toUpperCase()}
+                          </div>
+                        )}
+                      </div>
+                      <div className="ml-6 grow">
+                        <h3 className="text-2xl font-montserrat font-bold">
+                          {donor.name}
+                        </h3>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </>
+            )}
+          </motion.div>
+           <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 0.5 }}
+            className="max-w-2xl mx-auto mt-5 p-8 rounded-xl bg-transparent "
+          >
+            <p className="text-center text-gray-300 text-lg mb-6 font-montserrat">
+              {userHasDonated 
+                ? "Thank you for your support! Want to climb higher on the leaderboard?" 
+                : "Want to get featured on the leaderboard?"}
+            </p>
+            <Link href="/donate">
+              <button className="w-full py-4 px-8 bg-themecolor hover:bg-themecolor/90 text-white font-bold text-lg rounded-xl transition-all duration-300 shadow-lg shadow-themecolor/30 hover:shadow-themecolor/50 font-montserrat">
+                {userHasDonated ? "Donate More" : "Donate Now"}
+              </button>
+            </Link>
+          </motion.div>
+            {recentDonors.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.45 }}
+                className="max-w-2xl mx-auto mt-6 mb-8"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-3xl font-teko font-semibold text-white">Recent Contributors</h3>
+                  <p className="text-sm text-gray-400">Latest 5 contributors</p>
+                </div>
+
+                <div className="recent-donors-scroll space-y-4">
+                  {recentDonors.map((r) => (
+                      <div key={r.id} className="recent-donor-card flex items-center gap-4 p-3 bg-[#0f0f0f] rounded-lg">
+                        <div className="shrink-0">
+                        {r.photoURL ? (
+                          <Image src={r.photoURL} alt={r.name} width={56} height={56} className="rounded-full object-cover" />
+                        ) : (
+                          <div className="flex items-center justify-center w-14 h-14 bg-linear-to-br from-themecolor to-purple-600 rounded-full text-white text-xl font-bold">
                             {r.name.charAt(0).toUpperCase()}
                           </div>
                         )}
-
-                        <div>
-                          <p className="font-semibold">{r.name}</p>
-                          <p className="text-sm text-gray-400">
-                            ₹{r.donatedAmount.toLocaleString()}
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            {formatDate(r.lastDonationDate)}
-                          </p>
-                        </div>
                       </div>
-                    ))}
-                  </div>
+                      <div className="grow">
+                        <h4 className="font-semibold text-lg">{r.name}</h4>
+                        <p className="text-gray-500 text-xs mt-1">{formatDate(r.lastDonationDate)}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              )}
-            </>
-          )}
+              </motion.div>
+            )}
+          
         </div>
       </main>
     </>

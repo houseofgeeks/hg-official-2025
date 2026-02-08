@@ -1,13 +1,14 @@
 [
   {
-    "title": "Quasar X AI 2026",
+    "title": "Quasar X AI 2025",
     "description": "Quasar × AI 2026 is an inter-college hackathon uniting AI enthusiasts from universities across the region to build impactful, real-world solutions. The event features an online submission round followed by a high-energy 24-hour on-campus finale at IIIT Ranchi and serves as a pre-summit event for the AI Impact Summit 2026.",
-    "date": "January 2026",
+    "date": "January 2025",
     "category": "Inter - College Hackathon",
     "eventurl": "quasarxai2026",
     "images": [],
     "id": "ba136179-6e37-4d44-8091-0f4422824185",
-    "createdAt": "2025-12-28T12:18:22.358Z"
+    "createdAt": "2025-12-28T12:18:22.358Z",
+    "thumbnail": "sjjexzc8f3uyyttkmvmj"
   },
   {
     "title": "Smart India Hackathon – Internal Hackathon 2025",
@@ -78,7 +79,8 @@
       }
     ],
     "id": "bc118d70-2458-4724-b57d-a34edc884f7d",
-    "createdAt": "2025-12-28T12:11:09.835Z"
+    "createdAt": "2025-12-28T12:11:09.835Z",
+    "thumbnail": "zcrwiurhkfcb0yz0gqdg"
   },
   {
     "title": "Quasar 2.0",

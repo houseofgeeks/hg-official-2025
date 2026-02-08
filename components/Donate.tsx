@@ -23,8 +23,24 @@ const DonatePage: React.FC<DonatePageProps> = ({ isOpen, onClose }) => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [message, setMessage] = useState('');
+  const [showQR, setShowQR] = useState(false);
 
   const presetAmounts = [100, 500, 1000, 2500, 5000];
+  
+  // Check if Razorpay is enabled via environment variable
+  const razorpayEnvValue = process.env.NEXT_PUBLIC_RAZORPAY_ENABLED;
+  const isRazorpayEnabled = razorpayEnvValue === 'true';
+  const googleFormLink = process.env.NEXT_PUBLIC_DONATION_FORM_LINK || 'https://forms.google.com/your-form-link';
+
+  // Debug log to verify env variable
+  useEffect(() => {
+    console.log('===== PAYMENT METHOD DEBUG =====');
+    console.log('Raw Env Value:', razorpayEnvValue);
+    console.log('Env Value Type:', typeof razorpayEnvValue);
+    console.log('Is Razorpay Enabled:', isRazorpayEnabled);
+    console.log('Google Form Link:', googleFormLink);
+    console.log('================================');
+  }, []);
 
   useEffect(() => {
     if (user && userProfile) {
@@ -61,6 +77,14 @@ const DonatePage: React.FC<DonatePageProps> = ({ isOpen, onClose }) => {
       return;
     }
 
+    // If Razorpay is disabled, show QR code instead
+    if (!isRazorpayEnabled) {
+      console.log('Razorpay is disabled - showing QR code');
+      setShowQR(true);
+      return;
+    }
+
+    console.log('Razorpay is enabled - processing payment');
     try {
       setDonating(true);
 
@@ -158,7 +182,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ isOpen, onClose }) => {
 
   return (
     <>
-      <Script src="https://checkout.razorpay.com/v1/checkout.js" />
+      {isRazorpayEnabled && <Script src="https://checkout.razorpay.com/v1/checkout.js" />}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -225,97 +249,169 @@ const DonatePage: React.FC<DonatePageProps> = ({ isOpen, onClose }) => {
                   </AnimatePresence>
                 </div>
               ) : (
-                <form onSubmit={handleDonate} className="space-y-6">
-                  {/* User Info */}
-                  <div className="bg-[#0c0c0c] rounded-lg p-4 border border-indigo-500/10">
-                    <p className="text-gray-400 text-sm">Donation by</p>
-                    <p className="text-white font-semibold">{userProfile?.name}</p>
-                    <p className="text-gray-400 text-sm">{user?.email}</p>
-                  </div>
+                <div>
+                  {!showQR ? (
+                    <form onSubmit={handleDonate} className="space-y-6">
+                      {/* Payment Method Indicator (Debug) */}
+                      <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 text-xs text-blue-300">
+                        <strong>Payment Mode:</strong> {isRazorpayEnabled ? 'Razorpay (Online)' : 'QR Code (Manual)'}
+                      </div>
 
-                  {/* Preset Amounts */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-3">
-                      Quick Amount Selection
-                    </label>
-                    <div className="grid grid-cols-3 gap-2">
-                      {presetAmounts.map((preset) => (
-                        <button
-                          key={preset}
-                          type="button"
-                          onClick={() => {
-                            setSelectedPreset(preset);
-                            setAmount('');
+                      {/* User Info */}
+                      <div className="bg-[#0c0c0c] rounded-lg p-4 border border-indigo-500/10">
+                        <p className="text-gray-400 text-sm">Donation by</p>
+                        <p className="text-white font-semibold">{userProfile?.name}</p>
+                        <p className="text-gray-400 text-sm">{user?.email}</p>
+                      </div>
+
+                      {/* Preset Amounts */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-3">
+                          Quick Amount Selection
+                        </label>
+                        <div className="grid grid-cols-3 gap-2">
+                          {presetAmounts.map((preset) => (
+                            <button
+                              key={preset}
+                              type="button"
+                              onClick={() => {
+                                setSelectedPreset(preset);
+                                setAmount('');
+                              }}
+                              className={`py-2 px-3 rounded-lg font-semibold transition-all ${
+                                selectedPreset === preset
+                                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white'
+                                  : 'bg-[#0c0c0c] border border-indigo-500/30 text-gray-300 hover:border-indigo-500'
+                              }`}
+                            >
+                              ₹{preset}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Custom Amount */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          Custom Amount (₹)
+                        </label>
+                        <input
+                          type="number"
+                          value={amount}
+                          onChange={(e) => {
+                            setAmount(e.target.value);
+                            setSelectedPreset(null);
                           }}
-                          className={`py-2 px-3 rounded-lg font-semibold transition-all ${
-                            selectedPreset === preset
-                              ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white'
-                              : 'bg-[#0c0c0c] border border-indigo-500/30 text-gray-300 hover:border-indigo-500'
-                          }`}
+                          className="w-full px-4 py-2 bg-[#0c0c0c] border border-indigo-500/30 rounded-lg text-white focus:outline-none focus:border-indigo-500"
+                          placeholder="Enter amount"
+                          min="1"
+                        />
+                      </div>
+
+                      {/* Error */}
+                      {error && (
+                        <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-3 rounded-lg text-sm">
+                          {error}
+                        </div>
+                      )}
+
+                      {/* Success */}
+                      {success && (
+                        <div className="bg-green-500/10 border border-green-500/50 text-green-400 p-3 rounded-lg text-sm">
+                          {message}
+                        </div>
+                      )}
+
+                      {/* Submit Button */}
+                      <button
+                        type="submit"
+                        disabled={donating || success}
+                        className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-lg hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 transition-all"
+                      >
+                        {donating ? 'Processing...' : `Donate ₹${selectedPreset || amount || '0'}`}
+                      </button>
+
+                      {/* Logout Button */}
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          try {
+                            await logout();
+                            onClose();
+                          } catch (err) {
+                            console.error('Logout error:', err);
+                          }
+                        }}
+                        className="w-full py-2 text-gray-400 hover:text-gray-300 transition-all text-sm"
+                      >
+                        Logout
+                      </button>
+                    </form>
+                  ) : (
+                    <div className="space-y-6">
+                      {/* User Info */}
+                      <div className="bg-[#0c0c0c] rounded-lg p-4 border border-indigo-500/10">
+                        <p className="text-gray-400 text-sm">Donation by</p>
+                        <p className="text-white font-semibold">{userProfile?.name}</p>
+                        <p className="text-gray-400 text-sm">{user?.email}</p>
+                      </div>
+
+                      {/* Amount Display */}
+                      <div className="bg-gradient-to-r from-indigo-600/20 to-purple-600/20 rounded-lg p-4 border border-indigo-500/30 text-center">
+                        <p className="text-gray-300 text-sm mb-1">Donation Amount</p>
+                        <p className="text-3xl font-bold text-white">₹{selectedPreset || amount}</p>
+                      </div>
+
+                      {/* Instructions */}
+                      <div className="bg-[#0c0c0c] rounded-lg p-4 border border-indigo-500/10">
+                        <h3 className="text-white font-semibold mb-3">Payment Instructions:</h3>
+                        <ol className="text-gray-300 text-sm space-y-2 list-decimal list-inside">
+                          <li>Scan the QR code below using any UPI app</li>
+                          <li>Pay the amount shown above</li>
+                          <li>Take a screenshot of the payment confirmation</li>
+                          <li>Fill the Google Form with your payment details</li>
+                        </ol>
+                      </div>
+
+                      {/* QR Code */}
+                      <div className="flex justify-center p-6 bg-white rounded-lg">
+                        <img 
+                          src="/donation-qr.jpeg" 
+                          alt="Payment QR Code" 
+                          className="w-64 h-64 object-contain"
+                        />
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="space-y-3">
+                        <a 
+                          href={googleFormLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-lg hover:from-indigo-700 hover:to-purple-700 text-center transition-all"
                         >
-                          ₹{preset}
+                          Submit Payment Details (Google Form)
+                        </a>
+                        
+                        <button
+                          onClick={() => {
+                            setShowQR(false);
+                            setAmount('');
+                            setSelectedPreset(null);
+                          }}
+                          className="w-full py-2 bg-[#0c0c0c] border border-indigo-500/30 text-gray-300 font-semibold rounded-lg hover:border-indigo-500 transition-all"
+                        >
+                          Back
                         </button>
-                      ))}
-                    </div>
-                  </div>
+                      </div>
 
-                  {/* Custom Amount */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Custom Amount (₹)
-                    </label>
-                    <input
-                      type="number"
-                      value={amount}
-                      onChange={(e) => {
-                        setAmount(e.target.value);
-                        setSelectedPreset(null);
-                      }}
-                      className="w-full px-4 py-2 bg-[#0c0c0c] border border-indigo-500/30 rounded-lg text-white focus:outline-none focus:border-indigo-500"
-                      placeholder="Enter amount"
-                      min="1"
-                    />
-                  </div>
-
-                  {/* Error */}
-                  {error && (
-                    <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-3 rounded-lg text-sm">
-                      {error}
+                      {/* Note */}
+                      <p className="text-xs text-gray-400 text-center">
+                        After submitting the form, our team will verify your payment and update your contribution on the leaderboard.
+                      </p>
                     </div>
                   )}
-
-                  {/* Success */}
-                  {success && (
-                    <div className="bg-green-500/10 border border-green-500/50 text-green-400 p-3 rounded-lg text-sm">
-                      {message}
-                    </div>
-                  )}
-
-                  {/* Submit Button */}
-                  <button
-                    type="submit"
-                    disabled={donating || success}
-                    className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-lg hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 transition-all"
-                  >
-                    {donating ? 'Processing...' : `Donate ₹${selectedPreset || amount || '0'}`}
-                  </button>
-
-                  {/* Logout Button */}
-                  <button
-                    type="button"
-                    onClick={async () => {
-                      try {
-                        await logout();
-                        onClose();
-                      } catch (err) {
-                        console.error('Logout error:', err);
-                      }
-                    }}
-                    className="w-full py-2 text-gray-400 hover:text-gray-300 transition-all text-sm"
-                  >
-                    Logout
-                  </button>
-                </form>
+                </div>
               )}
             </AnimatePresence>
           </div>
