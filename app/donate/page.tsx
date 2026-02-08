@@ -27,8 +27,13 @@ const DonatePage: React.FC = () => {
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState<'success' | 'error'>('success');
   const [razorpayLoaded, setRazorpayLoaded] = useState(false);
+  const [showQRMode, setShowQRMode] = useState(false);
 
   const presetAmounts = [500, 1000, 2500, 5000];
+  
+  // Check if Razorpay is enabled via environment variable
+  const isRazorpayEnabled = process.env.NEXT_PUBLIC_RAZORPAY_ENABLED === 'true';
+  const googleFormLink = process.env.NEXT_PUBLIC_DONATION_FORM_LINK || 'https://forms.google.com/your-form-link';
 
   // Fetch user's photo from Firestore
   useEffect(() => {
@@ -50,8 +55,13 @@ const DonatePage: React.FC = () => {
     fetchUserPhoto();
   }, [user?.uid]);
 
-  // Load Razorpay script
+  // Load Razorpay script only if enabled
   useEffect(() => {
+    if (!isRazorpayEnabled) {
+      console.log('Razorpay is disabled - QR mode active');
+      return;
+    }
+    
     const script = document.createElement('script');
     script.src = 'https://checkout.razorpay.com/v1/checkout.js';
     script.async = true;
@@ -64,9 +74,11 @@ const DonatePage: React.FC = () => {
     document.body.appendChild(script);
 
     return () => {
-      document.body.removeChild(script);
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
     };
-  }, []);
+  }, [isRazorpayEnabled]);
 
   if (!user) {
     return (
@@ -86,7 +98,7 @@ const DonatePage: React.FC = () => {
             </h1>
             <p className="text-xl text-gray-300 font-montserrat max-w-2xl mx-auto mb-6">
               Your contribution empowers the next generation of tech innovators at IIIT Ranchi.
-              Every donation makes a difference!
+              Every contribution makes a difference!
             </p>
             <div className="h-1 w-32 bg-gradient-to-r from-themecolor to-purple-600 mx-auto rounded-full"></div>
           </motion.section>
@@ -104,9 +116,9 @@ const DonatePage: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h2 className="text-3xl font-teko font-bold text-white mb-3">READY TO DONATE?</h2>
+              <h2 className="text-3xl font-teko font-bold text-white mb-3">READY TO CONTRIBUTE?</h2>
               <p className="text-gray-300 mb-6 font-montserrat">
-                Please login to continue with your donation. Your profile will appear on our leaderboard!
+                Please login to continue with your contribution. Your profile will appear on our leaderboard!
               </p>
               <div className="flex flex-col gap-3">
                 <Link href="/auth/login">
@@ -134,14 +146,22 @@ const DonatePage: React.FC = () => {
       return;
     }
 
-    if (!razorpayLoaded || !window.Razorpay) {
-      setMessage('Payment gateway not loaded. Please refresh the page.');
+    if (amount < 500) {
+      setMessage('Minimum contribution amount is ₹500');
       setMessageType('error');
       return;
     }
 
-    if (amount < 500) {
-      setMessage('Minimum donation amount is ₹500');
+    // If Razorpay is disabled, show QR code donation method
+    if (!isRazorpayEnabled) {
+      console.log('Razorpay disabled - switching to QR mode');
+      setShowQRMode(true);
+      return;
+    }
+
+    // Razorpay payment flow
+    if (!razorpayLoaded || !window.Razorpay) {
+      setMessage('Payment gateway not loaded. Please refresh the page.');
       setMessageType('error');
       return;
     }
@@ -232,7 +252,7 @@ const DonatePage: React.FC = () => {
                 });
               }
 
-              setMessage('Donation successful! Thank you for your support!');
+              setMessage('Contribution successful! Thank you for your support!');
               setMessageType('success');
               setTimeout(() => router.push('/leaderboard'), 2000);
             } else {
@@ -267,17 +287,17 @@ const DonatePage: React.FC = () => {
       });
       rzp.open();
     } catch (error) {
-      setMessage('Error initiating donation');
+      setMessage('Error initiating contribution');
       setMessageType('error');
       setLoading(false);
     }
   };
 
   const impactStats = [
-    { icon: '🎓', value: '500+', label: 'Students Impacted' },
+    { icon: '🎓', value: '1500+', label: 'Students Impacted' },
     { icon: '🚀', value: '50+', label: 'Events Organized' },
     { icon: '💻', value: '100+', label: 'Projects Built' },
-    { icon: '🏆', value: '30+', label: 'Hackathons Won' },
+    { icon: '🏆', value: '30+', label: 'Hackathons Organized' },
   ];
 
   const whyDonate = [
@@ -320,7 +340,7 @@ const DonatePage: React.FC = () => {
           </h1>
           <p className="text-xl text-gray-300 font-montserrat max-w-2xl mx-auto mb-6">
             Your contribution empowers the next generation of tech innovators at IIIT Ranchi.
-            Every donation makes a difference!
+            Every contribution makes a difference!
           </p>
           <div className="h-1 w-32 bg-gradient-to-r from-themecolor to-purple-600 mx-auto rounded-full"></div>
         </motion.section>
@@ -338,9 +358,18 @@ const DonatePage: React.FC = () => {
           >
             <div className="bg-black/1 backdrop-blur-sm border border-white/20 rounded-2xl p-8 md:p-10 sticky top-24 shadow-[0_0_30px_rgba(240,66,124,0.3)]">
               <div className="text-center mb-8">
-                <h2 className="text-4xl font-teko font-bold text-white mb-2">MAKE A DONATION</h2>
-                <p className="text-gray-400 font-montserrat text-sm">Secure payment via Razorpay</p>
+                <h2 className="text-4xl font-teko font-bold text-white mb-2">MAKE A CONTRIBUTION</h2>
+                <p className="text-gray-400 font-montserrat text-sm">
+                  {isRazorpayEnabled ? 'Secure payment via Razorpay' : 'UPI QR Code Payment'}
+                </p>
               </div>
+
+              {/* Payment Mode Debug Info */}
+              {!isRazorpayEnabled && !showQRMode && (
+                <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 mb-4 text-xs text-blue-300">
+                  <strong>Payment Mode:</strong> QR Code (Manual Verification)
+                </div>
+              )}
 
               {message && (
                 <motion.div
@@ -356,7 +385,74 @@ const DonatePage: React.FC = () => {
                 </motion.div>
               )}
 
-              <div className="space-y-6">
+              {/* Show QR Code Mode only when showQRMode is true */}
+              {showQRMode ? (
+                <div className="space-y-6">
+                  {/* Amount Display */}
+                  <div className="bg-gradient-to-r from-themecolor/20 to-purple-600/20 rounded-lg p-4 border border-themecolor/30 text-center">
+                    <p className="text-gray-300 text-sm mb-1">Your Contribution Amount</p>
+                    <p className="text-3xl font-bold text-white">₹{(customAmount || selectedAmount).toLocaleString()}</p>
+                    <p className="text-xs text-gray-400 mt-1">(Minimum: ₹500)</p>
+                  </div>
+
+                  {/* Instructions */}
+                  <div className="bg-[#0c0c0c] rounded-lg p-4 border border-themecolor/10">
+                    <h3 className="text-white font-semibold mb-3 font-montserrat">Payment Instructions:</h3>
+                    <ol className="text-gray-300 text-sm space-y-2 list-decimal list-inside font-montserrat">
+                      <li>Scan the QR code below using any UPI app</li>
+                      <li>Pay your contribution amount: <strong className="text-white">₹{(customAmount || selectedAmount).toLocaleString()}</strong></li>
+                      <li>Take a screenshot of payment confirmation</li>
+                      <li>Submit payment details via Google Form</li>
+                    </ol>
+                  </div>
+
+                  {/* QR Code */}
+                  <div className="flex justify-center p-6 bg-white rounded-lg">
+                    <img 
+                      src="/donation-qr.jpeg" 
+                      alt="Payment QR Code" 
+                      className="w-64 h-64 object-contain"
+                    />
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="space-y-3">
+                    <a 
+                      href={googleFormLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full py-4 px-6 bg-themecolor hover:bg-themecolor/90 text-white font-bold rounded-xl text-center transition-all duration-300 font-montserrat"
+                    >
+                      Submit Payment Details (Google Form) →
+                    </a>
+                    
+                    <button
+                      onClick={() => {
+                        setShowQRMode(false);
+                        setCustomAmount('');
+                        setSelectedAmount(500);
+                      }}
+                      className="w-full py-3 bg-transparent border border-white/20 text-gray-300 font-semibold rounded-xl hover:border-themecolor transition-all font-montserrat"
+                    >
+                      ← Change Amount
+                    </button>
+                  </div>
+
+                  {/* Note */}
+                  <p className="text-xs text-gray-400 text-center font-montserrat">
+                    After submitting the form, our team will verify your payment and update the leaderboard within 24-48 hours.
+                  </p>
+
+                  {/* Logout Button */}
+                  <button
+                    onClick={() => signOut(auth)}
+                    className="w-full py-2.5 px-6 border border-white/20 hover:border-themecolor hover:bg-themecolor/10 text-gray-400 hover:text-white font-medium rounded-xl transition-all duration-300 font-montserrat text-sm"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-6">{/* Razorpay Payment Form */}
                 {/* Profile Photo Upload */}
                 <div className="text-center">
                   <label className="block text-gray-300 font-montserrat font-semibold mb-3 text-sm">
@@ -404,9 +500,12 @@ const DonatePage: React.FC = () => {
 
                 {/* Preset Amounts */}
                 <div>
-                  <label className="block text-gray-300 font-montserrat font-semibold mb-3 text-sm">
+                  <label className="block text-gray-300 font-montserrat font-semibold mb-2 text-sm">
                     Select Amount
                   </label>
+                  <p className="text-gray-400 text-xs font-montserrat mb-3">
+                    Minimum contribution amount is ₹500
+                  </p>
                   <div className="grid grid-cols-2 gap-3">
                     {presetAmounts.map((amount) => (
                       <button
@@ -472,7 +571,7 @@ const DonatePage: React.FC = () => {
                     </span>
                   ) : (
                     <span className="flex items-center justify-center gap-2">
-                      Donate ₹{(customAmount || selectedAmount).toLocaleString()} <span className="text-xl">💜</span>
+                      Contribute ₹{(customAmount || selectedAmount).toLocaleString()} <span className="text-xl">💜</span>
                     </span>
                   )}
                 </button>
@@ -498,6 +597,7 @@ const DonatePage: React.FC = () => {
                   Logout
                 </button>
               </div>
+              )}
             </div>
           </motion.section>
 
@@ -509,7 +609,7 @@ const DonatePage: React.FC = () => {
             className=""
           >
             <h2 className="text-5xl font-montserrat font-bold text-white mb-8">
-              WHY <span className="text-themecolor">DONATE?</span>
+              WHY <span className="text-themecolor">CONTRIBUTE?</span>
             </h2>
             <div className="space-y-5">
               {whyDonate.map((item, index) => (
@@ -592,14 +692,14 @@ const DonatePage: React.FC = () => {
               EVERY CONTRIBUTION <span className="text-themecolor">COUNTS</span>
             </h2>
             <p className="text-gray-400 font-montserrat mb-8 max-w-2xl mx-auto">
-              Whether big or small, your donation directly impacts student lives. Join our community of supporters.
+              Whether big or small, your contribution directly impacts student lives. Join our community of supporters.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link href="/community" className="interactive-element inline-flex items-center gap-2 px-6 py-3 bg-themecolor hover:bg-themecolor/90 text-white font-montserrat font-semibold rounded-xl transition-all duration-300">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
-                Join Community
+                View Community
               </Link>
               <Link href="/leaderboard" className="interactive-element inline-flex items-center gap-2 px-6 py-3 bg-transparent hover:bg-white/5 text-white font-montserrat font-semibold rounded-xl transition-all duration-300">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -170,11 +170,11 @@ const TermsAndConditions = () => {
               Last updated: December 2025
             </p>
 
-            {/* Back to Donate */}
+            {/* Back to Contribute */}
             <div className="text-center pt-8">
               <Link href="/donate">
                 <button className="interactive-element px-8 py-3 bg-themecolor hover:bg-themecolor/90 text-white font-bold rounded-xl transition-all duration-300 font-montserrat">
-                  Back to Donate
+                  Back to Contribute
                 </button>
               </Link>
             </div>

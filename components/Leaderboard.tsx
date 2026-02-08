@@ -10,7 +10,6 @@ import DonatePage from './Donate';
 interface Donor {
   id: string;
   name: string;
-  amount: number;
   photoURL?: string;
   featured?: boolean;
 }
@@ -53,7 +52,6 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ isOpen, onClose }) => {
           donorsList.push({
             id: doc.id,
             name: data.name || 'Anonymous',
-            amount: data.donatedAmount || 0,
             photoURL: data.photoURL,
             featured: data.featured || false,
           });
@@ -114,12 +112,12 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ isOpen, onClose }) => {
         initial={{ y: '-100vh' }}
         animate={{ y: 0 }}
         exit={{ y: '-100vh' }}
-        className="bg-gradient-to-br from-[#1a1a1a] to-[#0c0c0c] text-white rounded-lg shadow-xl w-full max-w-2xl border border-themecolor/20"
+        className="bg-linear-to-br from-[#1a1a1a] to-[#0c0c0c] text-white rounded-lg shadow-xl w-full max-w-2xl border border-themecolor/20"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-8">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-3xl font-bold font-teko">Top Donors</h2>
+            <h2 className="text-3xl font-bold font-teko">Top Contributors</h2>
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-white transition-colors"
@@ -153,7 +151,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ isOpen, onClose }) => {
                 <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-themecolor"></div>
               </div>
             ) : donors.length === 0 ? (
-              <p className="text-center text-gray-400 py-8">No donors yet. Be the first to support us!</p>
+              <p className="text-center text-gray-400 py-8">No contributors yet. Be the first to support us!</p>
             ) : (
               donors.map((donor, index) => (
                 <motion.div
@@ -161,7 +159,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ isOpen, onClose }) => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="flex items-center justify-between p-4 bg-gradient-to-r from-[#1a1a1a] to-[#0c0c0c] rounded-lg border border-themecolor/10 hover:border-themecolor/30 transition-all"
+                  className="flex items-center justify-between p-4 bg-linear-to-r from-[#1a1a1a] to-[#0c0c0c] rounded-lg border border-themecolor/10 hover:border-themecolor/30 transition-all"
                 >
                   <div className="flex items-center gap-4 flex-1">
                     <span className="text-2xl font-bold text-themecolor min-w-8">
@@ -175,8 +173,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ isOpen, onClose }) => {
                       />
                     )}
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold">{donor.name}</h3>
-                      <p className="text-gray-400 text-sm">₹{donor.amount.toLocaleString()}</p>
+                       <h3 className="text-lg font-semibold">{donor.name}</h3>
                     </div>
                     {donor.featured && (
                       <div className="flex items-center gap-1 px-3 py-1 bg-themecolor/20 rounded-full border border-themecolor/50">
@@ -202,7 +199,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ isOpen, onClose }) => {
             <p className="text-center text-gray-300 mb-4 font-montserrat">Want to get featured on the leaderboard?</p>
             <button
               onClick={() => setIsDonateOpen(true)}
-              className="w-full py-3 px-6 bg-gradient-to-r from-themecolor to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-lg transition-all font-montserrat"
+              className="w-full py-3 px-6 bg-linear-to-r from-themecolor to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-lg transition-all font-montserrat"
             >
               Donate Now
             </button>

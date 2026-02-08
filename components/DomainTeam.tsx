@@ -53,9 +53,11 @@ const DomainTeam: React.FC<DomainTeamProps> = ({ wingName, leads, cordinators, i
               <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-themecolor"></span>
             </h2>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+          <div className="flex flex-wrap justify-center items-start gap-8 sm:gap-10 md:gap-12 lg:gap-16 max-w-6xl mx-auto">
             {cordinators.map((coord, index) => (
-              <CoordinatorCircle key={index} member={coord} intercepted={intercepted} />
+              <div className="w-24 sm:w-28 md:w-32 lg:w-36" key={index}>
+                <CoordinatorCircle member={coord} intercepted={intercepted} />
+              </div>
             ))}
           </div>
         </div>
