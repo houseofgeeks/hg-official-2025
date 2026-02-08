@@ -8,7 +8,7 @@ type DomainProp={
 
 const Domains = ({useModal}:DomainProp) => {
   return (
-    <section>
+    <section id="domains">
         <div className="flex justify-center items-center flex-col pb-20">
           <div className="relative inline-block">
             <h1 className="text-7xl font-teko text-white pt-30 text-center">

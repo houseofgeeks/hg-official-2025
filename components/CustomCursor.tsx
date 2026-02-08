@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 const CustomCursor = () => {
+  const [isMobile, setIsMobile] = useState(true);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [target, setTarget] = useState<{
@@ -17,6 +18,23 @@ const CustomCursor = () => {
   const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
+    // Detect mobile/tablet and disable custom cursor
+    const checkMobile = () => {
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isSmallScreen = window.innerWidth < 1024;
+      const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+      setIsMobile(isTouchDevice || isSmallScreen || hasCoarsePointer);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
+    
     const renderRAF = () => {
       rafRef.current = null;
       // sync visible position with latest pointer (throttled)
@@ -94,7 +112,10 @@ const CustomCursor = () => {
       }
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [isMobile]);
+
+  // Don't render custom cursor on mobile/tablet
+  if (isMobile) return null;
 
   return (
     <>

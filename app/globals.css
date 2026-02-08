@@ -161,8 +161,11 @@ Some extra css
   }
 }
 
-body {
-  cursor: none;
+/* Hide cursor only on desktop (non-touch devices) for custom cursor */
+@media (min-width: 1024px) and (pointer: fine) {
+  body {
+    cursor: none;
+  }
 }
 
 .custom-cursor {
