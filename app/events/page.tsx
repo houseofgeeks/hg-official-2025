@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { getEvents } from "@/lib/eventsService";
 import Navbar from "@/components/Navbar";
-import { getEvents } from "@/lib/eventsService";
 
 export default async function EventsPage() {
   const events = await getEvents();

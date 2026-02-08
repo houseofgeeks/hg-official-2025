@@ -111,7 +111,8 @@ const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) => {
       let photoURL = '';
 
       if (photoFile) {
-        photoURL = await uploadToCloudinary(photoFile);
+        const result = await uploadToCloudinary(photoFile);
+        photoURL = result.url;
       }
 
       await signup(email, password, {
