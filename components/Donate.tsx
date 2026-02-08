@@ -328,7 +328,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ isOpen, onClose }) => {
                         disabled={donating || success}
                         className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-lg hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 transition-all"
                       >
-                        {donating ? 'Processing...' : `Donate ₹${selectedPreset || amount || '0'}`}
+                        {donating ? 'Processing...' : `Contribute ₹${selectedPreset || amount || '0'}`}
                       </button>
 
                       {/* Logout Button */}

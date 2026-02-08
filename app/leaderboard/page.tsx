@@ -346,7 +346,7 @@ const LeaderboardPage: React.FC = () => {
             </p>
             <Link href="/donate">
               <button className="w-full py-4 px-8 bg-themecolor hover:bg-themecolor/90 text-white font-bold text-lg rounded-xl transition-all duration-300 shadow-lg shadow-themecolor/30 hover:shadow-themecolor/50 font-montserrat">
-                {userHasDonated ? "Donate More" : "Donate Now"}
+                {userHasDonated ? "Contribute More" : "Contribute Now"}
               </button>
             </Link>
           </motion.div>

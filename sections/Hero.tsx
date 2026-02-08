@@ -26,7 +26,7 @@ const Hero = () => {
             />
         </div>
         <div className='sm:flex-row flex items-center justify-between sm:gap-10 flex-col gap-5'>
-            <Button text='Join The Community →' classname='interactive-element text-lg text-white border-themecolor border-2 font-montserrat font-semibold rounded-lg px-5 py-3 bg-themecolor hover:text-black'>
+            <Button text='View The Community →' classname='interactive-element text-lg text-white border-themecolor border-2 font-montserrat font-semibold rounded-lg px-5 py-3 bg-themecolor hover:text-black'>
             </Button>
             <Button text='Explore Domains' classname='interactive-element text-lg text-white border-2 border-themecolor font-montserrat font-semibold rounded-lg px-5 py-3 hover:text-themecolor transition-all duration-300'>
             </Button>
