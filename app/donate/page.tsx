@@ -364,13 +364,6 @@ const DonatePage: React.FC = () => {
                 </p>
               </div>
 
-              {/* Payment Mode Debug Info */}
-              {!isRazorpayEnabled && !showQRMode && (
-                <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 mb-4 text-xs text-blue-300">
-                  <strong>Payment Mode:</strong> QR Code (Manual Verification)
-                </div>
-              )}
-
               {message && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
@@ -575,11 +568,6 @@ const DonatePage: React.FC = () => {
                     </span>
                   )}
                 </button>
-
-                {/* Razorpay Footer */}
-                <p className="text-center text-gray-500 text-xs font-montserrat">
-                  Powered by Razorpay · 256-bit SSL Encryption
-                </p>
 
                 {/* Terms and Conditions */}
                 <p className="text-center text-gray-500 text-xs font-montserrat">
