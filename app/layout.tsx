@@ -32,6 +32,9 @@ const teko = Teko({
 export const metadata: Metadata = {
   title: "House of Geeks",
   description: "House of Geeks is the technical society of IIIT Ranchi",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
