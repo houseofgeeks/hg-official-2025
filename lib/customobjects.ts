@@ -11,20 +11,35 @@ export interface Lead{
 export const heads=[
   
   {
-      name:"Kushagra Malviya",
-      position:"Pr Lead",
-      image:"https://res.cloudinary.com/dlmfnwkon/image/upload/km_tg6lmk.png"
+      name:"Aditya Singh",
+      position:"General Secretary",
+      image:"https://res.cloudinary.com/dlmfnwkon/image/upload/v1770618829/Screenshot_2026-02-09_120300_mbykar.png"
   },
   {
       name:"Devansh Khandelwal",
-      position:"Head of Operations",
+      position:"Joint Secretary",
       image:"https://res.cloudinary.com/dlmfnwkon/image/upload/dk_fqpjkp.png"
   },
-  {
-      name:"Chaitanya Chaurasia",
-      position:"Treasurer",
-      image:"https://res.cloudinary.com/dlmfnwkon/image/upload/cc_kuwcph.png"
-  },
+  // {
+  //     name:"Chaitanya Chaurasia",
+  //     position:"Treasurer",
+  //     image:"https://res.cloudinary.com/dlmfnwkon/image/upload/cc_kuwcph.png"
+  // },
+  // {
+  //     name:"Kushagra Malviya",
+  //     position:"Pr Lead",
+  //     image:"https://res.cloudinary.com/dlmfnwkon/image/upload/km_tg6lmk.png"
+  // },
+  // {
+  //     name:"Devansh Khandelwal",
+  //     position:"Head of Operations",
+  //     image:"https://res.cloudinary.com/dlmfnwkon/image/upload/dk_fqpjkp.png"
+  // },
+  // {
+  //     name:"Chaitanya Chaurasia",
+  //     position:"Treasurer",
+  //     image:"https://res.cloudinary.com/dlmfnwkon/image/upload/cc_kuwcph.png"
+  // },
 
 ]
 
