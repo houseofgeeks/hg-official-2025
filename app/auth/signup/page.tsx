@@ -23,10 +23,11 @@ export default function SignupPage() {
   const [redirecting, setRedirecting] = useState(false);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState<'success' | 'error'>('success');
+  const [resendTimer, setResendTimer] = useState(0);
   const router = useRouter();
 
-  const handleSendOtp = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSendOtp = async (e?: React.FormEvent, isResend = false) => {
+    if (e) e.preventDefault();
     if (!name || !email || !password) {
       setMessage('Please fill all fields');
       setMessageType('error');
@@ -43,13 +44,24 @@ export default function SignupPage() {
       const res = await fetch('/api/auth/otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, name }),
+        body: JSON.stringify({ email, name, action: 'send' }),
       });
       const data = await res.json();
       if (data.success) {
         setStep('otp');
-        setMessage('OTP sent to your email');
+        setMessage(isResend ? 'New OTP sent to your email!' : 'OTP sent to your email');
         setMessageType('success');
+        // Start 60 second countdown for resend
+        setResendTimer(60);
+        const interval = setInterval(() => {
+          setResendTimer((prev) => {
+            if (prev <= 1) {
+              clearInterval(interval);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
       } else {
         setMessage(data.message || 'Failed to send OTP');
         setMessageType('error');
@@ -79,7 +91,7 @@ export default function SignupPage() {
       const res = await fetch('/api/auth/otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, otp, isSignup: true, name }),
+        body: JSON.stringify({ email, code: otp, action: 'verify', isSignup: true, name }),
       });
       const data = await res.json();
       console.log('OTP verification response:', data);
@@ -158,6 +170,7 @@ export default function SignupPage() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-md bg-black/60 backdrop-blur-md rounded-2xl p-8 border border-white/10"
+          suppressHydrationWarning
         >
           <h1 className="text-3xl font-bold text-white text-center mb-2">Create Account</h1>
           <p className="text-gray-400 text-center mb-6">Join House of Geeks</p>
@@ -176,6 +189,7 @@ export default function SignupPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-themecolor"
+                suppressHydrationWarning
               />
               <input
                 type="email"
@@ -183,6 +197,7 @@ export default function SignupPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-themecolor"
+                suppressHydrationWarning
               />
               <div className="relative">
                 <input
@@ -191,6 +206,7 @@ export default function SignupPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-3 pr-12 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-themecolor"
+                  suppressHydrationWarning
                 />
                 <button
                   type="button"
@@ -228,9 +244,27 @@ export default function SignupPage() {
               >
                 {loading ? 'Creating Account...' : redirecting ? 'Redirecting...' : 'Create Account'}
               </button>
-              <button type="button" onClick={() => setStep('form')} className="w-full text-gray-400 hover:text-white">
-                ← Back
-              </button>
+              <div className="flex items-center justify-between gap-4">
+                <button
+                  type="button"
+                  onClick={() => handleSendOtp(undefined, true)}
+                  disabled={loading || resendTimer > 0}
+                  className="flex-1 py-2 text-sm text-themecolor hover:text-themecolor/80 disabled:opacity-50 disabled:cursor-not-allowed transition border border-themecolor/30 rounded-lg hover:bg-themecolor/10"
+                >
+                  {resendTimer > 0 ? `Resend in ${resendTimer}s` : 'Resend OTP'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setStep('form');
+                    setOtp('');
+                    setMessage('');
+                  }}
+                  className="flex-1 py-2 text-sm text-gray-400 hover:text-white transition border border-gray-400/30 rounded-lg hover:bg-white/10"
+                >
+                  Change Email
+                </button>
+              </div>
             </form>
           )}
 

@@ -62,6 +62,7 @@ export default function LoginPage() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-md bg-black/60 backdrop-blur-md rounded-2xl p-8 border border-white/10"
+          suppressHydrationWarning
         >
           <h1 className="text-3xl font-bold text-white text-center mb-2">Welcome Back</h1>
           <p className="text-gray-400 text-center mb-6">Login to House of Geeks</p>
@@ -79,6 +80,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-themecolor"
+              suppressHydrationWarning
             />
             <div className="relative">
               <input
@@ -87,6 +89,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3 pr-12 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-themecolor"
+                suppressHydrationWarning
               />
               <button
                 type="button"

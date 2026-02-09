@@ -23,9 +23,12 @@ const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) => {
   const [error, setError] = useState('');
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
+  const [resendTimer, setResendTimer] = useState(0);
+  const [successMessage, setSuccessMessage] = useState('');
 
-  const sendOtp = async () => {
+  const sendOtp = async (isResend = false) => {
     setError('');
+    setSuccessMessage('');
     if (!email) {
       setError('Please enter your email');
       return;
@@ -42,6 +45,18 @@ const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) => {
       const data = await response.json();
       if (data.success) {
         setOtpSent(true);
+        setSuccessMessage(isResend ? 'New OTP sent to your email!' : 'OTP sent to your email!');
+        // Start 60 second countdown for resend
+        setResendTimer(60);
+        const interval = setInterval(() => {
+          setResendTimer((prev) => {
+            if (prev <= 1) {
+              clearInterval(interval);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
       } else {
         setError(data.message || 'Failed to send OTP');
       }
@@ -55,8 +70,14 @@ const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) => {
 
   const verifyOtp = async () => {
     setError('');
+    setSuccessMessage('');
     if (!otp) {
       setError('Please enter OTP');
+      return;
+    }
+
+    if (otp.length !== 6) {
+      setError('OTP must be 6 digits');
       return;
     }
 
@@ -71,6 +92,7 @@ const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) => {
       const data = await response.json();
       if (data.success) {
         setOtpVerified(true);
+        setSuccessMessage('Email verified successfully!');
       } else {
         setError(data.message || 'Invalid OTP');
       }
@@ -149,6 +171,12 @@ const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) => {
           </div>
         )}
 
+        {successMessage && (
+          <div className="bg-green-500/10 border border-green-500/50 text-green-400 p-3 rounded-lg mb-4 text-sm">
+            {successMessage}
+          </div>
+        )}
+
         <form onSubmit={handleSignup} className="space-y-4">
           {/* Email and OTP Section */}
           {!otpVerified && (
@@ -181,7 +209,7 @@ const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) => {
                   <input
                     type="text"
                     value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
+                    onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
                     maxLength={6}
                     className="w-full px-4 py-2 bg-[#0c0c0c] border border-indigo-500/30 rounded-lg text-white text-center text-2xl tracking-widest focus:outline-none focus:border-indigo-500"
                     placeholder="000000"
@@ -194,6 +222,27 @@ const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) => {
                   >
                     {loading ? 'Verifying...' : 'Verify OTP'}
                   </button>
+                  <div className="flex items-center justify-between">
+                    <button
+                      type="button"
+                      onClick={() => sendOtp(true)}
+                      disabled={loading || resendTimer > 0}
+                      className="text-sm text-indigo-400 hover:text-indigo-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    >
+                      {resendTimer > 0 ? `Resend OTP in ${resendTimer}s` : 'Resend OTP'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setOtpSent(false);
+                        setOtp('');
+                        setEmail('');
+                      }}
+                      className="text-sm text-gray-400 hover:text-gray-300 transition-all"
+                    >
+                      Change Email
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
