@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/sections/Footer';
 import SpaceBackground from '@/components/SpaceBackground';
+import { FaExclamationTriangle } from 'react-icons/fa';
 
 const TermsAndConditions = () => {
   return (
@@ -68,8 +69,8 @@ const TermsAndConditions = () => {
                   Please read this section carefully before making any donation.
                 </p>
                 <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4">
-                  <p className="text-red-400 font-semibold">
-                    ⚠️ NO REFUNDS WILL BE GRANTED AFTER DONATIONS ARE MADE.
+                  <p className="text-red-400 font-semibold flex items-center gap-2">
+                    <FaExclamationTriangle className="text-xl" /> NO REFUNDS WILL BE GRANTED AFTER DONATIONS ARE MADE.
                   </p>
                 </div>
                 <ul className="space-y-3">

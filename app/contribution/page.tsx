@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { firestore } from '@/lib/firebase';
 import { collection, query, orderBy, limit, getDocs, doc, getDoc } from 'firebase/firestore';
 import { useAuth } from '@/lib/AuthContext';
+import { FaCrown, FaMedal } from 'react-icons/fa';
 
 interface Donor {
   id: string;
@@ -159,7 +160,7 @@ const LeaderboardPage: React.FC = () => {
                       className="interactive-element flex items-center gap-4 p-4 rounded-xl border-2 bg-[#121212]"
                     >
                       <div className={`text-2xl ${['text-yellow-400','text-gray-300','text-orange-400'][index]}`}>
-                        {['👑','🥈','🥉'][index]}
+                        {index === 0 ? <FaCrown /> : <FaMedal />}
                       </div>
                       {donor.photoURL ? (
                         <Image

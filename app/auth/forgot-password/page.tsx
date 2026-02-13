@@ -4,8 +4,6 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import ParticlesContainer from '@/components/ParticlesContainer';
 import Navbar from '@/components/Navbar';
-import { sendPasswordResetEmail } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -22,18 +20,30 @@ export default function ForgotPasswordPage() {
     }
 
     setLoading(true);
+    setMessage('');
+    
     try {
-      await sendPasswordResetEmail(auth, email);
-      setMessage('Password reset email sent! Check your inbox.');
-      setMessageType('success');
-    } catch (err: any) {
-      if (err.code === 'auth/user-not-found') {
-        setMessage('No account found with this email');
-      } else if (err.code === 'auth/invalid-email') {
-        setMessage('Invalid email address');
+      const response = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage(data.message || 'Password reset link sent! Check your inbox.');
+        setMessageType('success');
+        setEmail(''); // Clear email field on success
       } else {
-        setMessage(err.message || 'Failed to send reset email');
+        setMessage(data.error || 'Failed to send reset email');
+        setMessageType('error');
       }
+    } catch (err: any) {
+      console.error('Password reset error:', err);
+      setMessage('An error occurred. Please try again.');
       setMessageType('error');
     } finally {
       setLoading(false);

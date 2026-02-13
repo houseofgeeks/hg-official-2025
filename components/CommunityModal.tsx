@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { IoClose } from "react-icons/io5";
 
 export default function CommunityModal({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -16,9 +17,9 @@ export default function CommunityModal({ children }: { children: React.ReactNode
       >
         <button 
             onClick={() => router.back()}
-            className="absolute top-4 right-4 text-gray-400 hover:text-white z-10"
+            className="absolute top-4 right-4 text-gray-400 hover:text-white z-10 text-2xl"
         >
-            ✕
+            <IoClose />
         </button>
         {children}
       </div>

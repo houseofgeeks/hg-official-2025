@@ -10,6 +10,7 @@ import Navbar from '@/components/Navbar';
 import { doc, setDoc, increment, collection, addDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { firestore, auth } from '@/lib/firebase';
 import { signOut } from 'firebase/auth';
+import { FaGraduationCap, FaRocket, FaLaptopCode, FaTrophy, FaBookOpen, FaBullseye, FaTools, FaStar, FaHeart } from 'react-icons/fa';
 
 declare global {
   interface Window {
@@ -294,30 +295,30 @@ const DonatePage: React.FC = () => {
   };
 
   const impactStats = [
-    { icon: '🎓', value: '1500+', label: 'Students Impacted' },
-    { icon: '🚀', value: '50+', label: 'Events Organized' },
-    { icon: '💻', value: '100+', label: 'Projects Built' },
-    { icon: '🏆', value: '30+', label: 'Hackathons Organized' },
+    { icon: <FaGraduationCap />, value: '1500+', label: 'Students Impacted' },
+    { icon: <FaRocket />, value: '50+', label: 'Events Organized' },
+    { icon: <FaLaptopCode />, value: '100+', label: 'Projects Built' },
+    { icon: <FaTrophy />, value: '30+', label: 'Hackathons Organized' },
   ];
 
   const whyDonate = [
     {
-      icon: '📚',
+      icon: <FaBookOpen />,
       title: 'Fund Workshops & Events',
       description: 'Support hands-on learning experiences and technical workshops for students.',
     },
     {
-      icon: '🎯',
+      icon: <FaBullseye />,
       title: 'Enable Hackathon Participation',
       description: 'Help students travel to and compete in national and international hackathons.',
     },
     {
-      icon: '🔧',
+      icon: <FaTools />,
       title: 'Provide Resources & Tools',
       description: 'Fund essential software, hardware, and cloud resources for student projects.',
     },
     {
-      icon: '🌟',
+      icon: <FaStar />,
       title: 'Build The Future',
       description: 'Invest in the next generation of tech leaders and innovators from IIIT Ranchi.',
     },
@@ -564,7 +565,7 @@ const DonatePage: React.FC = () => {
                     </span>
                   ) : (
                     <span className="flex items-center justify-center gap-2">
-                      Contribute ₹{(customAmount || selectedAmount).toLocaleString()} <span className="text-xl">💜</span>
+                      Contribute ₹{(customAmount || selectedAmount).toLocaleString()} <FaHeart className="text-xl" />
                     </span>
                   )}
                 </button>
@@ -609,8 +610,8 @@ const DonatePage: React.FC = () => {
                   className="interactive-element bg-transparent rounded-xl p-6 hover:bg-white/5 transition-all duration-300 group"
                 >
                   <div className="flex items-start w-full gap-4 text-white">
-                    <div className="w-12 h-12 rounded-lg bg-themecolor/20 flex items-center justify-center shrink-0">
-                      <span className="text-themecolor text-xl">{item.icon}</span>
+                    <div className="w-12 h-12 rounded-lg bg-themecolor/20 flex items-center justify-center shrink-0 text-themecolor text-xl">
+                      {item.icon}
                     </div>
                     <div>
                       <h3 className="text-xl font-montserrat font-semibold text-white mb-2 group-hover:text-themecolor">{item.title}</h3>
@@ -660,7 +661,7 @@ const DonatePage: React.FC = () => {
                 transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
                 className="interactive-element rounded-xl p-6 text-center hover:bg-white/5 transition-all duration-300 group"
               >
-                <span className="text-4xl mb-3 block group-hover:scale-110 transition-transform duration-300">{stat.icon}</span>
+                <div className="text-4xl mb-3 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 text-themecolor">{stat.icon}</div>
                 <p className="text-3xl font-teko font-bold text-themecolor mb-1">{stat.value}</p>
                 <p className="text-sm text-gray-400 font-montserrat">{stat.label}</p>
               </motion.div>

@@ -6,6 +6,7 @@ import { firestore } from '@/lib/firebase';
 import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { useAuth } from '@/lib/AuthContext';
 import DonatePage from './Donate';
+import { FaStar } from 'react-icons/fa';
 
 interface Donor {
   id: string;
@@ -176,8 +177,9 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ isOpen, onClose }) => {
                        <h3 className="text-lg font-semibold">{donor.name}</h3>
                     </div>
                     {donor.featured && (
-                      <div className="flex items-center gap-1 px-3 py-1 bg-themecolor/20 rounded-full border border-themecolor/50">
-                        <span className="text-themecolor text-sm font-semibold">⭐ Featured</span>
+                      <div className="flex items-center gap-2 px-3 py-1 bg-themecolor/20 rounded-full border border-themecolor/50">
+                        <FaStar className="text-themecolor" />
+                        <span className="text-themecolor text-sm font-semibold">Featured</span>
                       </div>
                     )}
                   </div>
