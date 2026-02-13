@@ -17,6 +17,17 @@ type DomainCardProps = {
     
 }
 
+// Optimize avatar images
+const optimizeAvatarUrl = (url: string): string => {
+  if (url.includes('cloudinary.com')) {
+    const parts = url.split('/upload/');
+    if (parts.length === 2) {
+      return `${parts[0]}/upload/w_50,h_50,c_fill,g_face,q_auto:low,f_auto/${parts[1]}`;
+    }
+  }
+  return url;
+};
+
 const DomainCard = ({icon, title, description, url, useModal, leads = [], cords = []} : DomainCardProps) => {
   // Combine leads and coordinators, limit to show max 6 avatars
   const allMembers = [...leads, ...cords];
@@ -40,10 +51,13 @@ const DomainCard = ({icon, title, description, url, useModal, leads = [], cords 
                 title={member.name}
               >
                 {member.image ? (
-                  <img
-                    src={member.image}
+                  <Image
+                    src={optimizeAvatarUrl(member.image)}
                     alt={member.name}
+                    fill
+                    sizes="32px"
                     className="object-cover"
+                    quality={60}
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-xs font-bold text-themecolor">

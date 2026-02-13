@@ -34,7 +34,7 @@ const Navbar = () => {
           <li className="hover:text-themecolor"><Link href="/#about" className='interactive-element'>About</Link></li>
           <li className="hover:text-themecolor"><Link href="/contribution" className='interactive-element'>Contributions</Link></li>
           <li className="hover:text-themecolor"><Link href="/community" className='interactive-element'>Community</Link></li>
-          <li className="hover:text-themecolor"><Link href="/#contact" onClick={(e)=>handleAnchorClick(e,'contact')} className='interactive-element'>Contact</Link></li>
+          <li className="hover:text-themecolor"><Link href="/events" className='interactive-element'>Events</Link></li>
         </ul>
 
         <div className="lg:hidden">
@@ -59,7 +59,7 @@ const Navbar = () => {
           <li className="hover:text-themecolor"><Link href="/#about" className='interactive-element'>About</Link></li>
           <li className="hover:text-themecolor"><Link href="/contribution" className='interactive-element'>Contributions</Link></li>
           <li className="hover:text-themecolor"><Link href="/community" className='interactive-element'>Community</Link></li>
-          <li className="hover:text-themecolor"><Link href="/#contact" onClick={(e)=>handleAnchorClick(e,'contact')} className='interactive-element'>Contact</Link></li>
+          <li className="hover:text-themecolor"><Link href="/events" className='interactive-element'>Events</Link></li>
         </ul>
         
         </div>

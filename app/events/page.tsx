@@ -1,7 +1,20 @@
 
 import Link from "next/link";
+import Image from "next/image";
 import { getEvents } from "@/lib/eventsService";
 import Navbar from "@/components/Navbar";
+
+// Optimize Cloudinary URL for small circular thumbnails
+const optimizeImageUrl = (url: string): string => {
+  if (url.includes('cloudinary.com')) {
+    const parts = url.split('/upload/');
+    if (parts.length === 2) {
+      // Add transformations: width=50, height=50, crop=fill, quality=auto:low, format=auto
+      return `${parts[0]}/upload/w_50,h_50,c_fill,g_face,q_auto:low,f_auto/${parts[1]}`;
+    }
+  }
+  return url;
+};
 
 export default async function EventsPage() {
   const events = await getEvents();
@@ -12,55 +25,87 @@ export default async function EventsPage() {
         <h1 className="font-teko text-4xl md:text-5xl text-themecolor mb-8">
           Events
         </h1>
-        <div className="space-y-6">
-          {events.map((event) => (
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {events.map((event, eventIndex) => (
             <Link
               key={event.id}
               href={`/events/${event.eventurl}`}
-              className="block border rounded-lg p-5 hover:border-themecolor transition interactive-element"
+              className="block h-full"
             >
-              {event.images && event.images.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-4 justify-start">
-                  {event.images.slice(0, 4).map((img, idx) => (
-                    <img
-                      key={img.public_id || idx}
-                      src={img.url}
-                      alt={event.title + ' image ' + (idx + 1)}
-                      className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 object-cover rounded-full border-2 border-white shadow"
-                    />
-                  ))}
-                  {event.images.length > 4 && (
-                    <div
-                      className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center rounded-full border-2 border-white shadow text-white font-bold"
-                      style={{
-                        fontSize: 'clamp(0.7rem, 2vw, 1.1rem)',
-                        backgroundColor: event.images[0]?.public_id
-                          ? [
-                              '#f472b6', // pink-400
-                              '#a78bfa', // purple-400
-                              '#38bdf8', // sky-400
-                              '#facc15', // yellow-400
-                              '#34d399', // green-400
-                              '#f87171', // red-400
-                              '#60a5fa', // blue-400
-                            ][event.images[0].public_id.length % 7]
-                          : '#f472b6', // fallback pink
-                      }}
-                    >
-                      +{event.images.length - 4}
+              <div className="interactive-element flex flex-col text-white hover:border-themecolor rounded-2xl p-6 gap-4 group hover:scale-103 transition-all duration-300 border border-transparent hover:bg-gray-900 h-full">
+                
+                {/* Overlapping Images Section */}
+                {event.images && event.images.length > 0 && (
+                  <div className="flex items-center mb-2 h-12">
+                    <div className="flex -space-x-2">
+                      {event.images.slice(0, 5).map((img, idx) => (
+                        <div
+                          key={img.public_id || idx}
+                          className="relative w-10 h-10 rounded-full border-2 border-gray-900 overflow-hidden hover:scale-110 hover:z-10 transition-transform duration-200 shadow-lg bg-gray-800"
+                          style={{ zIndex: 5 - idx }}
+                        >
+                          <Image
+                            src={optimizeImageUrl(img.url)}
+                            alt={`${event.title} image ${idx + 1}`}
+                            fill
+                            sizes="40px"
+                            className="object-cover"
+                            priority={eventIndex < 6}
+                            quality={60}
+                            placeholder="blur"
+                            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwABmQA=="
+                          />
+                        </div>
+                      ))}
+                      {event.images.length > 5 && (
+                        <div
+                          className="relative w-10 h-10 rounded-full border-2 border-gray-900 flex items-center justify-center font-bold shadow-lg text-white"
+                          style={{
+                            fontSize: '0.75rem',
+                            zIndex: 0,
+                            backgroundColor: [
+                              '#f472b6', '#a78bfa', '#38bdf8', '#facc15', 
+                              '#34d399', '#f87171', '#60a5fa'
+                            ][event.images[0]?.public_id?.length % 7 || 0] || '#f472b6',
+                          }}
+                        >
+                          +{event.images.length - 5}
+                        </div>
+                      )}
                     </div>
-                  )}
+                  </div>
+                )}
+
+                {/* Event Title */}
+                <h2 className="font-teko text-2xl text-white group-hover:text-themecolor transition-colors">
+                  {event.title}
+                </h2>
+
+                {/* Date and Category */}
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="px-3 py-1 rounded-full bg-themecolor/20 text-themecolor font-montserrat">
+                    {event.date}
+                  </span>
+                  <span className="text-gray-400 font-montserrat">
+                    {event.category}
+                  </span>
                 </div>
-              )}
-              <h2 className="font-teko text-2xl text-themecolor">
-                {event.title}
-              </h2>
-              <p className="font-montserrat text-sm text-white">
-                {event.date} • {event.category}
-              </p>
-              <p className="font-montserrat text-gray-300 mt-2">
-                {event.description}
-              </p>
+
+                {/* Divider */}
+                <div className="w-12 h-0.5 bg-themecolor" />
+
+                {/* Description */}
+                <p className="font-montserrat text-gray-300 text-sm leading-relaxed line-clamp-3 grow">
+                  {event.description}
+                </p>
+
+                {/* View More Link */}
+                <div className="mt-auto pt-2">
+                  <span className="text-themecolor font-montserrat text-sm group-hover:underline">
+                    View Details →
+                  </span>
+                </div>
+              </div>
             </Link>
           ))}
         </div>

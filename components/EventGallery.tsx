@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react"
 import { X, ChevronLeft, ChevronRight } from "lucide-react"
+import Image from "next/image"
 
 type Image = {
   url: string
@@ -14,7 +15,7 @@ const getOptimizedUrl = (url: string, width: number = 400) => {
   if (url.includes('cloudinary.com')) {
     const parts = url.split('/upload/')
     if (parts.length === 2) {
-      return `${parts[0]}/upload/w_${width},h_${width},c_fill,q_auto:low,f_auto/${parts[1]}`
+      return `${parts[0]}/upload/w_${width},h_${width},c_fill,q_auto:good,f_auto/${parts[1]}`
     }
   }
   return url
@@ -28,6 +29,18 @@ export default function EventGallery({ images }: { images: Image[] }) {
   const loadMoreRef = useRef<HTMLDivElement>(null)
   
   const IMAGES_PER_LOAD = 8 // Load 8 more images each time
+
+  // Load more images function
+  const loadMoreImages = useCallback(() => {
+    if (isLoading || visibleCount >= images.length) return
+    
+    setIsLoading(true)
+    // Simulate loading delay for smooth UX
+    setTimeout(() => {
+      setVisibleCount(prev => Math.min(prev + IMAGES_PER_LOAD, images.length))
+      setIsLoading(false)
+    }, 200)
+  }, [isLoading, visibleCount, images.length])
 
   // Intersection Observer for automatic load more
   useEffect(() => {
@@ -44,19 +57,7 @@ export default function EventGallery({ images }: { images: Image[] }) {
 
     observer.observe(loadMoreRef.current)
     return () => observer.disconnect()
-  }, [visibleCount, isLoading, images.length])
-
-  // Load more images function
-  const loadMoreImages = useCallback(() => {
-    if (isLoading || visibleCount >= images.length) return
-    
-    setIsLoading(true)
-    // Simulate loading delay for smooth UX
-    setTimeout(() => {
-      setVisibleCount(prev => Math.min(prev + IMAGES_PER_LOAD, images.length))
-      setIsLoading(false)
-    }, 200)
-  }, [isLoading, visibleCount, images.length])
+  }, [visibleCount, isLoading, images.length, loadMoreImages])
 
   // ⌨️ Keyboard navigation
   useEffect(() => {
@@ -111,14 +112,17 @@ export default function EventGallery({ images }: { images: Image[] }) {
                 <div className="w-8 h-8 border-2 border-themecolor/30 border-t-themecolor rounded-full animate-spin" />
               </div>
             )}
-            <img 
+            <Image 
               src={getOptimizedUrl(img.url, 400)} 
-              className={`h-full w-full object-cover transition-opacity duration-300 ${
+              alt={`Event photo ${index + 1}`}
+              fill
+              sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              className={`object-cover transition-opacity duration-300 ${
                 loadedImages.has(index) ? 'opacity-100' : 'opacity-0'
               }`}
               loading="lazy"
-              onLoad={() => handleImageLoad(index)}
-              alt={`Event photo ${index + 1}`}
+              quality={75}
+              onLoadingComplete={() => handleImageLoad(index)}
             />
             {/* Overlay on hover */}
             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
@@ -132,7 +136,7 @@ export default function EventGallery({ images }: { images: Image[] }) {
 
       {/* Intersection Observer Trigger */}
       {hasMore && (
-        <div ref={loadMoreRef} className="flex justify-center mt-8 min-h-[60px]">
+        <div ref={loadMoreRef} className="flex justify-center mt-8 min-h-15">
           {isLoading && (
             <div className="flex items-center gap-3 text-gray-400">
               <svg className="animate-spin h-6 w-6" viewBox="0 0 24 24">
@@ -152,7 +156,7 @@ export default function EventGallery({ images }: { images: Image[] }) {
 
       {/* MODAL */}
       {activeIndex !== null && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm">
+        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/90 backdrop-blur-sm">
           
           {/* CLOSE */}
           <button
@@ -183,12 +187,18 @@ export default function EventGallery({ images }: { images: Image[] }) {
           )}
 
           {/* IMAGE - Full quality for modal */}
-          <div className="flex max-h-[90vh] max-w-[90vw] items-center justify-center p-6">
-            <img
-              src={images[activeIndex].url}
-              className="max-h-[80vh] max-w-[80vw] object-contain rounded-xl bg-black shadow-2xl"
-              alt={`Event photo ${activeIndex + 1}`}
-            />
+          <div className="flex max-h-[90vh] max-w-[90vw] items-center justify-center p-6 relative">
+            <div className="relative w-full h-full flex items-center justify-center">
+              <Image
+                src={images[activeIndex].url}
+                alt={`Event photo ${activeIndex + 1}`}
+                width={1920}
+                height={1080}
+                className="max-h-[80vh] max-w-[80vw] object-contain rounded-xl shadow-2xl"
+                quality={90}
+                priority
+              />
+            </div>
           </div>
 
           {/* Image Counter */}

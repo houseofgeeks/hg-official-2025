@@ -146,7 +146,7 @@ const Signup: React.FC<SignupProps> = ({ onSuccess, onSwitchToLogin }) => {
       });
 
       onSuccess();
-    } catch (err: any) {
+    } catch (err:any) {
       setError(err.message || 'Signup failed');
       console.error(err);
     } finally {
