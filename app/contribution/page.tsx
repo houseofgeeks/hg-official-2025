@@ -345,11 +345,9 @@ const LeaderboardPage: React.FC = () => {
                 ? "Thank you for your support! Want to climb higher?" 
                 : "Want to get featured in our contributions?"}
             </p>
-            <Link href="/donate">
               <button className="interactive-element w-full py-4 px-8 bg-themecolor hover:bg-themecolor/90 text-white font-bold text-lg rounded-xl transition-all duration-300 shadow-lg shadow-themecolor/30 hover:shadow-themecolor/50 font-montserrat">
-                {userHasDonated ? "Contribute More" : "Contribute Now"}
+                Coming Soon
               </button>
-            </Link>
           </motion.div>
             {recentDonors.length > 0 && (
               <motion.div
